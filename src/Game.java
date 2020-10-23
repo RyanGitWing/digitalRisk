@@ -8,25 +8,43 @@ public class Game
 
     private Dice die;
 
-    private ArrayList<Player> player;
+    private LinkedList<Player> players;
+
+    private int numPlayers;
+
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game()
     {
-        createMap();
         parser = new Parser();
         die = new Dice();
+        players = new LinkedList<>();
     }
 
-    private void createMap() {
+    public int retrievePlayers()
+    {
+
+        Scanner reader = new Scanner(System.in);
+
+        System.out.println("Enter number of players: ");
+        numPlayers = reader.nextInt();
+
+        players = new LinkedList<>();
+
+        for (int i = 0; i < numPlayers; i++){
+            players.set(i, new Player(i+1));
+        }
+
+        return numPlayers;
+
+    }
+
+    private void createMap()
+    {
+
         Map map = new Map();
-    }
-
-    public void createPlayer() {
-        Player player = new Player()
-
     }
 
     /**
@@ -34,6 +52,8 @@ public class Game
      */
     public void play()
     {
+        retrievePlayers();
+
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
@@ -57,17 +77,9 @@ public class Game
         System.out.println("Risk is a turn-based world domination game.");
         System.out.println("How many players are playing");
         System.out.println();
-        printDescription();
         System.out.println();
     }
 
-    /**
-     * This is the method would print the status of the game?
-     */
-    private void printDescription()
-    {
-
-    }
 
     /**
      * Given a command, process (that is: execute) the command.
@@ -122,8 +134,6 @@ public class Game
         System.out.println("Your command words are:");
         System.out.println("quit help status attack endturn");
     }
-
-
 
     /**
      * "Quit" was entered. Check the rest of the command to see
@@ -197,6 +207,7 @@ public class Game
         return false;
     }
 
+    /**
     public int fightPower(){
 
         ArrayList<Dice> atkList = new ArrayList<>(3);
@@ -217,8 +228,7 @@ public class Game
 
 
     }
-
-    public
+     */
 
     public static void main (String[] args){
         Game game = new Game();
