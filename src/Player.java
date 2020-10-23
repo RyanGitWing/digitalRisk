@@ -134,6 +134,8 @@ public class Player {
      * @param destination Player's destination country.
      */
     public void MoveArmy(Country source, int armyCount, Country destination) {
+        //todo: make boolean
+        //todo: implement path move
         if (PlayerTurn) {
             int newArmy = this.PlayerStatus.get(source) - armyCount;
             CountryCheck(newArmy, source);
