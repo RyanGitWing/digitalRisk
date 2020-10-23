@@ -34,7 +34,9 @@ public class Country {
         armyOccupied += army;
     }
 
-    public void addAdjCountry(Country c){ adjCountries.add(c); }
+    public void addAdjCountry(Country c){ 
+        adjCountries.add(c); 
+    }
 
     public String getName(){
         return this.name;
