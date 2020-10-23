@@ -4,12 +4,29 @@ public class Game
 {
     private Parser parser;
 
+    private ArrayList<Dice> diceValue;
+
+    private Dice die;
+
+    private ArrayList<Player> player;
+
     /**
      * Create the game and initialise its internal map.
      */
     public Game()
     {
+        createMap();
         parser = new Parser();
+        die = new Dice();
+    }
+
+    private void createMap() {
+        Map map = new Map();
+    }
+
+    public void createPlayer() {
+        Player player = new Player()
+
     }
 
     /**
@@ -38,7 +55,7 @@ public class Game
         System.out.println();
         System.out.println("Welcome to Risk!");
         System.out.println("Risk is a turn-based world domination game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("How many players are playing");
         System.out.println();
         printDescription();
         System.out.println();
@@ -85,6 +102,10 @@ public class Game
 
         else if (commandWord.equals("endturn")) {
             endTurn(command);
+        }
+
+        else if (commandWord.equals("move")) {
+            move(command);
         }
 
         return wantToQuit;
@@ -166,6 +187,38 @@ public class Game
         }
         return true;
     }
+
+    private Boolean move(Command command) {
+
+        if(!command.hasSecondWord()) {
+            System.out.println("Move what?");
+        }
+
+        return false;
+    }
+
+    public int fightPower(){
+
+        ArrayList<Dice> atkList = new ArrayList<>(3);
+        ArrayList<Dice> defList = new ArrayList<>(2);
+
+        if (player.) {
+            for (int i = 0; i < atkList.size(); i++) {
+                die.rollDice();
+                atkList.add(die);
+            }
+        }
+        if (player is defending) {
+            for (int i = 0; i < defList.size(); i++) {
+                die.rollDice();
+                defList.add(die);
+            }
+        }
+
+
+    }
+
+    public
 
     public static void main (String[] args){
         Game game = new Game();
