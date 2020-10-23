@@ -5,9 +5,10 @@ public class Continent {
     private int continentBonus;
     private String name;
 
-    public Continent(ArrayList<Country> countries,int continentBonus, String name){
-        this.countries = countries;
-
+    public Continent(String name,int continentBonus){
+        this.name = name;
+        this.continentBonus = continentBonus;
+        countries = new ArrayList<>();
     }
 
 }
