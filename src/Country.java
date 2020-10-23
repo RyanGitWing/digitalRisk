@@ -3,29 +3,23 @@ import java.util.*;
 
 public class Country {
 
-    private String name;
-    private int armyBonus;
-    private String continent;
+    private final String name;
     private Player ruler;
     private int armyOccupied;
-    private ArrayList<Country> adjCountries;
+    private HashMap<String, String> adjCountries;
 
     /**
      *Creates a new country object
      *
      * @param name - the name of the country
-     * @param armyBonus - the bonus army u get for owning the country
-     * @param continent - the continent the country is in
      */
-    public Country(String name,int armyBonus, String continent){
+    public Country(String name){
         this.name = name;
-        this.armyBonus = armyBonus;
-        this.continent = continent;
         ruler = null;
         armyOccupied = 0;
-        adjCountries = new ArrayList<>();
+        adjCountries = new HashMap<>();
     }
-    
+
     public void setRuler(Player ruler){
         this.ruler = ruler;
     }
@@ -34,20 +28,12 @@ public class Country {
         armyOccupied += army;
     }
 
-    public void addAdjCountry(Country c){ 
-        adjCountries.add(c); 
+    public void setAdjCountry(String country,String adj){
+        adjCountries.put(country,adj);
     }
 
     public String getName(){
         return this.name;
-    }
-
-    public int getArmyBonus(){
-        return this.armyBonus;
-    }
-
-    public String getContinent(){
-        return this.continent;
     }
 
     public Player getRuler(){
@@ -56,5 +42,9 @@ public class Country {
 
     public int getArmyOccupied(){
         return this.armyOccupied;
+    }
+
+    public String getAdjCountries(String country){
+        return adjCountries.get(country);
     }
 }
