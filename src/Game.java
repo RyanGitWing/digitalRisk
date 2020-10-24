@@ -4,8 +4,6 @@ public class Game
 {
     private Parser parser;
 
-    private ArrayList<Dice> diceValue;
-
     private Dice die;
 
     private ArrayList<Player> playerList;
@@ -16,9 +14,12 @@ public class Game
 
     private Map map;
 
-    private Boolean hasAtk;
+    private boolean hasAtk;
 
     private Player currentPlayer;
+
+    private int numAtkArmy;
+
 
 
     /**
@@ -27,7 +28,6 @@ public class Game
     public Game()
     {
         parser = new Parser();
-        die = new Dice();
         playerList = new ArrayList<>();
         map = new Map();
     }
@@ -42,7 +42,7 @@ public class Game
 
         Scanner reader = new Scanner(System.in);
 
-        System.out.println("Enter number of players: ");
+        System.out.println("Enter the number of players: ");
         numPlayers = reader.nextInt();
 
         // If the number of players is less than 2 then request a larger amount.
@@ -60,7 +60,7 @@ public class Game
             playerList = new ArrayList<>();
 
             for (int i = 0; i < numPlayers; i++) {
-                playerList.add(i, new Player()); // Needs adjustment!!!
+                playerList.add(new Player()); // Needs adjustment!!!
             }
             // Initialize the starting player.
             playerIndex = 0;
@@ -132,7 +132,7 @@ public class Game
         }
 
         else if (commandWord.equals("attack")) {
-            attack(command);
+            attackCMD(command);
         }
 
         else if (commandWord.equals("endturn")) {
@@ -188,33 +188,77 @@ public class Game
      * where we attacking with how many troops.
      * @param command The command to be processed.
      */
-    private void attack(Command command) {
+    private void attackCMD(Command command) {
 
-        if(!command.hasSecondWord()) {
+        if (command.hasSecondWord()) {
             System.out.println("Attack what?");
 
         }
 
-        if(!command.hasThirdWord()) {
-            System.out.println("Attack from where?");
+        Scanner reader = new Scanner(System.in);
 
-        }
+        System.out.println("Which country is attacking?");
+        String countryATK = reader.nextLine();
 
-        if(!command.hasThirdWord()) {
-            System.out.println("Attack with how many army?");
+        // Needs to check if own this country.
 
-        }
+        System.out.println("Which country do you want to attack?");
+        String countryDef = reader.nextLine();
+
+        // Needs to check if the country is adjacent.
+
+        System.out.println("With how many army?");
+        numAtkArmy = reader.nextInt();
+
+        // Needs to check if their is enough army in the country.
+
+        battlePhase(countryATK, countryDef, numAtkArmy);
+
+    }
+
+    /**
+     * This method handles the battle phase between players. By rolling a
+     * die based on the number of troops deployed.
+     *
+     * @param attacking The country attacking the adjacent country.
+     * @param defending The country defending its territory.
+     * @param deployedTroops The number of troops sent by the attacking country.
+     */
+    private void battlePhase(String attacking, String defending, int deployedTroops) {
+
+        Country countryAtk = map.getCountry(attacking);
+        Country countryDef = map.getCountry(defending);
+        numAtkArmy = deployedTroops;
+
+        int[] atkList = new int[3];
+        int[] defList = new int[2];
 
         if (hasAtk == false) {
 
+            if (map.checkAdjCountry(countryAtk.getName(), countryDef.getName() == true)) {
 
+                die = new Dice();
 
+                for (int i = 0; i < Math.min(atkList.length, countryAtk.getArmy()); i++) {
+                    die.rollDice();
+                    atkList[i] = die.getValue();
+                }
+
+                for (int i = 0; i < Math.min(defList.length, countryDef.getArmy()); i++) {
+                    die.rollDice();
+                    defList[i] = die.getValue();
+                }
+
+                Arrays.sort(atkList);
+                Arrays.sort(defList);
+
+            }
         }
-
 
         hasAtk = true;
 
     }
+
 
     /**
      * "endturn" was entered. Check the rest of the command to see
@@ -223,7 +267,7 @@ public class Game
      */
     private void nextPlayer(Command command) {
 
-        if(command.hasSecondWord() || command.hasThirdWord() || command.hasFourthWord()) {
+        if(command.hasSecondWord()) {
             System.out.println("End turn what?");
         }
 
@@ -242,28 +286,6 @@ public class Game
 
     }
 
-    /**
-    public int fightPower(){
-
-        ArrayList<Dice> atkList = new ArrayList<>(3);
-        ArrayList<Dice> defList = new ArrayList<>(2);
-
-        if (player.) {
-            for (int i = 0; i < atkList.size(); i++) {
-                die.rollDice();
-                atkList.add(die);
-            }
-        }
-        if (player is defending) {
-            for (int i = 0; i < defList.size(); i++) {
-                die.rollDice();
-                defList.add(die);
-            }
-        }
-
-
-    }
-     */
 
     public static void main (String[] args){
         Game game = new Game();
