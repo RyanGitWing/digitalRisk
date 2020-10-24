@@ -6,7 +6,7 @@ public class Continent {
 
     public Continent(ContinentName name){
         this.name = name;
-        countries = new ArrayList<>();
+        countries = new List<>();
     }
     
     public void addCountry(Country c){
