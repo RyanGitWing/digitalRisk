@@ -1,14 +1,24 @@
 import java.util.*;
 
 public class Continent {
-    private ArrayList<Country> countries;
-    private int continentBonus;
-    private String name;
+    private List<Country> countries;
+    private ContinentName name;
 
-    public Continent(String name,int continentBonus){
+    public Continent(ContinentName name){
         this.name = name;
-        this.continentBonus = continentBonus;
         countries = new ArrayList<>();
+    }
+    
+    public void addCountry(Country c){
+        countries.add(c);
+    }
+    
+    public ContinentName getName(){
+        return name;
+    }
+    
+    public List<Country> getContinent(){
+        return countries;   
     }
 
 }
