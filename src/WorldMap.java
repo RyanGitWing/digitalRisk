@@ -1,12 +1,12 @@
 import java.util.HashMap;
 
-public class Map
+public class WorldMap
 {
-    private HashMap <CountryName, Integer> Map, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
+    private HashMap <CountryName, Integer> WorldMap, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
 
-    public Map ()
+    public WorldMap ()
     {
-        Map = new HashMap<>();
+        WorldMap = new HashMap<>();
         NorthAmerica = new HashMap<>();
         SouthAmerica = new HashMap<>();
         Europe = new HashMap<>();
@@ -98,12 +98,12 @@ public class Map
 
     public void setMap()
     {
-        Map.putAll(NorthAmerica);
-        Map.putAll(SouthAmerica);
-        Map.putAll(Europe);
-        Map.putAll(Africa);
-        Map.putAll(Asia);
-        Map.putAll(Australia);
+        WorldMap.putAll(NorthAmerica);
+        WorldMap.putAll(SouthAmerica);
+        WorldMap.putAll(Europe);
+        WorldMap.putAll(Africa);
+        WorldMap.putAll(Asia);
+        WorldMap.putAll(Australia);
     }
 
     public void randAllocation (int PlayerCount)
