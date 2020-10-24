@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Country {
 
-    private final String name;
+    private final CountryName name;
     private Player ruler;
     private int armyOccupied;
     private HashMap<CountryName, List<CountryName>> adjCountries;
