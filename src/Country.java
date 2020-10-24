@@ -6,7 +6,7 @@ public class Country {
     private final String name;
     private Player ruler;
     private int armyOccupied;
-    private HashMap<String, String> adjCountries;
+    private HashMap<CountryName, CountryName> adjCountries;
 
     /**
      *Creates a new country object
@@ -28,7 +28,7 @@ public class Country {
         armyOccupied += army;
     }
 
-    public void setAdjCountry(String country,String adj){
+    public void setAdjCountry(CountryName country,CountryName adj){
         adjCountries.put(country,adj);
     }
 
@@ -44,7 +44,7 @@ public class Country {
         return this.armyOccupied;
     }
 
-    public String getAdjCountries(String country){
+    public String getAdjCountries(CountryName country){
         return adjCountries.get(country);
     }
 }
