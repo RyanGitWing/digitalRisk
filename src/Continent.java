@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Continent {
     private List<Country> countries;
-    private ContinentName name;
+    private final ContinentName name;
 
     public Continent(ContinentName name){
         this.name = name;
