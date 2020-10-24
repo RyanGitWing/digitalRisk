@@ -8,9 +8,17 @@ public class Game
 
     private Dice die;
 
-    private LinkedList<Player> players;
+    private ArrayList<Player> playerList;
 
     private int numPlayers;
+
+    private int playerIndex;
+
+    private Map map;
+
+    private Boolean hasAtk;
+
+    private Player currentPlayer;
 
 
     /**
@@ -20,9 +28,15 @@ public class Game
     {
         parser = new Parser();
         die = new Dice();
-        players = new LinkedList<>();
+        playerList = new ArrayList<>();
+        map = new Map();
     }
 
+    /**
+     * Get a number of player between 2 and 6 from the user input for the
+     * game to start.
+     * @return the number of player.
+     */
     public int retrievePlayers()
     {
 
@@ -31,20 +45,31 @@ public class Game
         System.out.println("Enter number of players: ");
         numPlayers = reader.nextInt();
 
-        players = new LinkedList<>();
+        // If the number of players is less than 2 then request a larger amount.
+        if (numPlayers < 2) {
+            System.out.println("Not enough players!");
+            retrievePlayers();
+        }
+        // If the number of players exceeds 6 request a different number of player
+        else if (numPlayers > 6) {
+            System.out.println("Too many players!");
+            retrievePlayers();
+        }
+        // Insert players in a list.
+        else {
+            playerList = new ArrayList<>();
 
-        for (int i = 0; i < numPlayers; i++){
-            players.set(i, new Player(i+1));
+            for (int i = 0; i < numPlayers; i++) {
+                playerList.add(i, new Player()); // Needs adjustment!!!
+            }
+            // Initialize the starting player.
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+
         }
 
         return numPlayers;
 
-    }
-
-    private void createMap()
-    {
-
-        Map map = new Map();
     }
 
     /**
@@ -75,8 +100,6 @@ public class Game
         System.out.println();
         System.out.println("Welcome to Risk!");
         System.out.println("Risk is a turn-based world domination game.");
-        System.out.println("How many players are playing");
-        System.out.println();
         System.out.println();
     }
 
@@ -113,16 +136,11 @@ public class Game
         }
 
         else if (commandWord.equals("endturn")) {
-            endTurn(command);
-        }
-
-        else if (commandWord.equals("move")) {
-            move(command);
+            nextPlayer(command);
         }
 
         return wantToQuit;
     }
-
 
     /**
      * Print out some help information.
@@ -158,7 +176,7 @@ public class Game
      */
     private void status(Command command) {
 
-        if(command.hasSecondWord()) {
+        if(command.hasSecondWord() || command.hasThirdWord() || command.hasFourthWord()) {
             System.out.println("Status what?");
 
         }
@@ -178,33 +196,50 @@ public class Game
         }
 
         if(!command.hasThirdWord()) {
-            System.out.println("Attack with how many?");
+            System.out.println("Attack from where?");
 
         }
+
+        if(!command.hasThirdWord()) {
+            System.out.println("Attack with how many army?");
+
+        }
+
+        if (hasAtk == false) {
+
+
+
+        }
+
+
+        hasAtk = true;
 
     }
 
     /**
-     * "EndTurn" was entered. Check the rest of the command to see
-     * whether we really ended our turn.
+     * "endturn" was entered. Check the rest of the command to see
+     * whether we really want to pass our turn to the following player.
      * @param command The command to be processed.
      */
-    private Boolean endTurn(Command command) {
+    private void nextPlayer(Command command) {
 
-        if(command.hasSecondWord()) {
+        if(command.hasSecondWord() || command.hasThirdWord() || command.hasFourthWord()) {
             System.out.println("End turn what?");
-
-        }
-        return true;
-    }
-
-    private Boolean move(Command command) {
-
-        if(!command.hasSecondWord()) {
-            System.out.println("Move what?");
         }
 
-        return false;
+        playerIndex++;
+        // If the index is bigger or equal to the player list go back to index 0
+        if (playerIndex >= playerList.size()){
+            playerIndex = 0;
+
+        }
+        // Player that is playing according to index.
+        currentPlayer = playerList.get(playerIndex);
+        hasAtk = false;
+
+        System.out.println("My turn!"); // For testing
+
+
     }
 
     /**
