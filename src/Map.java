@@ -2,26 +2,108 @@ import java.util.HashMap;
 
 public class Map
 {
-    private HashMap <CountryName, Integer> Map;
-    private CountryName countryName;
+    private HashMap <CountryName, Integer> Map, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
 
     public Map ()
     {
         Map = new HashMap<>();
-        this.setCountries();
+        NorthAmerica = new HashMap<>();
+        SouthAmerica = new HashMap<>();
+        Europe = new HashMap<>();
+        Africa = new HashMap<>();
+        Asia = new HashMap<>();
+        Australia = new HashMap<>();
+        this.setContinents();
+        this.setMap();
     }
 
-    public void setCountry (CountryName country)
+    public void setCountry (CountryName country, HashMap map)
     {
-        this.Map.put(country,0);
+        map.put(country,0);
     }
 
-    public void setCountries ()
+    public void setContinent (ContinentName continent)
     {
-        for (CountryName country : CountryName.values())
+        if (continent == ContinentName.NorthAmerica)
         {
-            this.setCountry(country);
+            setCountry(CountryName.Alaska, NorthAmerica);
+            setCountry(CountryName.WesternCanada, NorthAmerica);
+            setCountry(CountryName.CentralAmerica, NorthAmerica);
+            setCountry(CountryName.EasternUS, NorthAmerica);
+            setCountry(CountryName.Greenland, NorthAmerica);
+            setCountry(CountryName.NorthwestTerritories, NorthAmerica);
+            setCountry(CountryName.CentralCanada, NorthAmerica);
+            setCountry(CountryName.EasternCanada, NorthAmerica);
+            setCountry(CountryName.WesternUS, NorthAmerica);
         }
+        if (continent == ContinentName.SouthAmerica)
+        {
+            setCountry(CountryName.Argentina, SouthAmerica);
+            setCountry(CountryName.Brazil, SouthAmerica);
+            setCountry(CountryName.Peru,SouthAmerica);
+            setCountry(CountryName.Venezuela, SouthAmerica);
+        }
+        if (continent == ContinentName.Europe)
+        {
+            setCountry(CountryName.GreatBritain, Europe);
+            setCountry(CountryName.Iceland,Europe);
+            setCountry(CountryName.NorthernEurope, Europe);
+            setCountry(CountryName.Scandinavia, Europe);
+            setCountry(CountryName.SouthernEurope, Europe);
+            setCountry(CountryName.Ukraine, Europe);
+            setCountry(CountryName.WesternEurope, Europe);
+        }
+        if (continent == ContinentName.Africa)
+        {
+            setCountry(CountryName.Congo, Africa);
+            setCountry(CountryName.EastAfrica, Africa);
+            setCountry(CountryName.Egypt, Africa);
+            setCountry(CountryName.Madagascar, Africa);
+            setCountry(CountryName.NorthAfrica, Africa);
+            setCountry(CountryName.SouthAfrica, Africa);
+        }
+        if (continent == ContinentName.Asia)
+        {
+            setCountry(CountryName.Afghanistan, Asia);
+            setCountry(CountryName.China, Asia);
+            setCountry(CountryName.India, Asia);
+            setCountry(CountryName.Irkutsk, Asia);
+            setCountry(CountryName.Japan, Asia);
+            setCountry(CountryName.Kamchatka, Asia);
+            setCountry(CountryName.MiddleEast, Asia);
+            setCountry(CountryName.Mongolia, Asia);
+            setCountry(CountryName.Siam, Asia);
+            setCountry(CountryName.Siberia, Asia);
+            setCountry(CountryName.Ural, Asia);
+            setCountry(CountryName.Yakutsk, Asia);
+        }
+        if (continent == ContinentName.Australia)
+        {
+            setCountry(CountryName.EasternAustralia, Australia);
+            setCountry(CountryName.Indonesia, Australia);
+            setCountry(CountryName.NewGuinea, Australia);
+            setCountry(CountryName.WesternAustralia, Australia);
+        }
+    }
+
+    public void setContinents()
+    {
+        setContinent(ContinentName.NorthAmerica);
+        setContinent(ContinentName.SouthAmerica);
+        setContinent(ContinentName.Europe);
+        setContinent(ContinentName.Africa);
+        setContinent(ContinentName.Asia);
+        setContinent(ContinentName.Australia);
+    }
+
+    public void setMap()
+    {
+        Map.putAll(NorthAmerica);
+        Map.putAll(SouthAmerica);
+        Map.putAll(Europe);
+        Map.putAll(Africa);
+        Map.putAll(Asia);
+        Map.putAll(Australia);
     }
 
     public void randAllocation (int PlayerCount)
