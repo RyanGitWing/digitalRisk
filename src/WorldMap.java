@@ -3,7 +3,6 @@ import java.util.List;
 
 public class WorldMap
 {
-    // to be modified
     private HashMap <ContinentName, List <Country> > WorldMap, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
 
     public WorldMap ()
@@ -55,11 +54,6 @@ public class WorldMap
         setMapContinent(ContinentName.Africa);
         setMapContinent(ContinentName.Asia);
         setMapContinent(ContinentName.Australia);
-    }
-
-    public static void main(String[] args) {
-        WorldMap t = new WorldMap();
-        System.out.println(t);
     }
 }
 
