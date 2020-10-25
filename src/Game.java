@@ -253,44 +253,65 @@ public class Game
     /**
      * This method handles the battle phase between players. By rolling a
      * die based on the number of troops deployed.
-     *
-     * @param attacking The country attacking the adjacent country.
-     * @param defending The country defending its territory.
-     * @param deployedTroops The number of troops sent by the attacking country.
      */
     private void battlePhase() {
 
-        //Country countryAtk = map.getCountry(attacking);
-        //Country countryDef = map.getCountry(defending);
-        //numAtkArmy = deployedTroops;
-
+        // An array to store dice.
         int[] atkList = new int[3];
         int[] defList = new int[2];
 
         die = new Dice();
 
+        // Check to see if current player has attacked.
         if (hasAtk == false) {
 
+            // Fill up the array with the values of the dice.
             for (int i = 0; i < numAtkArmy; i++) {
                 die.rollDice();
                 atkList[i] = die.getValue();
             }
 
-            for (int i = 0; i < numAtkArmy; i++) {
+            for (int i = 0; i < Math.min(defList.length, enemyCountry.getArmyOccupied()); i++) {
                 die.rollDice();
                 defList[i] = die.getValue();
             }
 
+            // Arrange the dice value in ascending order.
             Arrays.sort(atkList);
             Arrays.sort(defList);
 
-            currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
+            // Compare the values from the attacker side and defender side
+            // until one has reached zero.
+            while (atkList[0] != 0 || defList[0] != 0) {
 
-            currentPlayer.TurnLost(countryOwn);
+                if (atkList[0] > defList[0]) {
+
+                    enemyCountry.getArmyOccupied()--;
+                    defList[0] = defList[1];
+                    defList[1] = 0;
+
+                }
+
+                if (atkList[0] > defList[0]){
+
+                    countryOwn.getArmyOccupied()--;
+                    numAtkArmy--;
+                    atkList[0] = atkList[1];
+                    atkList[1] = atkList[2];
+                    atkList[2] = 0;
+
+                }
+
+            }
+
+            // If there are no more troops, player takes over the country.
+            if (countryOwn.getArmyOccupied() == 0)
+                currentPlayer.TurnLost(countryOwn);
+
+            if (enemyCountry.getArmyOccupied() == 0)
+                currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
 
         }
-
-
 
         hasAtk = true;
 
