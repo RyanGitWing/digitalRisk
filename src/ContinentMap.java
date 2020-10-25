@@ -9,6 +9,11 @@ public class ContinentMap
     {
         countryMap = new CountryMap();
     }
+
+    public Continent getContinent() {
+        return continent;
+    }
+
     public Continent setUpContinent (ContinentName continentName)
     {
         continent = new Continent(continentName);

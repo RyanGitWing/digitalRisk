@@ -2,11 +2,26 @@ import java.util.*;
 public class CountryMap
 {
     private List <CountryName> adjCountryList;
+
     private Country country;
 
     public CountryMap ()
     {
         adjCountryList = new LinkedList<CountryName>();
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public int getArmyCount()
+    {
+        return country.getArmyOccupied();
+    }
+
+    public Player getPlayer()
+    {
+        return country.getRuler();
     }
 
     public Country AdjacentCountryNA (CountryName name)
