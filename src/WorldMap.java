@@ -63,10 +63,5 @@ public class WorldMap
         worldMap.putAll(Australia);
         return this.worldMap;
     }
-
-    public static void main(String[] args) {
-        WorldMap t = new WorldMap();
-        System.out.println(t.worldMap.values());
-    }
 }
 
