@@ -20,6 +20,8 @@ public class Game
 
     private int numAtkArmy;
 
+    private Country countryOwn, enemyCountry;
+
 
 
     /**
@@ -42,7 +44,7 @@ public class Game
 
         Scanner reader = new Scanner(System.in);
 
-        System.out.println("Enter the number of players: ");
+        System.out.println("Enter a number of players between 2 and 6: ");
         numPlayers = reader.nextInt();
 
         // If the number of players is less than 2 then request a larger amount.
@@ -50,11 +52,13 @@ public class Game
             System.out.println("Not enough players!");
             retrievePlayers();
         }
+
         // If the number of players exceeds 6 request a different number of player
         else if (numPlayers > 6) {
             System.out.println("Too many players!");
             retrievePlayers();
         }
+
         // Insert players in a list.
         else {
             playerList = new ArrayList<>();
@@ -62,6 +66,7 @@ public class Game
             for (int i = 0; i < numPlayers; i++) {
                 playerList.add(new Player()); // Needs adjustment!!!
             }
+
             // Initialize the starting player.
             playerIndex = 0;
             currentPlayer = playerList.get(playerIndex);
@@ -100,6 +105,8 @@ public class Game
         System.out.println();
         System.out.println("Welcome to Risk!");
         System.out.println("Risk is a turn-based world domination game.");
+        System.out.println("Type 'help' if you need help.");
+        getGameStatus();
         System.out.println();
     }
 
@@ -176,7 +183,7 @@ public class Game
      */
     private void status(Command command) {
 
-        if(command.hasSecondWord() || command.hasThirdWord() || command.hasFourthWord()) {
+        if(command.hasSecondWord()) {
             System.out.println("Status what?");
 
         }
@@ -198,21 +205,48 @@ public class Game
         Scanner reader = new Scanner(System.in);
 
         System.out.println("Which country is attacking?");
-        String countryATK = reader.nextLine();
 
-        // Needs to check if own this country.
+        String attacker = reader.nextLine();
+        countryOwn = map.getCountry(attacker);
 
-        System.out.println("Which country do you want to attack?");
-        String countryDef = reader.nextLine();
+        // Check to see if the current player owns this country.
+        if(currentPlayer.equals(countryOwn.getRuler())) {
 
-        // Needs to check if the country is adjacent.
+            System.out.println("Which country do you want to attack?");
 
-        System.out.println("With how many army?");
-        numAtkArmy = reader.nextInt();
+            String defender = reader.nextLine();
+            enemyCountry = map.getCountry(defender);
 
-        // Needs to check if their is enough army in the country.
+            // Check to make sure the current player is not attacking a country they own.
+            if (!currentPlayer.equals(enemyCountry.getRuler())) {
 
-        battlePhase(countryATK, countryDef, numAtkArmy);
+                // Check to see if the country being attacked is an adjacent country.
+                if (defender.equals(countryOwn.getAdjCountries(countryOwn))) {
+
+                    System.out.println("With how many army?");
+
+                    numAtkArmy = reader.nextInt();
+
+                    // Check to see if the current player has the military force to attack.
+                    if (numAtkArmy <= countryOwn.getArmyOccupied() && 3) {
+
+                        battlePhase();
+
+                    } else {
+                        System.out.println("You do not own this many troops for " + attacker + ".");
+                    }
+
+                } else {
+                    System.out.println(defender + "is not adjacent to " + attacker + ".");
+                }
+
+            } else {
+                System.out.println("You own this country stupid!!!");
+            }
+
+        } else {
+            System.out.println("You do not own this country.");
+        }
 
     }
 
@@ -224,36 +258,39 @@ public class Game
      * @param defending The country defending its territory.
      * @param deployedTroops The number of troops sent by the attacking country.
      */
-    private void battlePhase(String attacking, String defending, int deployedTroops) {
+    private void battlePhase() {
 
-        Country countryAtk = map.getCountry(attacking);
-        Country countryDef = map.getCountry(defending);
-        numAtkArmy = deployedTroops;
+        //Country countryAtk = map.getCountry(attacking);
+        //Country countryDef = map.getCountry(defending);
+        //numAtkArmy = deployedTroops;
 
         int[] atkList = new int[3];
         int[] defList = new int[2];
 
+        die = new Dice();
+
         if (hasAtk == false) {
 
-            if (map.checkAdjCountry(countryAtk.getName(), countryDef.getName() == true)) {
-
-                die = new Dice();
-
-                for (int i = 0; i < Math.min(atkList.length, countryAtk.getArmy()); i++) {
-                    die.rollDice();
-                    atkList[i] = die.getValue();
-                }
-
-                for (int i = 0; i < Math.min(defList.length, countryDef.getArmy()); i++) {
-                    die.rollDice();
-                    defList[i] = die.getValue();
-                }
-
-                Arrays.sort(atkList);
-                Arrays.sort(defList);
-
+            for (int i = 0; i < numAtkArmy; i++) {
+                die.rollDice();
+                atkList[i] = die.getValue();
             }
+
+            for (int i = 0; i < numAtkArmy; i++) {
+                die.rollDice();
+                defList[i] = die.getValue();
+            }
+
+            Arrays.sort(atkList);
+            Arrays.sort(defList);
+
+            currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
+
+            currentPlayer.TurnLost(countryOwn);
+
         }
+
+
 
         hasAtk = true;
 
@@ -272,17 +309,24 @@ public class Game
         }
 
         playerIndex++;
+
         // If the index is bigger or equal to the player list go back to index 0
         if (playerIndex >= playerList.size()){
             playerIndex = 0;
 
         }
+
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
         hasAtk = false;
+        getGameStatus();
 
         System.out.println("My turn!"); // For testing
 
+
+    }
+
+    private String getGameStatus(){
 
     }
 
