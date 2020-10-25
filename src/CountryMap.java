@@ -248,7 +248,7 @@ public class CountryMap
     /**
      * AdjacentCountryAF (name) takes enum input and uses private variable country of type Country, adjCountryList which is
      * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
+     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
      * Africa
      *
      * @param name
@@ -315,7 +315,7 @@ public class CountryMap
     /**
      * AdjacentCountryAS (name) takes enum input and uses private variable country of type Country, adjCountryList which is
      * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
+     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
      * Asia
      *
      * @param name
@@ -440,7 +440,8 @@ public class CountryMap
     /**
      * AdjacentCountryAU (name) takes enum input and uses private variable country of type Country, adjCountryList which is
      * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList.
+     * adjCountries by using given enum input, and the adjCountryList.This will be done for all countries in
+     * Australia
      * @param name
      * @return Country
      */
