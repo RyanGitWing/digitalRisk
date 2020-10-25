@@ -12,7 +12,11 @@ public class Game
 
     private int playerIndex;
 
-    private WorldMap map;
+    private WorldMap wMap;
+
+    private ContinentMap contMap;
+
+    private CountryMap cMap;
 
     private boolean hasAtk;
 
@@ -31,7 +35,9 @@ public class Game
     {
         parser = new Parser();
         playerList = new ArrayList<>();
-        map = new WorldMap();
+        wMap = new WorldMap();
+        contMap = new ContinentMap();
+        cMap = new CountryMap();
     }
 
     /**
@@ -64,7 +70,9 @@ public class Game
             playerList = new ArrayList<>();
 
             for (int i = 0; i < numPlayers; i++) {
-                playerList.add(new Player()); // Needs adjustment!!!
+
+                playerList.add(new Player("Player" + (i + 1), null)); // todo
+
             }
 
             // Initialize the starting player.
@@ -97,11 +105,16 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * Method which prints the status of the player.
+     *
+     * @param p The player we want information on
+     */
     private void getPlayerStatus (Player p)
     {
-        for (Continent c: map.getWorldMap().values())
+        for (Continent c: wMap.getWorldMap().values())
         {
-            for (int i = 0; i < map.getWorldMap().size();i++)
+            for (int i = 0; i < wMap.getWorldMap().size();i++)
             {
                 if (c.getContinent().get(i).getRuler() == p)
                 {
@@ -114,7 +127,7 @@ public class Game
             }
         }
     }
-    
+
     /**
      * Method which returns the state of the game.
      * The number of armies and countries own by each player.
@@ -123,17 +136,21 @@ public class Game
      */
     private void getGameStatus()
     {
-        System.out.println("The current state of the world is: ");
+        System.out.println("The current state of the world is: \n");
 
         for (Player p : playerList){
-            System.out.println("Player "+ p.getName() + " owns " + p.getCountryCount() + " countries and " + p.getArmyCount() + " armies.");
+            System.out.println(p.getName() + " owns " + 0 + " countries and " + 0 + " armies."); // System.out.println(p.getName() + " owns " + p.GetCountryCount() + " countries and " + p.GetArmyCount() + " armies. \n"); todo
         }
 
-        for (Player p : playerList) {
+        System.out.println();
+
+         for (Player p : playerList) {
             getPlayerStatus(p);
-        }
+         }
 
-        System.out.println("It's currently Player " + currentPlayer.getName() + " turn.");
+        System.out.println();
+
+        System.out.println("It's currently " + currentPlayer.getName() + " turn. \n");
     }
 
     /**
@@ -143,10 +160,9 @@ public class Game
     {
         System.out.println();
         System.out.println("Welcome to Risk!");
-        System.out.println("Risk is a turn-based world domination game.");
+        System.out.println("Risk is a turn-based world domination game. \n");
         getGameStatus();
-        System.out.println("Type 'help' if you need help.");
-        System.out.println();
+        System.out.println("Type 'help' if you need help. \n");
     }
 
 
@@ -246,47 +262,58 @@ public class Game
         Scanner reader = new Scanner(System.in);
 
         System.out.println("Which country is attacking?");
-
         String attacker = reader.nextLine();
-        countryOwn = map.getCountry(attacker);
+
+        System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
+        String continentAttacker = reader.nextLine();
+
+        countryOwn = wMap.getCountry(ContinentName.valueOf(continentAttacker), CountryName.valueOf(attacker)); // adjusted according to getCountry method todo
 
         // Check to see if the current player owns this country.
         if(currentPlayer.equals(countryOwn.getRuler())) {
 
             System.out.println("Which country do you want to attack?");
-
             String defender = reader.nextLine();
-            enemyCountry = map.getCountry(defender);
+
+            System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
+            String continentDefender = reader.nextLine();
+
+            enemyCountry = wMap.getCountry(ContinentName.valueOf(continentDefender), CountryName.valueOf(defender)); // adjusted according to getCountry method todo
 
             // Check to make sure the current player is not attacking a country they own.
             if (!currentPlayer.equals(enemyCountry.getRuler())) {
 
                 // Check to see if the country being attacked is an adjacent country.
-                if (defender.equals(countryOwn.getAdjCountries(countryOwn))) {
+                if (defender.equals(countryOwn.getAdjCountries(CountryName.valueOf(attacker)))) { // change the internal of getAdj.. todo
 
                     System.out.println("With how many army?");
 
                     numAtkArmy = reader.nextInt();
 
                     // Check to see if the current player has the military force to attack.
-                    if (numAtkArmy <= countryOwn.getArmyOccupied() && 3) {
+                    if (numAtkArmy <= countryOwn.getArmyOccupied() && numAtkArmy <= 3) {
 
+                        // Onto war!!!
                         battlePhase();
 
                     } else {
                         System.out.println("You do not own this many troops for " + attacker + ".");
+                        System.out.println("Try attacking again or another cmd.");
                     }
 
                 } else {
                     System.out.println(defender + "is not adjacent to " + attacker + ".");
+                    System.out.println("Try attacking again or another cmd.");
                 }
 
             } else {
                 System.out.println("You own this country stupid!!!");
+                System.out.println("Try attacking again or another cmd.");
             }
 
         } else {
             System.out.println("You do not own this country.");
+            System.out.println("Try attacking again or another cmd.");
         }
 
     }
@@ -327,7 +354,7 @@ public class Game
 
                 if (atkList[0] > defList[0]) {
 
-                    enemyCountry.getArmyOccupied()--;
+                    enemyCountry.armyOccupied--; //enemyCountry.getArmyOccupied()--; todo
                     defList[0] = defList[1];
                     defList[1] = 0;
 
@@ -335,7 +362,7 @@ public class Game
 
                 if (atkList[0] < defList[0]){
 
-                    countryOwn.getArmyOccupied()--;
+                    countryOwn.armyOccupied--; // Change from countryOwn.getArmyOccupied()--; todo
                     numAtkArmy--;
                     atkList[0] = atkList[1];
                     atkList[1] = atkList[2];
@@ -357,11 +384,11 @@ public class Game
             if (countryOwn.getArmyOccupied() == 0) {
 
                 // If the the current player total army count falls to zero, remove player from game.
-                if (currentPlayer.getArmyCount() == 0) {
+                if (currentPlayer.GetArmyCount() == 0) {
                     removePlayer(currentPlayer);
                 }
 
-                System.out.println("NEWS: Player " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
+                System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
                 currentPlayer.TurnLost(countryOwn);
             }
 
@@ -369,11 +396,11 @@ public class Game
             if (enemyCountry.getArmyOccupied() == 0) {
 
                 // If the enemy total army count falls to zero, remove player from game.
-                if (enemyCountry.getRuler().getArmyCount() == 0) {
+                if (enemyCountry.getRuler().GetArmyCount() == 0) {
                     removePlayer(enemyCountry.getRuler());
                 }
 
-                System.out.println("NEWS: Player " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
+                System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
                 currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
 
             }
@@ -391,7 +418,7 @@ public class Game
      */
     private void removePlayer(Player dead){
 
-        System.out.println("NEWS: Player " + dead + " has been eliminated from the game!");
+        System.out.println("NEWS: " + dead + " has been eliminated from the game!");
 
         playerList.remove(dead);
 
