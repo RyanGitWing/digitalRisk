@@ -25,7 +25,7 @@ public enum CountryName {
     Madagascar,
     NorthAfrica,
     SouthAfrica,
-    Aghanistan,
+    Afghanistan,
     China,
     India,
     Irkutsk,
