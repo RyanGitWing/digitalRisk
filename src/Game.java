@@ -12,7 +12,7 @@ public class Game
 
     private int playerIndex;
 
-    private Map map;
+    private WorldMap map;
 
     private boolean hasAtk;
 
@@ -31,7 +31,7 @@ public class Game
     {
         parser = new Parser();
         playerList = new ArrayList<>();
-        map = new Map();
+        map = new WorldMap();
     }
 
     /**
@@ -98,6 +98,27 @@ public class Game
     }
 
     /**
+     * Method which returns the state of the game.
+     * The number of armies and countries own by each player.
+     *
+     * @return The status of each player.
+     */
+    private void getGameStatus()
+    {
+        System.out.println("The current state of the world is: ");
+
+        for (Player p : playerList){
+            System.out.println("Player "+ p.getName() + " owns " + p.getCountryCount() + " countries and " + p.getArmyCount() + " armies.");
+        }
+
+        for (Country c : map) {
+            System.out.println(c.getName() + " is ruled by Player " + c.getRuler().getName() + " with " + c.getArmyOccupied() + " armies.");
+        }
+
+        System.out.println("It's currently Player " + currentPlayer.getName() + " turn.");
+    }
+
+    /**
      * Print out the opening message for the player.
      */
     private void printWelcome()
@@ -105,8 +126,8 @@ public class Game
         System.out.println();
         System.out.println("Welcome to Risk!");
         System.out.println("Risk is a turn-based world domination game.");
-        System.out.println("Type 'help' if you need help.");
         getGameStatus();
+        System.out.println("Type 'help' if you need help.");
         System.out.println();
     }
 
@@ -187,6 +208,8 @@ public class Game
             System.out.println("Status what?");
 
         }
+
+        getGameStatus();
 
     }
 
@@ -292,7 +315,7 @@ public class Game
 
                 }
 
-                if (atkList[0] > defList[0]){
+                if (atkList[0] < defList[0]){
 
                     countryOwn.getArmyOccupied()--;
                     numAtkArmy--;
@@ -302,18 +325,57 @@ public class Game
 
                 }
 
+                if (atkList[0] == defList[0]){
+
+                    int temp = atkList[0];
+                    atkList[0] = atkList[2];
+                    atkList[2] = temp;
+
+                }
+
             }
 
-            // If there are no more troops, player takes over the country.
-            if (countryOwn.getArmyOccupied() == 0)
-                currentPlayer.TurnLost(countryOwn);
+            // If there are no more troops in the country, player takes over the country.
+            if (countryOwn.getArmyOccupied() == 0) {
 
-            if (enemyCountry.getArmyOccupied() == 0)
+                // If the the current player total army count falls to zero, remove player from game.
+                if (currentPlayer.getArmyCount() == 0) {
+                    removePlayer(currentPlayer);
+                }
+
+                System.out.println("NEWS: Player " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
+                currentPlayer.TurnLost(countryOwn);
+            }
+
+            // If there are no more troops in the country, player takes over the country.
+            if (enemyCountry.getArmyOccupied() == 0) {
+
+                // If the enemy total army count falls to zero, remove player from game.
+                if (enemyCountry.getRuler().getArmyCount() == 0) {
+                    removePlayer(enemyCountry.getRuler());
+                }
+
+                System.out.println("NEWS: Player " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
                 currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
+
+            }
+
+            hasAtk = true;
 
         }
 
-        hasAtk = true;
+    }
+
+    /**
+     * Remove the player who has no more army from the game.
+     *
+     * @param dead The player to remove from the game
+     */
+    private void removePlayer(Player dead){
+
+        System.out.println("NEWS: Player " + dead + " has been eliminated from the game!");
+
+        playerList.remove(dead);
 
     }
 
@@ -342,15 +404,8 @@ public class Game
         hasAtk = false;
         getGameStatus();
 
-        System.out.println("My turn!"); // For testing
-
 
     }
-
-    private String getGameStatus(){
-
-    }
-
 
     public static void main (String[] args){
         Game game = new Game();
