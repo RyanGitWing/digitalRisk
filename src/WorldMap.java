@@ -10,7 +10,7 @@ import java.util.*;
  *  setMap()
  *  getCountriesArmy(continentName,countryName)
  *  setCountriesArmy(continentName,countryName)
- *
+ *  getCounry(continentName,countryName)
  *  getPlayer()
  *  setPlayer()
  *
@@ -38,8 +38,12 @@ public class WorldMap
     }
 
     /**
-    *   Returns the HashMap worldMap, with Key of the enum ContinentName, and value of respective Continent object
-    * */
+     *
+     * Returns the HashMap worldMap, with Key of the enum ContinentName, and value of respective Continent object
+     *
+     * @return worldMap
+     * */
+
     public HashMap<ContinentName, Continent> getWorldMap() {
         return worldMap;
     }
@@ -54,6 +58,7 @@ public class WorldMap
      *   Continent object. tempContinent will be stored in the respective Continent HashMap
      *   according to the given continentName
      * */
+
     public HashMap <ContinentName, Continent> setMapContinent (ContinentName continentName)
     {
         ContinentMap continentMap = new ContinentMap();
@@ -69,6 +74,7 @@ public class WorldMap
      *
      * @return worldMap, the final Map with all of the mappings for every ContinentName enum, Continent class object
      */
+
     public HashMap<ContinentName, Continent> setMap ()
     {
         NorthAmerica.putAll(setMapContinent(ContinentName.NorthAmerica));
@@ -94,6 +100,7 @@ public class WorldMap
      * @param countryName
      * @return int
      */
+    
     public int getCountriesArmy (ContinentName continentName, CountryName countryName)
     {
         int count = 0;
