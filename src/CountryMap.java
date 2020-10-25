@@ -1,4 +1,20 @@
 import java.util.*;
+/**
+ *  CountryMap Class
+ *
+ *  Methods:
+ *
+ *  AdjacentCountryNA (name)
+ *  AdjacentCountrySA (name)
+ *  AdjacentCountryEU (name)
+ *  AdjacentCountryAF (name)
+ *  AdjacentCountryAS (name)
+ *  AdjacentCountryAU (name)
+ *
+ * Author: Vis Kirubakaran
+ * Version: 10.25.2020
+ */
+
 public class CountryMap
 {
     private List <CountryName> adjCountryList;
@@ -6,8 +22,18 @@ public class CountryMap
 
     public CountryMap ()
     {
-        adjCountryList = new LinkedList<>();
+        adjCountryList = new ArrayList<>();
     }
+
+    /**
+     * AdjacentCountryNA (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
+     * North America
+     *
+     * @param name
+     * @return Country
+     */
 
     public Country AdjacentCountryNA (CountryName name)
     {
@@ -88,6 +114,17 @@ public class CountryMap
         }
         else return null;
     }
+
+    /**
+     * AdjacentCountrySA (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
+     * South America
+     *
+     * @param name
+     * @return Country
+     */
+
     public Country AdjacentCountrySA (CountryName name)
     {
         this.country = new Country(name);
@@ -124,6 +161,17 @@ public class CountryMap
         }
         else return null;
     }
+
+    /**
+     * AdjacentCountryEU (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
+     * Europe
+     *
+     * @param name
+     * @return Country
+     */
+
     public Country AdjacentCountryEU (CountryName name)
     {
         this.country = new Country(name);
@@ -196,6 +244,17 @@ public class CountryMap
         }
         else return null;
     }
+
+    /**
+     * AdjacentCountryAF (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
+     * Africa
+     *
+     * @param name
+     * @return Country
+     */
+
     public Country AdjacentCountryAF (CountryName name)
     {
         this.country = new Country(name);
@@ -252,6 +311,17 @@ public class CountryMap
         }
         else return null;
     }
+
+    /**
+     * AdjacentCountryAS (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
+     * Asia
+     *
+     * @param name
+     * @return Country
+     */
+
     public Country AdjacentCountryAS (CountryName name)
     {
         this.country = new Country(name);
@@ -366,6 +436,15 @@ public class CountryMap
         }
         else return null;
     }
+
+    /**
+     * AdjacentCountryAU (name) takes enum input and uses private variable country of type Country, adjCountryList which is
+     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
+     * adjCountries by using given enum input, and the adjCountryList.
+     * @param name
+     * @return Country
+     */
+
     public Country AdjacentCountryAU (CountryName name)
     {
         this.country = new Country(name);
