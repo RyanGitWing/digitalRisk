@@ -46,11 +46,10 @@ public class Country {
      /**
      * Sets the countries adjacent to the current country
      *
-     *@param country - current country
      *@param adj - adjacent country
      */
-    public void setAdjCountry(CountryName country,List<CountryName> adj){
-        adjCountries.put(country,adj);
+    public void setAdjCountry(List<CountryName> adj){
+        adjCountries.put(this.name,adj);
     }
     
      /**
@@ -83,10 +82,9 @@ public class Country {
      /**
      * Returns adjacent countries
      *
-     *@param country - the current country 
      *@return a list of adjacent countries
      */
-    public String getAdjCountries(CountryName country){
-        return adjCountries.get(country);
+    public String getAdjCountries(){
+        return adjCountries.get(this.name);
     }
 }
