@@ -6,21 +6,7 @@ public class CountryMap
 
     public CountryMap ()
     {
-        adjCountryList = new LinkedList<CountryName>();
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public int getArmyCount()
-    {
-        return country.getArmyOccupied();
-    }
-
-    public Player getPlayer()
-    {
-        return country.getRuler();
+        adjCountryList = new LinkedList<>();
     }
 
     public Country AdjacentCountryNA (CountryName name)

@@ -1,4 +1,5 @@
-import java.util.HashMap;
+import java.net.CookieHandler;
+import java.util.*;
 
 public class WorldMap
 {
@@ -44,5 +45,80 @@ public class WorldMap
         worldMap.putAll(Australia);
         return worldMap;
     }
+
+    public int getCountriesArmy (ContinentName continentName, CountryName countryName)
+    {
+        int count = 0;
+        int i = 0;
+        while (i <worldMap.get(continentName).getContinent().size())
+        {
+            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
+            {
+                count = worldMap.get(continentName).getContinent().get(i).getArmyOccupied();
+            }
+            i++;
+        }
+        return count;
+    }
+
+    public void setCountriesArmy (ContinentName continentName, CountryName countryName, int armyCount)
+    {
+        int i = 0;
+        while (i <worldMap.get(continentName).getContinent().size())
+        {
+            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
+            {
+                worldMap.get(continentName).getContinent().get(i).addArmyOccupied(armyCount);
+            }
+            i++;
+        }
+    }
+
+    public Country getCountry (ContinentName continentName, CountryName countryName)
+    {
+        int index = 0;
+        int i = 0;
+        while (i <worldMap.get(continentName).getContinent().size())
+        {
+            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
+            {
+                index = i;
+            }
+            i++;
+        }
+        return worldMap.get(continentName).getContinent().get(index);
+    }
+
+    public Player getPlayer (ContinentName continentName, CountryName countryName)
+    {
+        int index = 0;
+        int i = 0;
+        while (i <worldMap.get(continentName).getContinent().size())
+        {
+            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
+            {
+                index = i;
+            }
+            i++;
+        }
+        return worldMap.get(continentName).getContinent().get(index).getRuler();
+    }
+
+    public void setPlayer (ContinentName continentName, CountryName countryName, Player player)
+    {
+        int index = 0;
+        int i = 0;
+        while (i <worldMap.get(continentName).getContinent().size())
+        {
+            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
+            {
+                index = i;
+            }
+            i++;
+        }
+        worldMap.get(continentName).getContinent().get(index).setRuler(player);
+    }
+
+
 }
 
