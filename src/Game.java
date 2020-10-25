@@ -97,6 +97,24 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    private void getPlayerStatus (Player p)
+    {
+        for (Continent c: map.getWorldMap().values())
+        {
+            for (int i = 0; i < map.getWorldMap().size();i++)
+            {
+                if (c.getContinent().get(i).getRuler() == p)
+                {
+                    System.out.println (c.getContinent().get(i).getName() + " is ruled by Player " + c.getContinent().get(i).getRuler() + " with " + c.getContinent().get(i).getArmyOccupied() + "armies");
+                }
+                if (c.getContinent().get(i).getRuler() == null) {
+                    System.out.println(c.getContinent().get(i).getName() + " is ruled by no one ");
+                    i++;
+                }
+            }
+        }
+    }
+    
     /**
      * Method which returns the state of the game.
      * The number of armies and countries own by each player.
@@ -111,8 +129,8 @@ public class Game
             System.out.println("Player "+ p.getName() + " owns " + p.getCountryCount() + " countries and " + p.getArmyCount() + " armies.");
         }
 
-        for (Country c : map) {
-            System.out.println(c.getName() + " is ruled by Player " + c.getRuler().getName() + " with " + c.getArmyOccupied() + " armies.");
+        for (Player p : playerList) {
+            getPlayerStatus(p);
         }
 
         System.out.println("It's currently Player " + currentPlayer.getName() + " turn.");
