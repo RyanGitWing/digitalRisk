@@ -2,7 +2,6 @@ import java.util.*;
 public class CountryMap
 {
     private List <CountryName> adjCountryList;
-
     private Country country;
 
     public CountryMap ()
