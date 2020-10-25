@@ -7,8 +7,6 @@ public class Game
 {
     private Parser parser;
 
-<<<<<<< Updated upstream
-=======
     private Dice die;
 
     private ArrayList<Player> playerList;
@@ -33,15 +31,12 @@ public class Game
 
 
 
->>>>>>> Stashed changes
     /**
      * Create the game and initialise its internal map.
      */
     public Game()
     {
         parser = new Parser();
-<<<<<<< Updated upstream
-=======
         playerList = new ArrayList<>();
         wMap = new WorldMap();
         contMap = new ContinentMap();
@@ -91,7 +86,6 @@ public class Game
 
         return numPlayers;
 
->>>>>>> Stashed changes
     }
 
     /**
@@ -99,6 +93,9 @@ public class Game
      */
     public void play()
     {
+
+        retrievePlayers();
+
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
@@ -150,13 +147,13 @@ public class Game
         }
 
         System.out.println();
-
+        /**
          for (Player p : playerList) {
             getPlayerStatus(p);
          }
 
         System.out.println();
-
+        */
         System.out.println("It's currently " + currentPlayer.getName() + " turn. \n");
     }
 
@@ -167,26 +164,11 @@ public class Game
     {
         System.out.println();
         System.out.println("Welcome to Risk!");
-<<<<<<< Updated upstream
         System.out.println("Risk is a turn-based world domination game.");
-        System.out.println("Type 'help' if you need help.");
-        System.out.println();
-        printDescription();
-        System.out.println();
-=======
-        System.out.println("Risk is a turn-based world domination game. \n");
         getGameStatus();
         System.out.println("Type 'help' if you need help. \n");
->>>>>>> Stashed changes
     }
 
-    /**
-     * This is the method would print the status of the game?
-     */
-    private void printDescription()
-    {
-
-    }
 
     /**
      * Given a command, process (that is: execute) the command.
@@ -220,11 +202,7 @@ public class Game
         }
 
         else if (commandWord.equals("endturn")) {
-<<<<<<< Updated upstream
-            endTurn(command);
-=======
             nextPlayer(command);
->>>>>>> Stashed changes
         }
 
         return wantToQuit;
@@ -306,8 +284,6 @@ public class Game
             System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
             String continentDefender = reader.nextLine();
 
-<<<<<<< Updated upstream
-=======
             enemyCountry = wMap.getCountry(ContinentName.valueOf(continentDefender), CountryName.valueOf(defender)); // adjusted according to getCountry method todo
 
             // Check to make sure the current player is not attacking a country they own.
@@ -482,7 +458,6 @@ public class Game
 
     }
 
->>>>>>> Stashed changes
     public static void main (String[] args){
         Game game = new Game();
         game.play();
