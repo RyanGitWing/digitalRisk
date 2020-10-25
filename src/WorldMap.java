@@ -3,57 +3,70 @@ import java.util.List;
 
 public class WorldMap
 {
-    private HashMap <ContinentName, List <Country> > WorldMap, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
+    private HashMap <ContinentName, List <Country> > worldMap, NorthAmerica,SouthAmerica,Europe,Africa,Asia,Australia;
 
     public WorldMap ()
     {
-        WorldMap = new HashMap<>();
+        worldMap = new HashMap<>();
         NorthAmerica = new HashMap<>();
         SouthAmerica = new HashMap<>();
         Europe = new HashMap<>();
         Africa = new HashMap<>();
         Asia = new HashMap<>();
         Australia = new HashMap<>();
-        this.setMap();
+        worldMap = setMap();
     }
 
-    public void setMapContinent (ContinentName continentName)
+    public HashMap <ContinentName, List<Country> > setMapContinent (ContinentName continentName)
     {
         ContinentMap continentMap = new ContinentMap();
         if (continentName == ContinentName.NorthAmerica)
         {
-            NorthAmerica = continentMap.setUpContinent(continentName);
+           return NorthAmerica = continentMap.setUpContinent(continentName);
         }
         if (continentName == ContinentName.SouthAmerica)
         {
-            SouthAmerica = continentMap.setUpContinent(continentName);
+           return SouthAmerica = continentMap.setUpContinent(continentName);
         }
         if (continentName == ContinentName.Europe)
         {
-            Europe = continentMap.setUpContinent(continentName);
+            return Europe = continentMap.setUpContinent(continentName);
         }
         if (continentName == ContinentName.Africa)
         {
-            Africa = continentMap.setUpContinent(continentName);
+            return Africa = continentMap.setUpContinent(continentName);
         }
         if (continentName == ContinentName.Asia)
         {
-            Asia = continentMap.setUpContinent(continentName);
+            return Asia = continentMap.setUpContinent(continentName);
         }
         if (continentName == ContinentName.Australia)
         {
-            Australia = continentMap.setUpContinent(continentName);
+            return Australia = continentMap.setUpContinent(continentName);
         }
+        else return null;
     }
 
-    public void setMap ()
+    public HashMap <ContinentName, List <Country> > setMap ()
     {
-        setMapContinent(ContinentName.NorthAmerica);
-        setMapContinent(ContinentName.SouthAmerica);
-        setMapContinent(ContinentName.Europe);
-        setMapContinent(ContinentName.Africa);
-        setMapContinent(ContinentName.Asia);
-        setMapContinent(ContinentName.Australia);
+        this.NorthAmerica = setMapContinent(ContinentName.NorthAmerica);
+        this.SouthAmerica = setMapContinent(ContinentName.SouthAmerica);
+        this.Europe = setMapContinent(ContinentName.Europe);
+        this.Africa = setMapContinent(ContinentName.Africa);
+        this.Asia = setMapContinent(ContinentName.Asia);
+        this.Australia = setMapContinent(ContinentName.Australia);
+        worldMap.putAll(NorthAmerica);
+        worldMap.putAll(SouthAmerica);
+        worldMap.putAll(Europe);
+        worldMap.putAll(Africa);
+        worldMap.putAll(Asia);
+        worldMap.putAll(Australia);
+        return this.worldMap;
+    }
+
+    public static void main(String[] args) {
+        WorldMap t = new WorldMap();
+        System.out.println(t.worldMap.values());
     }
 }
 
