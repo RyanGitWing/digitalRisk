@@ -1,4 +1,13 @@
-import java.util.*;
+/**
+ *  ContinentMap Class
+ *
+ *  Methods:
+ *  setUpContinent(continentName)
+ *
+ *
+ * Author: Vis Kirubakaran
+ * Version: 10.25.2020
+ */
 
 public class ContinentMap
 {
@@ -9,6 +18,16 @@ public class ContinentMap
     {
         countryMap = new CountryMap();
     }
+
+    /**
+     * setUpContinent(continentName) takes an enum input and uses that along with the private variable continent of type
+     * Continent and countryMap of type CountryMap. countryMap will be used to call CountryMap's method AdjacentCountry
+     * for each Continent Name abbrieviation which will return a Country class object with each call to that AdjCountry
+     * method. Each country returned is returned to the proper continent using an if statement, as seen below
+     *
+     * @param continentName
+     * @return continent
+     */
 
     public Continent setUpContinent (ContinentName continentName)
     {

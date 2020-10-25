@@ -92,7 +92,7 @@ public class WorldMap
      *
      * @param continentName
      * @param countryName
-     * @return
+     * @return int
      */
     public int getCountriesArmy (ContinentName continentName, CountryName countryName)
     {
@@ -139,7 +139,7 @@ public class WorldMap
      *
      * @param continentName
      * @param countryName
-     * @return
+     * @return Country
      */
 
     public Country getCountry (ContinentName continentName, CountryName countryName)
@@ -164,7 +164,7 @@ public class WorldMap
      *
      * @param continentName
      * @param countryName
-     * @return
+     * @return Player
      */
 
     public Player getPlayer (ContinentName continentName, CountryName countryName)
@@ -186,9 +186,10 @@ public class WorldMap
      * setPlayer(continentName, countryName) will take two enum inputs continentName, countryName. This method will
      * use enums along with worldMap in a while loop to obtain the Country class Object of the given CountryName enum
      * then use that to set the Ruler of the given Country
+     *
      * @param continentName
      * @param countryName
-     * @return
+     *
      */
 
     public void setPlayer (ContinentName continentName, CountryName countryName, Player player)
@@ -213,7 +214,7 @@ public class WorldMap
 
 
 
-
+        // modify to set rulers, army count
         c.
         for (Continent c: map.getWorldMap().values())
         {
