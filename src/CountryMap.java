@@ -1,10 +1,17 @@
 import java.util.*;
 public class CountryMap
 {
+    private List <CountryName> adjCountryList;
+    private Country country;
+
+    public CountryMap ()
+    {
+        adjCountryList = new LinkedList<CountryName>();
+    }
+
     public Country AdjacentCountryNA (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.Alaska)
         {
             adjCountryList.add(CountryName.NorthwestTerritories);
@@ -70,7 +77,7 @@ public class CountryMap
             country.setAdjCountry(name, adjCountryList);
             return country;
         }
-        if (name == CountryName.NorthwestTerritories)
+        if (name == CountryName.WesternUS)
         {
             adjCountryList.add(CountryName.WesternCanada);
             adjCountryList.add(CountryName.CentralAmerica);
@@ -83,8 +90,7 @@ public class CountryMap
     }
     public Country AdjacentCountrySA (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.Argentina)
         {
             adjCountryList.add(CountryName.Brazil);
@@ -120,8 +126,7 @@ public class CountryMap
     }
     public Country AdjacentCountryEU (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.GreatBritain)
         {
             adjCountryList.add(CountryName.Iceland);
@@ -193,8 +198,7 @@ public class CountryMap
     }
     public Country AdjacentCountryAF (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.Congo)
         {
             adjCountryList.add(CountryName.EastAfrica);
@@ -250,8 +254,7 @@ public class CountryMap
     }
     public Country AdjacentCountryAS (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.Afghanistan)
         {
             adjCountryList.add(CountryName.China);
@@ -365,8 +368,7 @@ public class CountryMap
     }
     public Country AdjacentCountryAU (CountryName name)
     {
-        Country country = new Country(name);
-        List <CountryName> adjCountryList = new LinkedList();
+        this.country = new Country(name);
         if (name == CountryName.EasternAustralia)
         {
             adjCountryList.add(CountryName.NewGuinea);
@@ -397,4 +399,5 @@ public class CountryMap
         }
         else return null;
     }
+
 }
