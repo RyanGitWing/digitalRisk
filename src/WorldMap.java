@@ -35,10 +35,5 @@ public class WorldMap
         worldMap.putAll(Australia);
         return worldMap;
     }
-
-    public static void main(String[] args) {
-        WorldMap t = new WorldMap();
-        System.out.println(t.setMapContinent(ContinentName.Asia));
-    }
 }
 
