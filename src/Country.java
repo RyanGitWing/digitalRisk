@@ -10,7 +10,7 @@ public class Country {
 
     private final CountryName name;
     private Player ruler;
-    private int armyOccupied;
+    int armyOccupied;
     private HashMap<CountryName, List<CountryName>> adjCountries;
 
     /**
@@ -84,7 +84,7 @@ public class Country {
      *
      *@return a list of adjacent countries
      */
-    public String getAdjCountries(){
-        return adjCountries.get(this.name);
+    public List<CountryName> getAdjCountries(CountryName country){
+        return adjCountries.get(country);
     }
 }
