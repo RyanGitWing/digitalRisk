@@ -48,8 +48,8 @@ public class Country {
      *
      *@param adj - adjacent country
      */
-    public void setAdjCountry(List<CountryName> adj){
-        adjCountries.put(this.name,adj);
+    public void setAdjCountry(CountryName country, List<CountryName> adj){
+        adjCountries.put(country, adj);
     }
     
      /**
