@@ -265,12 +265,12 @@ public class WorldMap
                         c.getContinent().get(randNum2).setRuler(p);
                         c.getContinent().get(randNum2).addArmyOccupied(randNum1);
                         randNum1 = randInt.nextInt(5);
-                        randNum2 = randInt.nextInt(24 + 1);
+                        randNum2 = randInt.nextInt(12 + 1);
                         i++;
                     }
                     if (c.getContinent().get(i).getRuler() == p || c.getContinent().get(i).getRuler() != null) {
                         i++;
-                        randNum2 = randInt.nextInt(24 + 1);
+                        randNum2 = randInt.nextInt(12 + 1);
                     }
                 }
             }
