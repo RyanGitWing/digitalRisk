@@ -237,48 +237,44 @@ public class WorldMap
                 this.armySize = 20;
             }
             for (Continent c : worldMap.values()) {
-                if (c.equals(ContinentName.NorthAmerica)) {
-                    randNum2 = randInt.nextInt(9)+1;
-                }
-                if (c.equals(ContinentName.SouthAmerica)) {
-                    randInt = new Random();
-                    randNum2 = randInt.nextInt(4)+1;
-                }
-                if (c.equals(ContinentName.Europe)) {
-                    randInt = new Random();
-                    randNum2 = randInt.nextInt(7)+1;
-                }
-                if (c.equals(ContinentName.Africa)) {
-                    randInt = new Random();
-                    randNum2 = randInt.nextInt(6)+1;
-                }
-                if (c.equals(ContinentName.Asia)) {
-                    randInt = new Random();
-                    randNum2 = randInt.nextInt(12)+1;
-                }
-                if (c.equals(ContinentName.Australia)) {
-                    randInt = new Random();
-                    randNum2 = randInt.nextInt(4)+1;
-                }
                 for (int i = 0; i < worldMap.size(); i++) {
+                    if (c.equals(ContinentName.NorthAmerica)) {
+                        randNum2 = randInt.nextInt(9)+1;
+                    }
+                    if (c.equals(ContinentName.SouthAmerica)) {
+                        randInt = new Random();
+                        randNum2 = randInt.nextInt(4)+1;
+                    }
+                    if (c.equals(ContinentName.Europe)) {
+                        randInt = new Random();
+                        randNum2 = randInt.nextInt(7)+1;
+                    }
+                    if (c.equals(ContinentName.Africa)) {
+                        randInt = new Random();
+                        randNum2 = randInt.nextInt(6)+1;
+                    }
+                    if (c.equals(ContinentName.Asia)) {
+                        randInt = new Random();
+                        randNum2 = randInt.nextInt(12)+1;
+                    }
+                    if (c.equals(ContinentName.Australia)) {
+                        randInt = new Random();
+                        randNum2 = randInt.nextInt(4)+1;
+                    }
                     if (c.getContinent().get(randNum2).getRuler() == null && armySize > 0) {
                         c.getContinent().get(randNum2).setRuler(p);
                         c.getContinent().get(randNum2).addArmyOccupied(randNum1);
                         randNum1 = randInt.nextInt(5);
-                        randNum2 = randInt.nextInt(12 + 1);
                         i++;
                     }
                     if (c.getContinent().get(i).getRuler() == p || c.getContinent().get(i).getRuler() != null) {
                         i++;
-                        randNum2 = randInt.nextInt(12 + 1);
                     }
                 }
             }
         }
     }
 
-    /**
-     * test for randAlloc
     public static void main(String[] args) {
         WorldMap t = new WorldMap();
         System.out.println(t.worldMap.size());
@@ -289,6 +285,5 @@ public class WorldMap
         pL.add(p2);
         t.randAlloc(2, pL );
      }
-     **/
 
 }
