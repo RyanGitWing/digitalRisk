@@ -77,12 +77,12 @@ public class WorldMap
 
     public HashMap<ContinentName, Continent> setMap ()
     {
-        NorthAmerica.putAll(setMapContinent(ContinentName.NorthAmerica));
-        SouthAmerica.putAll(setMapContinent(ContinentName.SouthAmerica));
-        Europe.putAll(setMapContinent(ContinentName.Europe));
-        Africa.putAll(setMapContinent(ContinentName.Africa));
-        Asia.putAll(setMapContinent(ContinentName.Asia));
-        Australia.putAll(setMapContinent(ContinentName.Australia));
+        NorthAmerica = setMapContinent(ContinentName.NorthAmerica);
+        SouthAmerica = setMapContinent(ContinentName.SouthAmerica);
+        Europe = setMapContinent(ContinentName.Europe);
+        Africa = setMapContinent(ContinentName.Africa);
+        Asia = setMapContinent(ContinentName.Asia);
+        Australia = setMapContinent(ContinentName.Australia);
         worldMap.putAll(NorthAmerica);
         worldMap.putAll(SouthAmerica);
         worldMap.putAll(Europe);
@@ -100,7 +100,7 @@ public class WorldMap
      * @param countryName
      * @return int
      */
-    
+
     public int getCountriesArmy (ContinentName continentName, CountryName countryName)
     {
         int count = 0;
@@ -214,29 +214,57 @@ public class WorldMap
         worldMap.get(continentName).getContinent().get(index).setRuler(player);
     }
 
-    public void randAlloc (int playerCount)
+
+    // split two player countries into North and South America (50 army count,
+    public void randAlloc (int playerCount, List <Player> playerList)
     {
-        PlayerFactory c = new PlayerFactory();
+        int armySize = 0;
+        Random randInt = new Random();
+        int randContinent = randInt.nextInt(6 + 1);
+        int randCountry = randInt.nextInt(24 + 1);
+        int randArmy = randInt.nextInt(5);
 
-
-
-
-        // modify to set rulers, army count
-        c.
-        for (Continent c: map.getWorldMap().values())
+        if (playerCount == 2)
         {
-            for (int i = 0; i < map.getWorldMap().size();i++)
+            armySize = 50;
+        }
+        if (playerCount == 3)
+        {
+            armySize = 35;
+        }
+        if (playerCount == 4)
+        {
+            armySize = 30;
+        }
+        if (playerCount == 5)
+        {
+            armySize = 25;
+        }
+        if (playerCount == 6)
+        {
+            armySize = 20;
+        }
+            for (Player p: playerList)
             {
-                if (c.getContinent().get(i).getRuler() == p)
+                for (Continent c: worldMap.values())
                 {
-                    System.out.println (c.getContinent().get(i).getName() + " is ruled by Player " + c.getContinent().get(i).getRuler() + " with "
-                            + c.getContinent().get(i).getArmyOccupied() + "armies");
-                }
-                if (c.getContinent().get(i).getRuler() == null) {
-                    System.out.println(c.getContinent().get(i).getName() + " is ruled by no one ");
-                    i++;
+                    {
+                        for (int i = 0; i < worldMap.size(); i++) {
+                            if (c.getContinent().get(randCountry).getRuler() == null && armySize > 0) {
+                                c.getContinent().get(randCountry).setRuler(p);
+                                c.getContinent().get(randCountry).addArmyOccupied(randArmy);
+                                randArmy = randInt.nextInt(5);
+                                randCountry = randInt.nextInt(24 + 1);
+                                i++;
+                            }
+                            if (c.getContinent().get(i).getRuler() == p) {
+                                i++;
+                                randCountry = randInt.nextInt(24 + 1);
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
+
 }
