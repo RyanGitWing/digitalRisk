@@ -7,7 +7,7 @@ import java.util.*;
  * Version: 10.25.2020
  */
 public class Continent {
-    private List<Country> countries;
+    ArrayList<Country> countries;
     private final ContinentName name;
     
     /**
@@ -17,7 +17,7 @@ public class Continent {
      */
     public Continent(ContinentName name){
         this.name = name;
-        countries = new List<>();
+        countries = new ArrayList<>();
     }
     
     /**
