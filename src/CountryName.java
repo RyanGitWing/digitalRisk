@@ -1,3 +1,7 @@
+/**
+ * Author: Fareen Lavji
+ * Version: 10.23.2020
+ */
 public enum CountryName {
     Alaska,
     WesternCanada,

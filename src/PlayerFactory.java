@@ -4,7 +4,8 @@ import java.util.*;
  * Creates players and assigns countries and armies.
  *
  * Author: Fareen. L
- * Version: 10.23.2020
+ * Version: 10.25.2020
+ *
  */
 public class PlayerFactory {
 
@@ -47,6 +48,12 @@ public class PlayerFactory {
         return pM;
     }
 
+    /**
+     * Returns army count based on number of players.
+     *
+     * @param playerCount The number of players playing.
+     * @return The army capacity for each player.
+     */
     private static int getArmyCount(int playerCount) {
         switch (playerCount) {
             case 2:

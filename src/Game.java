@@ -2,6 +2,8 @@ import java.util.*;
 
 /**
  * Author: Ryan Nguyen
+ *
+ * todo: Fareen refactor this game!!
  */
 public class Game
 {
