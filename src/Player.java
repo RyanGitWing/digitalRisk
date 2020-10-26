@@ -3,8 +3,8 @@ import java.util.Map;
 /**
  * Represents the player's object and moves.
  *
- * Author: Fareen. L
- * Version: 10.23.2020
+ * @author Fareen. L
+ * @version 10.25.2020
  */
 public class Player {
 
@@ -32,7 +32,7 @@ public class Player {
         for (Country country : PlayerStatus.keySet()) {
             // todo: write out countries and army counts.
         }
-        System.out.println("Country count: " + GetCountryCount() + "Army count: " + GetArmyCount());
+        System.out.println("Country count: " + GetCountryCount() + " Army count: " + GetArmyCount());
         String bool;
         if (PlayerTurn) bool = "Yes";
         else bool = "No";

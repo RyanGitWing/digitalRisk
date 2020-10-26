@@ -1,5 +1,8 @@
 import java.util.Random;
-
+/**
+ * @author Ryan Nguyen
+ * @version 10.25.2020
+ */
 public class Dice {
 
     private int value;

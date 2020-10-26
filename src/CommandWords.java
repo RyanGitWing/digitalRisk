@@ -1,3 +1,8 @@
+/**
+* @author Ryan Nguyen
+ * @version 10.25.2020
+ */
+
 public class CommandWords
 {
     // a constant array that holds all valid command words

@@ -1,6 +1,11 @@
 import java.util.Scanner;
+/**
+ * @author Ryan Nguyen
+ * @version 10.25.2020
+ */
 
 public class Parser
+
 {
     private CommandWords commands;  // holds all valid command words
     private Scanner reader;         // source of command input

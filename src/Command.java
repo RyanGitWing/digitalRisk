@@ -1,9 +1,13 @@
+/**
+ * @author Ryan Nguyen
+ * @version 10.25.2020
+ */
+
 public class Command
+
 {
     private String commandWord;
     private String secondWord;
-    private String thirdWord;
-    private String fourthWord;
 
     /**
      * Create a command object. First and second word must be supplied, but

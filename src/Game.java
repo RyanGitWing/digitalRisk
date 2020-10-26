@@ -1,7 +1,11 @@
 import java.util.*;
 
 /**
- * Author: Ryan Nguyen
+ * Risk Game, a turn-based world domination game where players take turn fighting each other to the death until only
+ * one player remain conquering the whole world.
+ *
+ * @author Ryan Nguyen
+ * @version 10.25.2020
  */
 public class Game
 {
@@ -74,7 +78,7 @@ public class Game
 
             for (int i = 0; i < numPlayers; i++) {
 
-                playerList.add(new Player("Player" + (i + 1), null)); // todo
+                playerList.add(new Player("Player" + (i + 1), null));
 
             }
 
@@ -147,6 +151,8 @@ public class Game
         }
 
         System.out.println();
+
+        // This part does not work bc it needs player to be assigned to country and armies todo
         /**
          for (Player p : playerList) {
             getPlayerStatus(p);
@@ -270,10 +276,10 @@ public class Game
         System.out.println("Which country is attacking?");
         String attacker = reader.nextLine();
 
-        System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
+        System.out.println("From which continent is this from?"); // Should check if the country is part of this continent. todo
         String continentAttacker = reader.nextLine();
 
-        countryOwn = wMap.getCountry(ContinentName.valueOf(continentAttacker), CountryName.valueOf(attacker)); // adjusted according to getCountry method todo
+        countryOwn = wMap.getCountry(ContinentName.valueOf(continentAttacker), CountryName.valueOf(attacker));
 
         // Check to see if the current player owns this country.
         if(currentPlayer.equals(countryOwn.getRuler())) {
@@ -284,13 +290,13 @@ public class Game
             System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
             String continentDefender = reader.nextLine();
 
-            enemyCountry = wMap.getCountry(ContinentName.valueOf(continentDefender), CountryName.valueOf(defender)); // adjusted according to getCountry method todo
+            enemyCountry = wMap.getCountry(ContinentName.valueOf(continentDefender), CountryName.valueOf(defender));
 
             // Check to make sure the current player is not attacking a country they own.
             if (!currentPlayer.equals(enemyCountry.getRuler())) {
 
                 // Check to see if the country being attacked is an adjacent country.
-                if (defender.equals(countryOwn.getAdjCountries(CountryName.valueOf(attacker)))) { // change the internal of getAdj.. todo
+                if (defender.equals(countryOwn.getAdjCountries(CountryName.valueOf(attacker)))) {
 
                     System.out.println("With how many army?");
 
@@ -360,7 +366,7 @@ public class Game
 
                 if (atkList[0] > defList[0]) {
 
-                    enemyCountry.armyOccupied--; //enemyCountry.getArmyOccupied()--; todo
+                    enemyCountry.armyOccupied--; // Should assign enemyCountry.getArmyOccupied() to variable and than substract. todo
                     defList[0] = defList[1];
                     defList[1] = 0;
 
@@ -368,7 +374,7 @@ public class Game
 
                 if (atkList[0] < defList[0]){
 
-                    countryOwn.armyOccupied--; // Change from countryOwn.getArmyOccupied()--; todo
+                    countryOwn.armyOccupied--; // Should assign countryOwn.getArmyOccupied() to variable and than substract. todo
                     numAtkArmy--;
                     atkList[0] = atkList[1];
                     atkList[1] = atkList[2];
