@@ -72,11 +72,8 @@ public class Game
         else {
             playerList = new ArrayList<>();
 
-            for (int i = 0; i < numPlayers; i++) {
-
-                playerList.add(new Player("Player" + (i + 1), null)); // todo
-
-            }
+            PlayerFactory playerFactory = new PlayerFactory();
+            playerFactory.CreatePlayers(numPlayers);
 
             // Initialize the starting player.
             playerIndex = 0;
