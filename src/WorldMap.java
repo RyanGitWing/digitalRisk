@@ -10,7 +10,7 @@ import java.util.*;
  *  setMap()
  *  getCountriesArmy(continentName,countryName)
  *  setCountriesArmy(continentName,countryName)
- *  getCounry(continentName,countryName)
+ *  getCountry(continentName,countryName)
  *  getPlayer()
  *  setPlayer()
  *
@@ -165,30 +165,7 @@ public class WorldMap
         return worldMap.get(continentName).getContinent().get(index);
     }
 
-    /**
-     * getPlayer(continentName, countryName) will take two enum inputs continentName, countryName. This method will
-     * use enums along with worldMap in a while loop to obtain the Country class Object of the given CountryName enum
-     * then use that to find the ruler of the given Country
-     *
-     * @param continentName
-     * @param countryName
-     * @return Player
-     */
 
-    public Player getPlayer (ContinentName continentName, CountryName countryName)
-    {
-        int index = 0;
-        int i = 0;
-        while (i <worldMap.get(continentName).getContinent().size())
-        {
-            if (worldMap.get(continentName).getContinent().get(i).getName() == countryName)
-            {
-                index = i;
-            }
-            i++;
-        }
-        return worldMap.get(continentName).getContinent().get(index).getRuler();
-    }
 
     /**
      * setPlayer(continentName, countryName) will take two enum inputs continentName, countryName. This method will
@@ -197,9 +174,9 @@ public class WorldMap
      *
      * @param continentName
      * @param countryName
+     * @param player
      *
      */
-
     public void setPlayer (ContinentName continentName, CountryName countryName, Player player)
     {
         int index = 0;
@@ -224,12 +201,11 @@ public class WorldMap
         {
             for (int i = 0; i < c.getContinent().size(); i ++)
             {
-                if (getPlayer(c.getName(), c.getContinent().get(i).getName()) == p)
+                if (c.getContinent().get(i).getRuler() == p)
                 {
                     playerCountries.add(c.getContinent().get(i));
-                    i++;
                 }
-                else i++;
+                i++;
             }
         }
         return playerCountries;
@@ -290,41 +266,59 @@ public class WorldMap
         for (Player p : playerList)
         {
             int armySize = armySizeini(playerCount);
-            for (Continent c : worldMap.values())
-            {
-                if (armySize > 0)
+            Iterator<Continent> continentIterator = worldMap.values().iterator();
+            ListIterator<Country> countryListIterator = continentIterator.next().getContinent().listIterator();
+            Country nextCountry = countryListIterator.next();
+            Continent nextContinent = continentIterator.next();
+
+            while (armySize > 0)
                 {
-                    for (int i = 0; i < c.getContinent().size(); i++)
+                    int randNum = randNumini(nextContinent.getName());
+                    int randNum2 = randInt.nextInt(5) + 1;
+                    Country randCountry = nextContinent.getContinent().get(randNum);
+                    if (randCountry.getRuler() == null && armySize > 0)
                     {
-                        int randNum = randNumini(c.getName());
-                        int randNum2 = randInt.nextInt(10);
-                        if (c.getContinent().get(randNum).getRuler() == null && armySize > 0)
+                        randCountry.setRuler(p);
+                        if ((armySize - randNum2 < 0))
                         {
-                            setPlayer(c.getName(), c.getContinent().get(randNum).getName(), p);
-                            setCountriesArmy(c.getName(), c.getContinent().get(randNum).getName(), randNum2);
-                            if (randNum2 == 0 || (armySize - randNum2 < 0 && armySize > 0))
-                            {
-                                randNum2 = randInt.nextInt(armySize);
-                            }
-                            armySize -= randNum2;
-                            i++;
+                            randNum2 = randInt.nextInt(armySize) + 1;
                         }
-                        else if (c.getContinent().get(randNum).getRuler() == p || c.getContinent().get(randNum).getRuler() != null)
+                            randCountry.addArmyOccupied(randNum2);
+                            armySize -= randNum2;
+                    }
+                    else if (randCountry.getRuler() != null && armySize > 0)
+                    {
+                        if (randCountry.getName() != nextCountry.getName() && nextCountry.getRuler() == null)
                         {
-                            i++;
+                            nextCountry.setRuler(p);
+                            if ((armySize - randNum2 < 0))
+                            {
+                                randNum2 = randInt.nextInt(armySize) + 1;
+                            }
+                            nextCountry.addArmyOccupied(randNum2);
+                            armySize -= randNum2;
                         }
                     }
+                    if (countryListIterator.hasNext())
+                    {
+                        nextCountry = countryListIterator.next();
+                    }
+                    else
+                        {
+                            if (continentIterator.hasNext())
+                            {
+                                nextContinent = continentIterator.next();
+                            }
+                            else break;
+                        }
                 }
-                else if (armySize == 0) break;
-            }
         }
     }
-
 
     // This is a test for random allocation and getPlayerCountry
     public static void main(String[] args) {
         WorldMap t = new WorldMap();
-        Player p = new Player("job", null);
+        Player p = new Player("tom", null);
         Player p2 = new Player("bob", null);
         List <Player> pL = new ArrayList<>();
         pL.add(p);
