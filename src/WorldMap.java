@@ -260,11 +260,9 @@ public class WorldMap
         }
         return randNum;
     }
-    public void randAlloc (int playerCount, List <Player> playerList)
-    {
+    public void randAlloc (int playerCount, List <Player> playerList) {
         Random randInt = new Random();
-        for (Player p : playerList)
-        {
+        for (Player p : playerList) {
             int armySize = armySizeini(playerCount);
             Iterator<Continent> continentIterator = worldMap.values().iterator();
             ListIterator<Country> countryListIterator = continentIterator.next().getContinent().listIterator();
@@ -272,46 +270,81 @@ public class WorldMap
             Continent nextContinent = continentIterator.next();
 
             while (armySize > 0)
+            {
+                int randNum = randNumini(nextContinent.getName());
+                int randNum2 = randInt.nextInt(10) + 1;
+                if (nextContinent.getContinent().get(randNum).getRuler() != null)
                 {
-                    int randNum = randNumini(nextContinent.getName());
-                    int randNum2 = randInt.nextInt(5) + 1;
-                    Country randCountry = nextContinent.getContinent().get(randNum);
-                    if (randCountry.getRuler() == null && armySize > 0)
+                    while (nextContinent.getContinent().get(randNum).getRuler() != null)
                     {
-                        randCountry.setRuler(p);
+                        randNum = randNumini(nextContinent.getName());
+                    }
+                }
+                Country randCountry = nextContinent.getContinent().get(randNum);
+                if (randCountry.getRuler() == null && armySize > 0)
+                {
+                    randCountry.setRuler(p);
+                    if ((armySize - randNum2 < 0)) {
+                        randNum2 = randInt.nextInt(armySize) + 1;
+                    }
+                    randCountry.addArmyOccupied(randNum2);
+                    armySize -= randNum2;
+                }
+                else if (randCountry.getRuler() != null || randCountry.getRuler() == p && armySize > 0)
+                {
+                    if (randCountry.getName() != nextCountry.getName() && nextCountry.getRuler() == null)
+                    {
+                        nextCountry.setRuler(p);
                         if ((armySize - randNum2 < 0))
                         {
                             randNum2 = randInt.nextInt(armySize) + 1;
                         }
-                            randCountry.addArmyOccupied(randNum2);
-                            armySize -= randNum2;
+                        nextCountry.addArmyOccupied(randNum2);
+                        armySize -= randNum2;
                     }
-                    else if (randCountry.getRuler() != null && armySize > 0)
-                    {
-                        if (randCountry.getName() != nextCountry.getName() && nextCountry.getRuler() == null)
-                        {
-                            nextCountry.setRuler(p);
-                            if ((armySize - randNum2 < 0))
-                            {
-                                randNum2 = randInt.nextInt(armySize) + 1;
-                            }
-                            nextCountry.addArmyOccupied(randNum2);
-                            armySize -= randNum2;
-                        }
-                    }
-                    if (countryListIterator.hasNext())
-                    {
-                        nextCountry = countryListIterator.next();
-                    }
-                    else
-                        {
-                            if (continentIterator.hasNext())
-                            {
-                                nextContinent = continentIterator.next();
-                            }
-                            else break;
-                        }
                 }
+                if (countryListIterator.hasNext())
+                {
+                    nextCountry = countryListIterator.next();
+                }
+                else
+                    {
+                    if (continentIterator.hasNext())
+                    {
+                        nextContinent = continentIterator.next();
+                    }
+                    else if (!continentIterator.hasNext() && armySize > 0)
+                    {
+                        for (Continent c : worldMap.values())
+                        {
+                            if (armySize == 0)
+                            {
+                                break;
+                            }
+                            else
+                                {
+                                for (int i = 0; i < c.getContinent().size(); i++)
+                                {
+                                    randNum2 = randInt.nextInt(10) + 1;
+                                    if (c.getContinent().get(i).getRuler() == null && armySize > 0)
+                                    {
+                                        randCountry = c.getContinent().get(i);
+                                        randCountry.setRuler(p);
+                                        if ((armySize - randNum2 < 0) && armySize > 0)
+                                        {
+                                            randNum2 = randInt.nextInt(armySize) + 1;
+                                        }
+                                        randCountry.addArmyOccupied(randNum2);
+                                        armySize -= randNum2;
+                                    }
+                                    else if (armySize == 0) break;
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
