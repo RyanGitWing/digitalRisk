@@ -10,7 +10,7 @@ public class Country {
 
     private final CountryName name;
     private Player ruler;
-    int armyOccupied;
+    private int armyOccupied;
     private HashMap<CountryName, List<CountryName>> adjCountries;
 
     /**

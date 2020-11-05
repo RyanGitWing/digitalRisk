@@ -186,7 +186,6 @@ public class CountryMap
         }
         if (name == CountryName.Iceland)
         {
-            adjCountryList.add(CountryName.Iceland);
             adjCountryList.add(CountryName.SouthernEurope);
             adjCountryList.add(CountryName.Greenland);
             country.setAdjCountry(name, adjCountryList);
@@ -366,7 +365,7 @@ public class CountryMap
         if (name == CountryName.Japan)
         {
             adjCountryList.add(CountryName.Kamchatka);
-            adjCountryList.add(CountryName.MiddleEast);
+            adjCountryList.add(CountryName.Mongolia);
             country.setAdjCountry(name, adjCountryList);
             return country;
         }
@@ -457,6 +456,7 @@ public class CountryMap
         }
         if (name == CountryName.Indonesia)
         {
+            adjCountryList.add(CountryName.NewGuinea);
             adjCountryList.add(CountryName.WesternAustralia);
             adjCountryList.add(CountryName.Siam);
             country.setAdjCountry(name, adjCountryList);
