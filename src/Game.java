@@ -28,6 +28,7 @@ public class Game
 
     private Country countryOwn, enemyCountry;
 
+    private List <RiskView> riskViews;
 
 
     /**
@@ -38,22 +39,28 @@ public class Game
         playerList = new ArrayList<>();
         wMap = new WorldMap();
         hasAtk = false;
+
+        riskViews = new ArrayList<>();
     }
 
     /**
      * Create the game and initialise its internal map
-     * @param players the number of players playing the game
+     * @param playerCount the number of players playing the game
      */
-    public Game(int players)
+    public Game(int playerCount)
     {
         playerList = new ArrayList<>();
         wMap = new WorldMap();
         hasAtk = false;
+        riskViews = new ArrayList<>();
 
-        this.numPlayers = players;
+        this.numPlayers = playerCount;
 
         retrievePlayers();
     }
+
+    public void addRiskView(RiskView rv) { riskViews.add(rv);}
+    public void removeRiskView(RiskView rv) { riskViews.remove(rv);}
 
     /**
      * Get a number of player between 2 and 6 from the user input for the
@@ -62,35 +69,18 @@ public class Game
     public void retrievePlayers()
     {
 
-        // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) { //todo
-            System.out.println("Not enough players!");
-            retrievePlayers();
-            return;
-        }
+        playerList = new ArrayList<>();
 
-        // If the number of players exceeds 6 request a different number of player
-        else if (numPlayers > 6) {
-            System.out.println("Too many players!");
-            retrievePlayers();
-            return;
-        }
+        for (int i = 0; i < numPlayers; i++) {
 
-        // Insert players in a list.
-        else { //todo
-            playerList = new ArrayList<>();
-
-            for (int i = 0; i < numPlayers; i++) {
-
-                playerList.add(new Player("Player" + (i + 1)));
-
-            }
-
-            // Initialize the starting player.
-            playerIndex = 0;
-            currentPlayer = playerList.get(playerIndex);
+            playerList.add(new Player("Player" + (i + 1)));
 
         }
+
+        // Initialize the starting player.
+        playerIndex = 0;
+        currentPlayer = playerList.get(playerIndex);
+
         wMap.randAlloc(numPlayers, playerList);
 
     }
