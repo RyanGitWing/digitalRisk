@@ -19,7 +19,6 @@ import java.util.*;
 public class WorldMap
 {
     private HashMap <ContinentName, Continent> worldMap,NorthAmerica, SouthAmerica, Europe, Africa, Asia, Australia;
-    private int armySize;
 
 
     /**
@@ -35,7 +34,6 @@ public class WorldMap
         Africa = new HashMap<>();
         Australia = new HashMap<>();
         worldMap = setMap();
-        armySize = 0;
     }
 
     /**
@@ -119,7 +117,7 @@ public class WorldMap
     }
     public int armySizeini (int playerCount)
     {
-
+        int armySize = 0;
         if (playerCount == 2) {
             armySize = 50;
         }
@@ -175,7 +173,7 @@ public class WorldMap
 
         for (Player p : playerList) {
             p.SetArmyCount(armySizeini(playerCount));
-            armySize = p.GetArmyCount();
+            int armySize = p.GetArmyCount();
             while (armySize > 0) {
                 int randNum = randNumini(nextContinent.getName());
                 int randNum2 = randInt.nextInt(10) + 1;
