@@ -62,7 +62,7 @@ public class Game
 
 
         // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) { 
+        if (numPlayers < 2) {
             System.out.println("Not enough players!");
             retrievePlayers();
             return;
@@ -76,7 +76,7 @@ public class Game
         }
 
         // Insert players in a list.
-        else { 
+        else {
             playerList = new ArrayList<>();
 
             for (int i = 0; i < numPlayers; i++) {
@@ -286,10 +286,12 @@ public class Game
                         // Check if the country being attack has zero army
                         // If so then takeover the country without commencing battlephase
                         if (enemyCountry.getArmyOccupied() == 0) {
+
                             enemyCountry.setRuler(currentPlayer);
                             currentPlayer.addNewCountry(enemyCountry);
                             enemyCountry.addArmyOccupied(numAtkArmy);
                             countryOwn.addArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+
                         }
 
                         // Check to see if the current player has the military force to attack.
@@ -333,8 +335,10 @@ public class Game
     private void battlePhase() {
 
         // An array to store dice.
-        Integer[] atkList = new Integer[3];
-        Integer[] defList = new Integer[2];
+        ArrayList<Integer> atkList = new ArrayList<>();
+        ArrayList<Integer> defList = new ArrayList<>();
+
+        int numDefArmy;
 
         die = new Dice();
 
@@ -342,39 +346,40 @@ public class Game
         for (int i = 0; i < Math.min(numAtkArmy, countryOwn.getArmyOccupied()); i++) {
 
             die.rollDice();
-            atkList[i] = die.getValue();
-            System.out.println(currentPlayer.getName() + " Dice: " + (i + 1) +  " Value: " + atkList[i]);
+            atkList.add(die.getValue());
+            System.out.println(currentPlayer.getName() + " Dice: " + (i + 1) +  " Value: " + atkList.get(i));
             System.out.println();
 
         }
 
-        for (int i = 0; i < Math.min(defList.length, enemyCountry.getArmyOccupied()); i++) {
+        if (enemyCountry.getArmyOccupied() >= 2) {
+            numDefArmy = 2;
+        } else {
+            numDefArmy = 1;
+        }
+
+        for (int i = 0; i < numDefArmy; i++) {
 
             die.rollDice();
-            defList[i] = die.getValue();
-            System.out.println(enemyCountry.getRuler().getName() + " Dice: " + (i + 1) + " Value: " + defList[i]);
+            defList.add(die.getValue());
+            System.out.println(enemyCountry.getRuler().getName() + " Dice: " + (i + 1) + " Value: " + defList.get(i));
             System.out.println();
 
         }
 
-        int numDefArmy = Math.min(defList.length, enemyCountry.getArmyOccupied());
-
         // Arrange the dice value in descending order.
-        if (numAtkArmy > 1 && atkList[0] < atkList[1] || atkList[0] < atkList[2]) { //null pointer exception
-            Arrays.sort(atkList, Collections.reverseOrder());
+        if (numAtkArmy > 1) { //null pointer exception
+            Collections.sort(atkList, Collections.reverseOrder());
         }
         else {
 
         }
-        if (numDefArmy > 1 && defList[0] < defList[1]) {
-            Arrays.sort(defList, Collections.reverseOrder());
+        if (numDefArmy > 1) {
+            Collections.sort(defList, Collections.reverseOrder());
         }
 
-        System.out.println(Arrays.toString(atkList)); // checking
-        System.out.println(Arrays.toString(defList));
-
         // Compare the values from the attacker side and defender side
-        if (atkList[0] > defList[0]) {
+        if (atkList.get(0) > defList.get(0)) {
             enemyCountry.getRuler().SetArmyCount(enemyCountry.getRuler().GetArmyCount() - 1); // sub an army from enemy player
             enemyCountry.addArmyOccupied(enemyCountry.getArmyOccupied() - 1); // sub an army from enemy country
             numDefArmy--;
@@ -386,9 +391,9 @@ public class Game
             numAtkArmy--;
         }
 
-        if (atkList[1] != null && defList[1] != null){
+        if (atkList.size() >= 2 && defList.get(1) >= 2){
 
-            if (atkList[1] > defList[1]) {
+            if (atkList.get(1) > defList.get(1)) {
                 enemyCountry.getRuler().SetArmyCount(enemyCountry.getRuler().GetArmyCount() - 1);
                 enemyCountry.addArmyOccupied(enemyCountry.getArmyOccupied() - 1);
                 numDefArmy--;
@@ -416,7 +421,6 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
-
         }
 
         // If there are no more troops in the country, player takes over the country.
@@ -433,7 +437,6 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
-
 
         }
 
