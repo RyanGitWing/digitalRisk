@@ -61,25 +61,6 @@ public class Player {
     }
 
     /**
-     * Returns the player's name if it is the player's turn.
-     *
-     * @return The player's name.
-     */
-    public String GetPlayerTurn() {
-        if (PlayerTurn) return this.NAME;
-        else return null;
-    }
-
-    public List<Country> getOwnedCountries() {
-        return ownedCountries;
-    }
-
-    public void addNewCountry (Country newCountry) {
-        ownedCountries.add(newCountry);
-    }
-
-
-    /**
      * Returns the army count in the specified country.
      *
      * @param country The country requesting the army count from.
