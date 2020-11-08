@@ -62,7 +62,7 @@ public class Game
 
 
         // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) { //todo
+        if (numPlayers < 2) {
             System.out.println("Not enough players!");
             retrievePlayers();
             return;
@@ -76,7 +76,7 @@ public class Game
         }
 
         // Insert players in a list.
-        else { //todo
+        else {
             playerList = new ArrayList<>();
 
             for (int i = 0; i < numPlayers; i++) {
@@ -416,7 +416,6 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
-            // currentPlayer.TurnLost(countryOwn);
         }
 
         // If there are no more troops in the country, player takes over the country.
@@ -433,7 +432,6 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
-            //currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);//todo
 
         }
 
