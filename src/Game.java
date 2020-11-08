@@ -9,7 +9,6 @@ import java.util.*;
  */
 public class Game
 {
-    private Parser parser;
 
     private Dice die;
 
@@ -20,10 +19,6 @@ public class Game
     private int playerIndex;
 
     private WorldMap wMap;
-
-    private ContinentMap contMap;
-
-    private CountryMap cMap;
 
     private boolean hasAtk;
 
@@ -40,12 +35,24 @@ public class Game
      */
     public Game()
     {
-        parser = new Parser();
         playerList = new ArrayList<>();
         wMap = new WorldMap();
-        contMap = new ContinentMap();
-        cMap = new CountryMap();
         hasAtk = false;
+    }
+
+    /**
+     * Create the game and initialise its internal map
+     * @param players the number of players playing the game
+     */
+    public Game(int players)
+    {
+        playerList = new ArrayList<>();
+        wMap = new WorldMap();
+        hasAtk = false;
+
+        this.numPlayers = players;
+
+        retrievePlayers();
     }
 
     /**
@@ -54,12 +61,6 @@ public class Game
      */
     public void retrievePlayers()
     {
-
-        Scanner reader = new Scanner(System.in);
-
-        System.out.println("Enter a number of players between 2 and 6: ");
-        numPlayers = reader.nextInt();
-
 
         // If the number of players is less than 2 then request a larger amount.
         if (numPlayers < 2) { //todo
@@ -97,41 +98,20 @@ public class Game
 
 
     /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play()
-    {
-
-        retrievePlayers();
-
-        printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-
-        boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-        }
-        System.out.println("Thank you for playing.  Good bye.");
-    }
-
-
-    /**
      * Method which returns the state of the game.
      * The number of armies and countries own by each player.
      *
      */
-    private void getGameStatus()
+    public String getGameStatus()
     {
-        System.out.println("The current state of the world is: \n");
+        String playersInfo = "";
+        String pInfo = "";
+        String currentTurn = "";
 
         for (Player p : playerList){
-            System.out.println(p.getName() + " owns " + p.getOwnedCountries().size() + " countries and " + p.GetArmyCount() + " armies.");
+            playersInfo += p.getName() + " owns " + p.getOwnedCountries().size() + " countries and " + p.GetArmyCount() + " armies.\n";
         }
 
-        System.out.println();
         for (Player p : playerList)
         {
             String ownedCountries = "";
@@ -139,59 +119,12 @@ public class Game
             {
                 ownedCountries += p.getOwnedCountries().get(i).getName() + " ";
             }
-            System.out.println (p.getName() + " owns the following countries: " + ownedCountries);
-        }
-        System.out.println();
-        System.out.println("It's currently " + currentPlayer.getName() + " turn. \n");
-    }
-
-    /**
-     * Print out the opening message for the player.
-     */
-    private void printWelcome()
-    {
-        System.out.println();
-        System.out.println("Welcome to Risk!");
-        System.out.println("Risk is a turn-based world domination game.");
-        getGameStatus();
-        System.out.println("Type 'help' if you need help. \n");
-    }
-
-
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
-    private boolean processCommand(Command command)
-    {
-        boolean wantToQuit = false;
-
-        if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
+            pInfo += p.getName() + " owns the following countries: " + ownedCountries + "\n";
         }
 
-        String commandWord = command.getCommandWord();
-        switch (commandWord) {
-            case "help":
-                printHelp();
-                break;
-            case "quit":
-                wantToQuit = quit(command);
-                break;
-            case "status":
-                status(command);
-                break;
-            case "attack":
-                attackCMD(command);
-                break;
-            case "endturn":
-                nextPlayer(command);
-                break;
-        }
+        currentTurn += "It's currently " + currentPlayer.getName() + " turn. \n";
 
-        return wantToQuit;
+        return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
     /**
@@ -205,51 +138,19 @@ public class Game
         System.out.println("quit help status attack endturn");
     }
 
-
-
     /**
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
+     * "Status" output the game status.
      */
-    private boolean quit(Command command)
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
-        }
-    }
-
-    /**
-     * "Status" was entered. Check the rest of the command to see
-     * whether we checking the status of the game or not.
-     * @param command The command to be processed.
-     */
-    private void status(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("Status what?");
-
-        }
-
-        getGameStatus();
-
+    public void status() {
+        System.out.println(getGameStatus());
     }
 
     /**
      * "Attack" was entered. Check the rest of the command to see
      * where we attacking with how many troops.
-     * @param command The command to be processed.
      */
-    private void attackCMD(Command command) {
+    public void attackCMD() {
 
-        if (command.hasSecondWord()) {
-            System.out.println("Attack what?");
-
-        }
         if (!hasAtk) {
 
             Scanner reader = new Scanner(System.in);
@@ -458,13 +359,8 @@ public class Game
     /**
      * "endturn" was entered. Check the rest of the command to see
      * whether we really want to pass our turn to the following player.
-     * @param command The command to be processed.
      */
-    private void nextPlayer(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("End turn what?");
-        }
+    public void nextPlayer() {
 
         playerIndex++;
 
@@ -477,13 +373,7 @@ public class Game
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
         hasAtk = false;
-        getGameStatus();
 
 
-    }
-
-    public static void main (String[] args){
-        Game game = new Game();
-        game.play();
     }
 }
