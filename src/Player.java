@@ -60,6 +60,15 @@ public class Player {
         return this.NAME;
     }
 
+    public List<Country> getOwnedCountries() {
+        return ownedCountries;
+    }
+
+    public void addNewCountry (Country newCountry) {
+        ownedCountries.add(newCountry);
+    }
+
+
     /**
      * Returns the army count in the specified country.
      *
