@@ -334,7 +334,7 @@ public class Game
      */
     private void battlePhase() {
 
-        // An array to store dice.
+        // An arraylist to store dice.
         ArrayList<Integer> atkList = new ArrayList<>();
         ArrayList<Integer> defList = new ArrayList<>();
 
@@ -368,7 +368,7 @@ public class Game
         }
 
         // Arrange the dice value in descending order.
-        if (numAtkArmy > 1) { //null pointer exception
+        if (numAtkArmy > 1) {
             Collections.sort(atkList, Collections.reverseOrder());
         }
         else {
@@ -391,7 +391,7 @@ public class Game
             numAtkArmy--;
         }
 
-        if (atkList.size() >= 2 && defList.get(1) >= 2){
+        if (atkList.size() >= 2 && defList.size() >= 2){
 
             if (atkList.get(1) > defList.get(1)) {
                 enemyCountry.getRuler().SetArmyCount(enemyCountry.getRuler().GetArmyCount() - 1);
