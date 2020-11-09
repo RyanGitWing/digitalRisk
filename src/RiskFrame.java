@@ -118,6 +118,7 @@ public class RiskFrame extends JFrame implements RiskView{
                         atkC = e.getActionCommand();
                         adjSource(atkC);
                         numAtkArmy = country.getArmyOccupied();
+                        worldNews.append(numAtkArmy + " "); //TESST
                     }
                 }
             });
@@ -765,25 +766,6 @@ public class RiskFrame extends JFrame implements RiskView{
         f.setVisible(true);
         f.setResizable(false);
 
-        /*
-        //Takes Users typed input
-        String input = JOptionPane.showInputDialog(f, "Welcome to Risk! \n" +
-                "Risk is a turn-based world domination game. \n" + "\n Enter a number of players between 2 and 6");
-        numPlayers = Integer.parseInt(input);
-        if (numPlayers < 2) {
-            JOptionPane.showMessageDialog(f, "Not enough players!", "Alert", JOptionPane.WARNING_MESSAGE);
-            starter();
-            return;
-        }
-        // If the number of players exceeds 6 request a different number of player
-        else if (numPlayers > 6) {
-            JOptionPane.showMessageDialog(f, "Too many players!", "Alert", JOptionPane.WARNING_MESSAGE);
-            starter();
-            return;
-        }
-        else {
-        }
-         */
     }
 
 
@@ -820,6 +802,7 @@ public class RiskFrame extends JFrame implements RiskView{
                     defC = e.getActionCommand();
                     f.dispose();
                     worldNews.append(defC);
+                    armySource();
                 }
             });
             aPanel.add(b);
@@ -841,8 +824,53 @@ public class RiskFrame extends JFrame implements RiskView{
 
     private void armySource(){
 
+        JFrame f = new JFrame();
+
+        f.setTitle("Adjacent Countries");
+
+        f.setLayout(new BorderLayout());
+        f.setSize(500,100);
+
+        //A panel for the buttons
+        JPanel aPanel = new JPanel();
+        aPanel.setLayout(new FlowLayout());
+
+        //A label that shows a text requesting the user to do something
+        JLabel label = new JLabel("\n Select the number of army to attack with.");
+        //Align the label to be centered to the frame
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+
+
+        if (numAtkArmy > 3) {
+            numAtkArmy = 3;
+        }
+
+        for (int i = 0; i < numAtkArmy; i++){
+            JButton b = new JButton((i + 1) + "");
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    f.dispose();
+                    riskGame.attackCMD(atkC, numAtkArmy, defC);
+                }
+            });
+            aPanel.add(b);
+        }
+
+        //Spacing the panel away from the label
+        aPanel.add(Box.createVerticalStrut(50));
+
+        //Adding the label to North and the panel to the Center
+        f.add(label, BorderLayout.NORTH);
+        f.add(aPanel, BorderLayout.CENTER);
+
         map.setVisible(false);
         centerPanel.setVisible(true);
+
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+        f.setResizable(true);
 
     }
 
