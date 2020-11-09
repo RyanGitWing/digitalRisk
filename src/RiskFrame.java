@@ -5,8 +5,6 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.util.EventListener;
 import java.util.List;
 
 public class RiskFrame extends JFrame implements RiskView{
@@ -25,15 +23,19 @@ public class RiskFrame extends JFrame implements RiskView{
 
     WorldMap worldMap;
 
-    JPanel map;
+    JPanel map, centerPanel;
 
     int numAtkArmy;
 
     String atkC, defC;
 
+    private static ImageIcon wImg;
+
     public RiskFrame() {
 
         super("Risk Game");
+
+        wImg = new ImageIcon(getClass().getResource("map.png"));
 
         //The starter frame
         starter();
@@ -63,6 +65,8 @@ public class RiskFrame extends JFrame implements RiskView{
         //Centering the frame to be in the middle of the screen
         this.setLocationRelativeTo(null);
 
+        imgPanel();
+
         //Add the menu to the frame
         theMenu();
 
@@ -76,6 +80,19 @@ public class RiskFrame extends JFrame implements RiskView{
         WorldMapGUI();
 
         worldNews.setText(riskGame.getGameStatus());
+    }
+
+    private void imgPanel(){
+
+        centerPanel = new JPanel();
+        centerPanel.setSize(1500,1000);
+
+        JLabel label = new JLabel();
+        label.setIcon(wImg);
+
+        centerPanel.add(label);
+        centerPanel.setVisible(true);
+        this.add(centerPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -597,7 +614,6 @@ public class RiskFrame extends JFrame implements RiskView{
 
         //Adding the box to the panel
         westPanel.add(box);
-
 
 
         //Adding the panel to the west side of the frame
