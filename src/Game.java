@@ -123,40 +123,23 @@ public class Game
         return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the
-     * command words.
-     */
-    private void printHelp()
-    {
-        System.out.println("Your command words are:");
-        System.out.println("quit help status attack endturn");
-    }
-
-    /**
-     * "Status" output the game status.
-     */
-    public void status() {
-        System.out.println(getGameStatus());
-    }
 
     /**
      * "Attack" was entered. Check the rest of the command to see
      * where we attacking with how many troops.
      */
-    public void attackCMD(Country attacker, int numArmy, Country defender) {
+    public void attackCMD(String attacker, int numArmy, String defender) {
 
         if (!hasAtk) {
 
-            countryOwn = attacker;
+            countryOwn = wMap.getCountry(CountryName.valueOf(attacker));
 
             List<CountryName> countryOwnAdj = countryOwn.getAdjCountries(countryOwn.getName());
 
             // Check to see if the current player owns this country.
             if (currentPlayer.equals(countryOwn.getRuler())) {
 
-                enemyCountry = defender;
+                enemyCountry = wMap.getCountry(CountryName.valueOf(defender));
                 enemyPlayer = enemyCountry.getRuler();
 
                 // Check to make sure the current player is not attacking a country they own.
@@ -209,6 +192,7 @@ public class Game
         else {
             System.out.println("You have already attacked!");
         }
+
 
     }
 
