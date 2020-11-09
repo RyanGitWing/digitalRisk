@@ -1,12 +1,11 @@
 /**
  *  ContinentMap Class
- *
- *  Methods:
- *  setUpContinent(continentName)
- *
- *
+
  * @author Vis Kirubakaran
  * @version: 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.08.2020
  */
 
 public class ContinentMap
@@ -35,109 +34,109 @@ public class ContinentMap
 
         if (continentName == ContinentName.NorthAmerica)
         {
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.CentralAmerica));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.CentralAmerica));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.EasternUS));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.EasternUS));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.Greenland));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Greenland));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.NorthwestTerritories));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.NorthwestTerritories));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.CentralCanada));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.CentralCanada));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.EasternCanada));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.EasternCanada));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.WesternUS));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.WesternUS));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.Alaska));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Alaska));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryNA(CountryName.WesternCanada));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.WesternCanada));
             countryMap = new CountryMap();
             return continent;
         }
         if (continentName == ContinentName.SouthAmerica)
         {
-            continent.addCountry(countryMap.AdjacentCountrySA(CountryName.Argentina));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Argentina));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountrySA(CountryName.Brazil));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Brazil));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountrySA(CountryName.Peru));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Peru));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountrySA(CountryName.Venezuela));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Venezuela));
             countryMap = new CountryMap();
             return continent;
         }
         if (continentName == ContinentName.Europe)
         {
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.GreatBritain));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.GreatBritain));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.Iceland));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Iceland));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.NorthernEurope));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.NorthernEurope));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.Scandinavia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Scandinavia));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.SouthernEurope));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.SouthernEurope));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.Ukraine));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Ukraine));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryEU(CountryName.WesternEurope));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.WesternEurope));
             countryMap = new CountryMap();
             return continent;
         }
         if (continentName == ContinentName.Africa)
         {
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.Congo));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Congo));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.EastAfrica));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.EastAfrica));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.Egypt));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Egypt));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.Madagascar));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Madagascar));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.NorthAfrica));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.NorthAfrica));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAF(CountryName.SouthAfrica));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.SouthAfrica));
             countryMap = new CountryMap();
             return continent;
         }
         if (continentName == ContinentName.Asia)
         {
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Afghanistan));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Afghanistan));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.China));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.China));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.India));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.India));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Irkutsk));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Irkutsk));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Japan));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Japan));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Kamchatka));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Kamchatka));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.MiddleEast));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.MiddleEast));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Mongolia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Mongolia));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Siam));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Siam));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Siberia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Siberia));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Ural));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Ural));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAS(CountryName.Yakutsk));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Yakutsk));
             countryMap = new CountryMap();
             return continent;
         }
         if (continentName == ContinentName.Australia)
         {
-            continent.addCountry(countryMap.AdjacentCountryAU(CountryName.EasternAustralia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.EasternAustralia));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAU(CountryName.Indonesia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.Indonesia));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAU(CountryName.NewGuinea));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.NewGuinea));
             countryMap = new CountryMap();
-            continent.addCountry(countryMap.AdjacentCountryAU(CountryName.WesternAustralia));
+            continent.addCountry(countryMap.SetAdjacentCountries(CountryName.WesternAustralia));
             countryMap = new CountryMap();
             return continent;
         }

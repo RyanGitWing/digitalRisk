@@ -1,481 +1,185 @@
 import java.util.*;
 /**
- *  CountryMap Class
- *
- *  Methods:
- *
- *  AdjacentCountryNA (name)
- *  AdjacentCountrySA (name)
- *  AdjacentCountryEU (name)
- *  AdjacentCountryAF (name)
- *  AdjacentCountryAS (name)
- *  AdjacentCountryAU (name)
+ *  The default Country Map Class
  *
  * @author Vis Kirubakaran
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.08.2020
  */
 
 public class CountryMap
 {
-    private List <CountryName> adjCountryList;
-    private Country country;
+    // North America
+    private final CountryName[] Alaska = new CountryName[] { CountryName.NorthwestTerritories };
+    private final CountryName[] WesternCanada = new CountryName[] {
+            CountryName.NorthwestTerritories, CountryName.CentralCanada };
+    private final CountryName[] CentralAmerica = new CountryName[] {
+            CountryName.EasternUS, CountryName.WesternUS, CountryName.Scandinavia };
+    private final CountryName[] EasternUS = new CountryName[] {
+            CountryName.CentralAmerica, CountryName.CentralCanada, CountryName.WesternUS };
+    private final CountryName[] Greenland = new CountryName[] {
+            CountryName.NorthwestTerritories, CountryName.CentralCanada, CountryName.EasternCanada, CountryName.Iceland };
+    private final CountryName[] NorthwestTerritories = new CountryName[] {
+            CountryName.Alaska, CountryName.WesternCanada, CountryName.Greenland, CountryName.CentralCanada };
+    private final CountryName[] CentralCanada = new CountryName[] {
+            CountryName.WesternCanada, CountryName.Greenland, CountryName.NorthwestTerritories, CountryName.EasternCanada };
+    private final CountryName[] EasternCanada = new CountryName[] {
+            CountryName.EasternUS, CountryName.Greenland, CountryName.NorthwestTerritories, CountryName.CentralCanada };
+    private final CountryName[] WesternUS = new CountryName[] {
+            CountryName.WesternCanada, CountryName.CentralAmerica, CountryName.EasternUS, CountryName.EasternCanada };
 
+    // South America
+    private final CountryName[] Argentina = new CountryName[] { CountryName.Brazil, CountryName.Peru };
+    private final CountryName[] Brazil  = new CountryName[] {
+            CountryName.Argentina, CountryName.Peru, CountryName.Venezuela, CountryName.NorthAfrica };
+    private final CountryName[] Peru = new CountryName[] {
+            CountryName.Argentina, CountryName.Brazil, CountryName.Venezuela };
+    private final CountryName[] Venezuela = new CountryName[] { CountryName.Brazil, CountryName.Peru };
+
+    // Europe
+    private final CountryName[] GreatBritain  = new CountryName[] {
+            CountryName.Iceland, CountryName.NorthernEurope, CountryName.Scandinavia, CountryName.WesternEurope };
+    private final CountryName[] Iceland  = new CountryName[] { CountryName.SouthernEurope, CountryName.Greenland };
+    private final CountryName[] NorthernEurope = new CountryName[] {
+            CountryName.GreatBritain, CountryName.Scandinavia, CountryName.SouthernEurope, CountryName.Ukraine, CountryName.WesternEurope };
+    private final CountryName[] Scandinavia = new CountryName[] {
+            CountryName.GreatBritain, CountryName.Iceland, CountryName.NorthernEurope, CountryName.Ukraine };
+    private final CountryName[] SouthernEurope = new CountryName[] {
+            CountryName.NorthernEurope, CountryName.Ukraine, CountryName.WesternEurope, CountryName.Egypt, CountryName.NorthAfrica, CountryName.MiddleEast };
+    private final CountryName[] Ukraine  = new CountryName[] {
+            CountryName.NorthernEurope, CountryName.Scandinavia, CountryName.SouthernEurope, CountryName.Afghanistan, CountryName.MiddleEast, CountryName.Ural };
+    private final CountryName[] WesternEurope = new CountryName[] {
+            CountryName.GreatBritain, CountryName.NorthernEurope, CountryName.SouthernEurope, CountryName.NorthAfrica };
+
+    // Africa
+    private final CountryName[] Congo = new CountryName[] {
+            CountryName.EastAfrica, CountryName.NorthAfrica, CountryName.SouthAfrica };
+    private final CountryName[] EastAfrica = new CountryName[] {
+            CountryName.Congo, CountryName.Egypt, CountryName.Madagascar, CountryName.MiddleEast };
+    private final CountryName[] Egypt = new CountryName[] {
+            CountryName.EastAfrica, CountryName.NorthAfrica, CountryName.SouthernEurope, CountryName.MiddleEast };
+    private final CountryName[] Madagascar = new CountryName[] { CountryName.EastAfrica, CountryName.SouthAfrica };
+    private final CountryName[] NorthAfrica = new CountryName[] {
+            CountryName.Congo, CountryName.Egypt, CountryName.Brazil, CountryName.SouthernEurope, CountryName.WesternEurope };
+    private final CountryName[] SouthAfrica = new CountryName[] {
+            CountryName.Congo, CountryName.EastAfrica, CountryName.Madagascar };
+
+    // Asia
+    private final CountryName[] Afghanistan = new CountryName[] {
+            CountryName.China, CountryName.India, CountryName.MiddleEast, CountryName.Ural, CountryName.Ukraine };
+    private final CountryName[] China = new CountryName[] {
+            CountryName.Afghanistan, CountryName.India, CountryName.Mongolia, CountryName.Siam, CountryName.Siberia, CountryName.Ural };
+    private final CountryName[] India = new CountryName[] {
+            CountryName.Afghanistan, CountryName.China, CountryName.MiddleEast };
+    private final CountryName[] Irkutsk = new CountryName[] {
+            CountryName.Kamchatka, CountryName.Mongolia, CountryName.Siberia, CountryName.Yakutsk };
+    private final CountryName[] Japan = new CountryName[] { CountryName.Kamchatka, CountryName.Mongolia };
+    private final CountryName[] Kamchatka = new CountryName[] { CountryName.Irkutsk, CountryName.Japan, CountryName.Yakutsk };
+    private final CountryName[] MiddleEast = new CountryName[] {
+            CountryName.Afghanistan, CountryName.India, CountryName.EastAfrica, CountryName.Egypt, CountryName.SouthernEurope, CountryName.Ukraine };
+    private final CountryName[] Mongolia = new CountryName[] {
+            CountryName.China, CountryName.Irkutsk, CountryName.Japan, CountryName.Kamchatka, CountryName.Siberia };
+    private final CountryName[] Siam = new CountryName[] {
+        CountryName.China, CountryName.India, CountryName.Indonesia };
+    private final CountryName[] Siberia = new CountryName[] {
+        CountryName.China, CountryName.Irkutsk, CountryName.Mongolia, CountryName.Ural, CountryName.Yakutsk };
+    private final CountryName[] Ural = new CountryName[] {
+        CountryName.Afghanistan, CountryName.China, CountryName.Siberia, CountryName.Ukraine };
+    private final CountryName[] Yakutsk = new CountryName[] {
+        CountryName.Irkutsk, CountryName.Kamchatka, CountryName.Siberia };
+
+    // Australia
+    private final CountryName[] EasternAustralia =  new CountryName[] { CountryName.NewGuinea, CountryName.WesternAustralia };
+    private final CountryName[] Indonesia = new CountryName[] {
+        CountryName.NewGuinea, CountryName.WesternAustralia, CountryName.Siam };
+    private final CountryName[] NewGuinea = new CountryName[] { CountryName.EasternAustralia, CountryName.Indonesia };
+    private final CountryName[] WesternAustralia = new CountryName[] { CountryName.EasternAustralia, CountryName.NewGuinea };
+
+    /**
+     * Creates a new country map and sets up an empty list of adjacent countries.
+     */
     public CountryMap ()
     {
-        adjCountryList = new ArrayList<>();
     }
 
     /**
-     * AdjacentCountryNA (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
-     * North America
+     * Sets up a country with corresponding adjacent countries.
      *
-     * @param name
-     * @return Country
+     * @param name The name of the country
+     * @return The setup country.
      */
-
-    public Country AdjacentCountryNA (CountryName name)
+    public Country SetAdjacentCountries (CountryName name)
     {
-        this.country = new Country(name);
-        if (name == CountryName.Alaska)
-        {
-            adjCountryList.add(CountryName.NorthwestTerritories);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.WesternCanada)
-        {
-            adjCountryList.add(CountryName.NorthwestTerritories);
-            adjCountryList.add(CountryName.CentralCanada);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.CentralAmerica)
-        {
-            adjCountryList.add(CountryName.EasternUS);
-            adjCountryList.add(CountryName.WesternUS);
-            adjCountryList.add(CountryName.Scandinavia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.EasternUS)
-        {
-            adjCountryList.add(CountryName.CentralAmerica);
-            adjCountryList.add(CountryName.CentralCanada);
-            adjCountryList.add(CountryName.WesternUS);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Greenland)
-        {
-            adjCountryList.add(CountryName.NorthwestTerritories);
-            adjCountryList.add(CountryName.CentralCanada);
-            adjCountryList.add(CountryName.EasternCanada);
-            adjCountryList.add(CountryName.Iceland);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.NorthwestTerritories)
-        {
-            adjCountryList.add(CountryName.Alaska);
-            adjCountryList.add(CountryName.WesternCanada);
-            adjCountryList.add(CountryName.Greenland);
-            adjCountryList.add(CountryName.CentralCanada);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.CentralCanada)
-        {
-            adjCountryList.add(CountryName.WesternCanada);
-            adjCountryList.add(CountryName.Greenland);
-            adjCountryList.add(CountryName.NorthwestTerritories);
-            adjCountryList.add(CountryName.EasternCanada);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.EasternCanada)
-        {
-            adjCountryList.add(CountryName.EasternUS);
-            adjCountryList.add(CountryName.Greenland);
-            adjCountryList.add(CountryName.NorthwestTerritories);
-            adjCountryList.add(CountryName.CentralCanada);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.WesternUS)
-        {
-            adjCountryList.add(CountryName.WesternCanada);
-            adjCountryList.add(CountryName.CentralAmerica);
-            adjCountryList.add(CountryName.EasternUS);
-            adjCountryList.add(CountryName.EasternCanada);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
-    }
+        boolean exists = false;
 
-    /**
-     * AdjacentCountrySA (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
-     * South America
-     *
-     * @param name
-     * @return Country
-     */
+        // check to see if CountryName is valid
+        for (CountryName c : CountryName.values()) {
+            if (c.name().equals(name)) {
+                exists = true;
+                break;
+            }
+        }
 
-    public Country AdjacentCountrySA (CountryName name)
-    {
-        this.country = new Country(name);
-        if (name == CountryName.Argentina)
-        {
-            adjCountryList.add(CountryName.Brazil);
-            adjCountryList.add(CountryName.Peru);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Brazil)
-        {
-            adjCountryList.add(CountryName.Argentina);
-            adjCountryList.add(CountryName.Peru);
-            adjCountryList.add(CountryName.Venezuela);
-            adjCountryList.add(CountryName.NorthAfrica);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Peru)
-        {
-            adjCountryList.add(CountryName.Argentina);
-            adjCountryList.add(CountryName.Brazil);
-            adjCountryList.add(CountryName.Venezuela);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Venezuela)
-        {
-            adjCountryList.add(CountryName.Brazil);
-            adjCountryList.add(CountryName.Peru);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
-    }
+        if (! exists) return null;
 
-    /**
-     * AdjacentCountryEU (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be done for all countries in
-     * Europe
-     *
-     * @param name
-     * @return Country
-     */
+        Country country = new Country(name);
 
-    public Country AdjacentCountryEU (CountryName name)
-    {
-        this.country = new Country(name);
-        if (name == CountryName.GreatBritain)
-        {
-            adjCountryList.add(CountryName.Iceland);
-            adjCountryList.add(CountryName.NorthernEurope);
-            adjCountryList.add(CountryName.Scandinavia);
-            adjCountryList.add(CountryName.WesternEurope);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Iceland)
-        {
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.Greenland);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.NorthernEurope)
-        {
-            adjCountryList.add(CountryName.GreatBritain);
-            adjCountryList.add(CountryName.Scandinavia);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.Ukraine);
-            adjCountryList.add(CountryName.WesternEurope);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Scandinavia)
-        {
-            adjCountryList.add(CountryName.GreatBritain);
-            adjCountryList.add(CountryName.Iceland);
-            adjCountryList.add(CountryName.NorthernEurope);
-            adjCountryList.add(CountryName.Ukraine);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.SouthernEurope)
-        {
-            adjCountryList.add(CountryName.NorthernEurope);
-            adjCountryList.add(CountryName.Ukraine);
-            adjCountryList.add(CountryName.WesternEurope);
-            adjCountryList.add(CountryName.Egypt);
-            adjCountryList.add(CountryName.NorthAfrica);
-            adjCountryList.add(CountryName.MiddleEast);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Ukraine)
-        {
-            adjCountryList.add(CountryName.NorthernEurope);
-            adjCountryList.add(CountryName.Scandinavia);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.Afghanistan);
-            adjCountryList.add(CountryName.MiddleEast);
-            adjCountryList.add(CountryName.Ural);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.WesternEurope)
-        {
-            adjCountryList.add(CountryName.GreatBritain);
-            adjCountryList.add(CountryName.NorthernEurope);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.NorthAfrica);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
-    }
+        // North America
+        if (name == CountryName.Alaska) country.setAdjCountry(Arrays.asList(Alaska));
+        if (name == CountryName.WesternCanada) country.setAdjCountry(Arrays.asList(WesternCanada));
+        if (name == CountryName.CentralAmerica) country.setAdjCountry(Arrays.asList(CentralAmerica));
+        if (name == CountryName.EasternUS) country.setAdjCountry(Arrays.asList(EasternUS));
+        if (name == CountryName.Greenland) country.setAdjCountry(Arrays.asList(Greenland));
+        if (name == CountryName.NorthwestTerritories) country.setAdjCountry(Arrays.asList(NorthwestTerritories));
+        if (name == CountryName.CentralCanada) country.setAdjCountry(Arrays.asList(CentralCanada));
+        if (name == CountryName.EasternCanada) country.setAdjCountry(Arrays.asList(EasternCanada));
+        if (name == CountryName.WesternUS) country.setAdjCountry(Arrays.asList(WesternUS));
 
-    /**
-     * AdjacentCountryAF (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
-     * Africa
-     *
-     * @param name
-     * @return Country
-     */
+        // SouthAmerica
+        if (name == CountryName.Argentina) country.setAdjCountry(Arrays.asList(Argentina));
+        if (name == CountryName.Brazil) country.setAdjCountry(Arrays.asList(Brazil));
+        if (name == CountryName.Peru) country.setAdjCountry(Arrays.asList(Peru));
+        if (name == CountryName.Venezuela) country.setAdjCountry(Arrays.asList(Venezuela));
 
-    public Country AdjacentCountryAF (CountryName name)
-    {
-        this.country = new Country(name);
-        if (name == CountryName.Congo)
-        {
-            adjCountryList.add(CountryName.EastAfrica);
-            adjCountryList.add(CountryName.NorthAfrica);
-            adjCountryList.add(CountryName.SouthAfrica);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.EastAfrica)
-        {
-            adjCountryList.add(CountryName.Congo);
-            adjCountryList.add(CountryName.Egypt);
-            adjCountryList.add(CountryName.Madagascar);
-            adjCountryList.add(CountryName.MiddleEast);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Egypt)
-        {
-            adjCountryList.add(CountryName.EastAfrica);
-            adjCountryList.add(CountryName.NorthAfrica);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.MiddleEast);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Madagascar)
-        {
-            adjCountryList.add(CountryName.EastAfrica);
-            adjCountryList.add(CountryName.SouthAfrica);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.NorthAfrica)
-        {
-            adjCountryList.add(CountryName.Congo);
-            adjCountryList.add(CountryName.Egypt);
-            adjCountryList.add(CountryName.Brazil);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.WesternEurope);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.SouthAfrica)
-        {
-            adjCountryList.add(CountryName.Congo);
-            adjCountryList.add(CountryName.EastAfrica);
-            adjCountryList.add(CountryName.Madagascar);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
-    }
+        // Europe
+        if (name == CountryName.GreatBritain) country.setAdjCountry(Arrays.asList(GreatBritain));
+        if (name == CountryName.Iceland) country.setAdjCountry(Arrays.asList(Iceland));
+        if (name == CountryName.NorthernEurope) country.setAdjCountry(Arrays.asList(NorthernEurope));
+        if (name == CountryName.Scandinavia) country.setAdjCountry(Arrays.asList(Scandinavia));
+        if (name == CountryName.SouthernEurope) country.setAdjCountry(Arrays.asList(SouthernEurope));
+        if (name == CountryName.Ukraine) country.setAdjCountry(Arrays.asList(Ukraine));
+        if (name == CountryName.WesternEurope) country.setAdjCountry(Arrays.asList(WesternEurope));
 
-    /**
-     * AdjacentCountryAS (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList. This will be doen for all countries in
-     * Asia
-     *
-     * @param name
-     * @return Country
-     */
+        // Africa
+        if (name == CountryName.Congo) country.setAdjCountry(Arrays.asList(Congo));
+        if (name == CountryName.EastAfrica) country.setAdjCountry(Arrays.asList(EastAfrica));
+        if (name == CountryName.Egypt) country.setAdjCountry(Arrays.asList(Egypt));
+        if (name == CountryName.Madagascar) country.setAdjCountry(Arrays.asList(Madagascar));
+        if (name == CountryName.NorthAfrica) country.setAdjCountry(Arrays.asList(NorthAfrica));
+        if (name == CountryName.SouthAfrica) country.setAdjCountry(Arrays.asList(SouthAfrica));
 
-    public Country AdjacentCountryAS (CountryName name)
-    {
-        this.country = new Country(name);
-        if (name == CountryName.Afghanistan)
-        {
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.India);
-            adjCountryList.add(CountryName.MiddleEast);
-            adjCountryList.add(CountryName.Ural);
-            adjCountryList.add(CountryName.Ukraine);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.China)
-        {
-            adjCountryList.add(CountryName.Afghanistan);
-            adjCountryList.add(CountryName.India);
-            adjCountryList.add(CountryName.Mongolia);
-            adjCountryList.add(CountryName.Siam);
-            adjCountryList.add(CountryName.Siberia);
-            adjCountryList.add(CountryName.Ural);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.India)
-        {
-            adjCountryList.add(CountryName.Afghanistan);
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.MiddleEast);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Irkutsk)
-        {
-            adjCountryList.add(CountryName.Kamchatka);
-            adjCountryList.add(CountryName.Mongolia);
-            adjCountryList.add(CountryName.Siberia);
-            adjCountryList.add(CountryName.Yakutsk);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Japan)
-        {
-            adjCountryList.add(CountryName.Kamchatka);
-            adjCountryList.add(CountryName.Mongolia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Kamchatka)
-        {
-            adjCountryList.add(CountryName.Irkutsk);
-            adjCountryList.add(CountryName.Japan);
-            adjCountryList.add(CountryName.Yakutsk);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.MiddleEast)
-        {
-            adjCountryList.add(CountryName.Afghanistan);
-            adjCountryList.add(CountryName.India);
-            adjCountryList.add(CountryName.EastAfrica);
-            adjCountryList.add(CountryName.Egypt);
-            adjCountryList.add(CountryName.SouthernEurope);
-            adjCountryList.add(CountryName.Ukraine);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Mongolia)
-        {
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.Irkutsk);
-            adjCountryList.add(CountryName.Japan);
-            adjCountryList.add(CountryName.Kamchatka);
-            adjCountryList.add(CountryName.Siberia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Siam)
-        {
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.India);
-            adjCountryList.add(CountryName.Indonesia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Siberia)
-        {
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.Irkutsk);
-            adjCountryList.add(CountryName.Mongolia);
-            adjCountryList.add(CountryName.Ural);
-            adjCountryList.add(CountryName.Yakutsk);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Ural)
-        {
-            adjCountryList.add(CountryName.Afghanistan);
-            adjCountryList.add(CountryName.China);
-            adjCountryList.add(CountryName.Siberia);
-            adjCountryList.add(CountryName.Ukraine);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Yakutsk)
-        {
-            adjCountryList.add(CountryName.Irkutsk);
-            adjCountryList.add(CountryName.Kamchatka);
-            adjCountryList.add(CountryName.Siberia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
-    }
+        // Asia
+        if (name == CountryName.Afghanistan) country.setAdjCountry(Arrays.asList(Afghanistan));
+        if (name == CountryName.China) country.setAdjCountry(Arrays.asList(China));
+        if (name == CountryName.India) country.setAdjCountry(Arrays.asList(India));
+        if (name == CountryName.Irkutsk) country.setAdjCountry(Arrays.asList(Irkutsk));
+        if (name == CountryName.Japan) country.setAdjCountry(Arrays.asList(Japan));
+        if (name == CountryName.Kamchatka) country.setAdjCountry(Arrays.asList(Kamchatka));
+        if (name == CountryName.MiddleEast) country.setAdjCountry(Arrays.asList(MiddleEast));
+        if (name == CountryName.Mongolia) country.setAdjCountry(Arrays.asList(Mongolia));
+        if (name == CountryName.Siam) country.setAdjCountry(Arrays.asList(Siam));
+        if (name == CountryName.Siberia) country.setAdjCountry(Arrays.asList(Siberia));
+        if (name == CountryName.Ural) country.setAdjCountry(Arrays.asList(Ural));
+        if (name == CountryName.Yakutsk) country.setAdjCountry(Arrays.asList(Yakutsk));
 
-    /**
-     * AdjacentCountryAU (name) takes enum input and uses private variable country of type Country, adjCountryList which is
-     * a list of CountryName enums. This method will use setAdjCountry method provided in Country to set country's
-     * adjCountries by using given enum input, and the adjCountryList.
-     * @param name
-     * @return Country
-     */
+        // Australia
+        if (name == CountryName.EasternAustralia) country.setAdjCountry(Arrays.asList(EasternAustralia));
+        if (name == CountryName.Indonesia) country.setAdjCountry(Arrays.asList(Indonesia));
+        if (name == CountryName.NewGuinea) country.setAdjCountry(Arrays.asList(NewGuinea));
+        if (name == CountryName.WesternAustralia) country.setAdjCountry(Arrays.asList(WesternAustralia));
 
-    public Country AdjacentCountryAU (CountryName name)
-    {
-        this.country = new Country(name);
-        if (name == CountryName.EasternAustralia)
-        {
-            adjCountryList.add(CountryName.NewGuinea);
-            adjCountryList.add(CountryName.WesternAustralia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.Indonesia)
-        {
-            adjCountryList.add(CountryName.NewGuinea);
-            adjCountryList.add(CountryName.WesternAustralia);
-            adjCountryList.add(CountryName.Siam);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.NewGuinea)
-        {
-            adjCountryList.add(CountryName.EasternAustralia);
-            adjCountryList.add(CountryName.Indonesia);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        if (name == CountryName.WesternAustralia)
-        {
-            adjCountryList.add(CountryName.EasternAustralia);
-            adjCountryList.add(CountryName.NewGuinea);
-            country.setAdjCountry(name, adjCountryList);
-            return country;
-        }
-        else return null;
+        return country;
     }
 }

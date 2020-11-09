@@ -16,7 +16,7 @@ import java.util.*;
  * @version 10.25.2020
  */
 
-public class WorldMap
+public class Board
 {
     private HashMap <ContinentName, Continent> worldMap,NorthAmerica, SouthAmerica, Europe, Africa, Asia, Australia;
     private int armySize;
@@ -25,7 +25,7 @@ public class WorldMap
     /**
      *   Initializes all of the HashMaps, then calls setMap() method in WorldMap
      * */
-    public WorldMap ()
+    public Board()
     {
         worldMap = new HashMap<>();
         NorthAmerica = new HashMap<>();
@@ -109,7 +109,7 @@ public class WorldMap
         {
             for (Country country: c.getContinent())
             {
-                if (country.getName() == countryName)
+                if (country.getCountryName() == countryName)
                 {
                     countryToReturn = country;
                 }
@@ -174,8 +174,8 @@ public class WorldMap
         List <Integer> randIndTrack = new ArrayList<>();
 
         for (Player p : playerList) {
-            p.SetArmyCount(armySizeini(playerCount));
-            armySize = p.GetArmyCount();
+            p.setArmyCount(armySizeini(playerCount));
+            armySize = p.getArmyCount();
             while (armySize > 0) {
                 int randNum = randNumini(nextContinent.getName());
                 int randNum2 = randInt.nextInt(10) + 1;
@@ -207,7 +207,7 @@ public class WorldMap
                     {
                         randNum2 = randInt.nextInt(armySize) + 1;
                     }
-                    randCountry.addArmyOccupied(randNum2);
+                    randCountry.setArmyOccupied(randNum2);
                     armySize -= randNum2;
                     if (!continentIterator.hasNext())
                     {
@@ -219,29 +219,4 @@ public class WorldMap
             }
         }
     }
-    // This is a test for random allocation and getPlayerCountry
-    public static void main(String[] args) {
-        WorldMap t = new WorldMap();
-        Player p1 = new Player("player 1");
-        Player p2 = new Player("player 2");
-        Player p3 = new Player("player 3");
-        Player p4 = new Player("player 4");
-        Player p5 = new Player("player 5");
-        Player p6 = new Player("player 6");
-        List <Player> pL = new ArrayList<>();
-        pL.add(p1);
-        pL.add(p2);
-        pL.add(p3);
-        pL.add(p4);
-        pL.add(p5);
-        pL.add(p6);
-        t.randAlloc(pL.size(), pL );
-        p1.getOwnedCountries().size();
-        p2.getOwnedCountries().size();
-        p3.getOwnedCountries().size();
-        p4.getOwnedCountries().size();
-        p5.getOwnedCountries().size();
-        p6.getOwnedCountries().size();
-    }
-
 }
