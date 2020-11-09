@@ -32,6 +32,8 @@ public class Game
 
     private Country countryOwn, enemyCountry;
 
+    private List <RiskFrame> riskFrames;
+
 
 
     /**
@@ -44,6 +46,31 @@ public class Game
         board = new Board();
         hasAtk = false;
     }
+
+    /**
+     * Create the game and initialise its internal map
+     * @param playerCount the number of players playing the game
+     */
+    public Game(int playerCount)
+    {
+        playerList = new ArrayList<>();
+        board = new Board();
+        hasAtk = false;
+        riskFrames = new ArrayList<>();
+
+        this.numPlayers = playerCount;
+
+        _retrievePlayers();
+    }
+
+    public Board getBoardMap() {
+        return board;
+    }
+
+    public void addRiskView(RiskFrame rv) { riskFrames.add(rv);}
+
+    public void removeRiskView(RiskFrame rv) { riskFrames.remove(rv);}
+
 
     /**
      *  Main play routine.  Loops until end of play.
@@ -69,43 +96,18 @@ public class Game
      */
     private void _retrievePlayers()
     {
-        Scanner reader = new Scanner(System.in);
+        playerList = new ArrayList<>();
 
-        System.out.print("Enter the number of players between 2 and 6: ");
-        try {
-            numPlayers = reader.nextInt();
-        }
-        catch(Exception e) {
-            System.out.println("Invalid number entered.");
-            _retrievePlayers();
-            return;
+        for (int i = 0; i < numPlayers; i++) {
+
+            playerList.add(new Player("Player" + (i + 1)));
+
         }
 
-        // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) {
-            System.out.println("Not enough players!");
-            _retrievePlayers();
-            return;
-        }
+        // Initialize the starting player.
+        playerIndex = 0;
+        currentPlayer = playerList.get(playerIndex);
 
-        // If the number of players exceeds 6 request a different number of player
-        else if (numPlayers > 6) {
-            System.out.println("Too many players!");
-            _retrievePlayers();
-            return;
-        }
-
-        // Create a list of players and initialize.
-        else {
-            playerList = new ArrayList<>();
-            for (int i = 0; i < numPlayers; i++) {
-                playerList.add(new Player("Player" + (i + 1)));
-            }
-            // Initialize the starting player.
-            playerIndex = 0;
-            currentPlayer = playerList.get(playerIndex);
-        }
-        // randomly allocate countries and armies to players.
         board.setupPlayers(playerList);
     }
 
@@ -125,15 +127,25 @@ public class Game
      * Method which returns the state of the game.
      * The number of armies and countries owned by each player.
      */
-    private void _getGameStatus()
+    public String _getGameStatus()
     {
-        System.out.println("THE CURRENT STATE OF THE WORLD");
+        String playersInfo = "";
+        String pInfo = "";
+
+        String currentTurn = "";
 
         for (Player p : playerList){
-            p.printPlayerStatus();
+            playersInfo += p.toString();
+            String ownedCountries = "";
+            for (Country c : p.getOwnedCountries())
+            {
+                ownedCountries += c.getCountryName().name() + " ";
+            }
+            pInfo += p.getName() + " owns the following countries: " + ownedCountries + "\n";
         }
 
-        System.out.println("It's currently " + currentPlayer.getName() + "'s turn. \n");
+        currentTurn += "It's currently " + currentPlayer.getName() + "'s turn. \n";
+        return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
     /**
@@ -162,7 +174,7 @@ public class Game
                 _attackCMD(command);
                 break;
             case "endturn":
-                nextPlayer(command);
+                nextPlayer();
                 break;
         }
 
@@ -422,13 +434,9 @@ public class Game
      * whether we really want to pass our turn to the following player.
      *
      * todo: Fareen refactor.
-     * @param command The command to be processed.
+     *
      */
-    private void nextPlayer(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("End turn what?");
-        }
+    public void nextPlayer() {
 
         playerIndex++;
 
