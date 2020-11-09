@@ -25,6 +25,8 @@ public class RiskFrame extends JFrame implements RiskView{
 
     WorldMap worldMap;
 
+    JPanel map;
+
     int numAtkArmy;
 
     String atkC, defC;
@@ -90,7 +92,17 @@ public class RiskFrame extends JFrame implements RiskView{
         for (Country country: continent.getContinent())
         {
             JButton jButton = new JButton(country.getName().toString());
-            jButton.addActionListener(riskCtrl);
+            jButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    if (e.getSource() instanceof JButton) {
+                        atkC = e.getActionCommand();
+                        adjSource(atkC);
+
+                    }
+                }
+            });
             jButton.setActionCommand(country.getName().toString());
 
             if (continent.getName() == ContinentName.NorthAmerica)
@@ -428,7 +440,7 @@ public class RiskFrame extends JFrame implements RiskView{
     private void WorldMapGUI ()
     {
         WorldMap worldMap = new WorldMap(); // will need to change so it updates based on progress as state of Game changes
-        JPanel map = new JPanel(new GridBagLayout());
+        map = new JPanel(new GridBagLayout());
         map.setBackground(Color.white);
         map.setPreferredSize (new Dimension(1500,1000));
 
@@ -485,6 +497,7 @@ public class RiskFrame extends JFrame implements RiskView{
             }
         }
         this.add(map, BorderLayout.CENTER);
+        map.setVisible(false);
     }
 
     private void theMenu(){
@@ -531,8 +544,6 @@ public class RiskFrame extends JFrame implements RiskView{
 
         // Dice dice = new Dice();
 
-
-
         //Create the panel to store the buttons and the Dice
         JPanel westPanel = new JPanel();
         westPanel.setPreferredSize(new Dimension(300, 0));
@@ -543,9 +554,11 @@ public class RiskFrame extends JFrame implements RiskView{
         atk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getAtkSource();
+                worldNews.append("\n Which Country would you like to attack with? \n");
+                map.setVisible(true);
             }
         });
+
         //Make the status button
         stat = new JButton("Game Status");
         stat.addActionListener(new ActionListener() {
@@ -743,24 +756,6 @@ public class RiskFrame extends JFrame implements RiskView{
          */
     }
 
-    public void getAtkSource(){
-
-        JFrame f = new JFrame("Countries");
-
-        f.setSize(1500,1000);
-
-        worldMap = new WorldMap();
-
-        for (Continent c: worldMap.getWorldMap().values()){
-            JPanel p = continentPanel(c.getName());
-            f.add(p);
-        }
-
-        f.pack();
-        f.setVisible(true);
-        f.setLocationRelativeTo(null);
-
-    }
 
     void adjSource(String cN) {
 
@@ -794,6 +789,7 @@ public class RiskFrame extends JFrame implements RiskView{
                public void actionPerformed(ActionEvent e) {
                    defC = e.getActionCommand();
                    f.dispose();
+                   worldNews.append(defC);
                }
            });
            aPanel.add(b);

@@ -59,6 +59,11 @@ public class Game
         retrievePlayers();
     }
 
+    public WorldMap getWorldMap() {
+        return wMap;
+    }
+
+
     public void addRiskView(RiskFrame rv) { riskFrames.add(rv);}
 
     public void removeRiskView(RiskFrame rv) { riskFrames.remove(rv);}
