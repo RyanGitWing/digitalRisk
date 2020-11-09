@@ -35,7 +35,7 @@ public class RiskFrame extends JFrame implements RiskView{
 
         super("Risk Game");
 
-        wImg = new ImageIcon(getClass().getResource("map.png"));
+        //wImg = new ImageIcon(getClass().getResource("map.png"));
 
         //The starter frame
         starter();
@@ -53,7 +53,7 @@ public class RiskFrame extends JFrame implements RiskView{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        riskCtrl = new RiskController(); // modified to be field.
+        riskCtrl = new RiskController(riskGame); // modified to be field.
 
         riskGame.addRiskView(this);
 
@@ -99,10 +99,8 @@ public class RiskFrame extends JFrame implements RiskView{
      * This is a helper method for WorldMapGUI() which sets up a JPanel corresponding to its respective continent
      * that is filled with Country JButtons
      * */
-    private JPanel continentPanel (ContinentName continentName)
+    private JPanel continentPanel (Continent continent)
     {
-        ContinentMap continentMap = new ContinentMap();
-        Continent continent = continentMap.setUpContinent(continentName);
         JPanel jPanel = new JPanel(new GridBagLayout());
         jPanel.setBackground(Color.white);
 
@@ -116,7 +114,7 @@ public class RiskFrame extends JFrame implements RiskView{
                     if (e.getSource() instanceof JButton) {
                         atkC = e.getActionCommand();
                         adjSource(atkC);
-
+                        System.out.println (country.getName().toString()  + country.getRuler().getName() + " " + country.getArmyOccupied()); // TEST
                     }
                 }
             });
@@ -456,14 +454,14 @@ public class RiskFrame extends JFrame implements RiskView{
      * */
     private void WorldMapGUI ()
     {
-        WorldMap worldMap = new WorldMap(); // will need to change so it updates based on progress as state of Game changes
+        WorldMap worldMap =  riskGame.getWorldMap(); // will need to change so it updates based on progress as state of Game changes
         map = new JPanel(new GridBagLayout());
         map.setBackground(Color.white);
         map.setPreferredSize (new Dimension(1500,1000));
 
         for (Continent c:  worldMap.getWorldMap().values())
         {
-            JPanel jPanel = continentPanel(c.getName());
+            JPanel jPanel = continentPanel(c);
             if (c.getName() == ContinentName.NorthAmerica)
             {
                 GridBagConstraints constraints = new GridBagConstraints();
@@ -799,16 +797,16 @@ public class RiskFrame extends JFrame implements RiskView{
         List<CountryName> countryOwnAdj = c.getAdjCountries(c.getName());
 
         for (CountryName countryName : countryOwnAdj) {
-           JButton b = new JButton(countryName.toString());
-           b.addActionListener(new ActionListener() {
-               @Override
-               public void actionPerformed(ActionEvent e) {
-                   defC = e.getActionCommand();
-                   f.dispose();
-                   worldNews.append(defC);
-               }
-           });
-           aPanel.add(b);
+            JButton b = new JButton(countryName.toString());
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    defC = e.getActionCommand();
+                    f.dispose();
+                    worldNews.append(defC);
+                }
+            });
+            aPanel.add(b);
         }
 
         //Spacing the panel away from the label
@@ -826,5 +824,10 @@ public class RiskFrame extends JFrame implements RiskView{
 
     public static void main(String[] args) {
         new RiskFrame();
+    }
+
+    @Override
+    public void handleGameUpdate(RiskEvent e) {
+
     }
 }
