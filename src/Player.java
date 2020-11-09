@@ -73,10 +73,6 @@ public class Player {
 
         ownedCountries.add(newCountry);
     }
-    
-    public void removeCountry(Country removeC) {
-        ownedCountries.remove(removeC);
-    }
 
     @Override
     public String toString() {
@@ -100,5 +96,10 @@ public class Player {
             ownedCountries += c.getCountryName().name() + ": " + c.getArmyOccupied() + "\n";
         }
         System.out.println (ownedCountries);
+    }
+
+    public void removeNewCountry(Country newCountry) {
+
+        ownedCountries.remove(newCountry);
     }
 }

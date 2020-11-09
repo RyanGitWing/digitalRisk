@@ -5,14 +5,13 @@ import java.awt.event.ActionListener;
 
 public class RiskController  implements ActionListener {
 
-    private RiskFrame frame;
+    private Game riskGame;
 
     public RiskController(Game riskGame) {
+        this.riskGame = riskGame;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-
     }
 }
