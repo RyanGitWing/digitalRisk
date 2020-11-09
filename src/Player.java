@@ -74,6 +74,14 @@ public class Player {
         ownedCountries.add(newCountry);
     }
 
+    @Override
+    public String toString() {
+
+        String playersInfo = "";
+        playersInfo += this.getName() + " owns " + this.getOwnedCountries().size() + " countries and " + this.getArmyCount() + " armies.\n";
+        return playersInfo;
+    }
+
     /**
      * Prints the player status.
      */
