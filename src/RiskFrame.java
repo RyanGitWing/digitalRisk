@@ -17,7 +17,7 @@ public class RiskFrame extends JFrame implements RiskView{
 
     JTextArea worldNews;
 
-    int numPlayers;
+    private int numPlayers;
 
     RiskController riskCtrl;
 
@@ -25,9 +25,9 @@ public class RiskFrame extends JFrame implements RiskView{
 
     JPanel map, centerPanel;
 
-    int numAtkArmy;
+    private int numAtkArmy;
 
-    String atkC, defC;
+    private String atkC, defC;
 
     private static ImageIcon wImg;
 
@@ -36,6 +36,7 @@ public class RiskFrame extends JFrame implements RiskView{
         super("Risk Game");
 
         wImg = new ImageIcon(getClass().getResource("map.png"));
+
 
         //The starter frame
         starter();
@@ -52,8 +53,9 @@ public class RiskFrame extends JFrame implements RiskView{
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         riskCtrl = new RiskController(); // modified to be field.
+
+        worldMap = riskGame.getWorldMap();
 
         riskGame.addRiskView(this);
 
@@ -82,7 +84,7 @@ public class RiskFrame extends JFrame implements RiskView{
         worldNews.setText(riskGame.getGameStatus());
     }
 
-    private void imgPanel(){
+    private void imgPanel() {
 
         centerPanel = new JPanel();
         centerPanel.setSize(1500,1000);
@@ -93,16 +95,15 @@ public class RiskFrame extends JFrame implements RiskView{
         centerPanel.add(label);
         centerPanel.setVisible(true);
         this.add(centerPanel, BorderLayout.CENTER);
+
     }
 
     /**
      * This is a helper method for WorldMapGUI() which sets up a JPanel corresponding to its respective continent
      * that is filled with Country JButtons
      * */
-    private JPanel continentPanel (ContinentName continentName)
+    private JPanel continentPanel (Continent continent)
     {
-        ContinentMap continentMap = new ContinentMap();
-        Continent continent = continentMap.setUpContinent(continentName);
         JPanel jPanel = new JPanel(new GridBagLayout());
         jPanel.setBackground(Color.white);
 
@@ -116,7 +117,7 @@ public class RiskFrame extends JFrame implements RiskView{
                     if (e.getSource() instanceof JButton) {
                         atkC = e.getActionCommand();
                         adjSource(atkC);
-
+                        numAtkArmy = country.getArmyOccupied();
                     }
                 }
             });
@@ -456,14 +457,24 @@ public class RiskFrame extends JFrame implements RiskView{
      * */
     private void WorldMapGUI ()
     {
-        WorldMap worldMap = new WorldMap(); // will need to change so it updates based on progress as state of Game changes
+
+        JPanel p = new JPanel();
+        p.setLayout(new BorderLayout());
+        p.setSize(1500, 1000);
+        p.setBackground(Color.WHITE);
+
+        WorldMap worldMap =  riskGame.getWorldMap(); // will need to change so it updates based on progress as state of Game changes
         map = new JPanel(new GridBagLayout());
-        map.setBackground(Color.white);
+        map.setBackground(Color.WHITE);
         map.setPreferredSize (new Dimension(1500,1000));
+
+        JLabel aLabel = new JLabel("Which Country would you like to attack with?");
+        aLabel.setHorizontalAlignment(JLabel.CENTER);
+        aLabel.setVerticalAlignment(JLabel.CENTER);
 
         for (Continent c:  worldMap.getWorldMap().values())
         {
-            JPanel jPanel = continentPanel(c.getName());
+            JPanel jPanel = continentPanel(c);
             if (c.getName() == ContinentName.NorthAmerica)
             {
                 GridBagConstraints constraints = new GridBagConstraints();
@@ -513,7 +524,10 @@ public class RiskFrame extends JFrame implements RiskView{
                 map.add(jPanel, constraints);
             }
         }
-        this.add(map, BorderLayout.CENTER);
+
+        p.add(aLabel, BorderLayout.NORTH);
+        p.add(map, BorderLayout.CENTER);
+        this.add(p, BorderLayout.CENTER);
         map.setVisible(false);
     }
 
@@ -571,7 +585,7 @@ public class RiskFrame extends JFrame implements RiskView{
         atk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                worldNews.append("\n Which Country would you like to attack with? \n");
+                centerPanel.setVisible(false);
                 map.setVisible(true);
             }
         });
@@ -680,7 +694,7 @@ public class RiskFrame extends JFrame implements RiskView{
         label.setVerticalAlignment(JLabel.CENTER);
 
         //Creating the buttons for each number of players
-
+        // todo refactor to be fooorrrr loooopppp
         JButton b2 = new JButton("2 Players");
         b2.addActionListener(new ActionListener() {
             @Override
@@ -773,7 +787,7 @@ public class RiskFrame extends JFrame implements RiskView{
     }
 
 
-    void adjSource(String cN) {
+    public void adjSource(String cN) {
 
         worldMap = new WorldMap();
 
@@ -791,7 +805,7 @@ public class RiskFrame extends JFrame implements RiskView{
         aPanel.setLayout(new FlowLayout());
 
         //A label that shows a text requesting the user to do something
-        JLabel label = new JLabel("\n Select the number of Players playing.");
+        JLabel label = new JLabel("\n Select the Country to attack.");
         //Align the label to be centered to the frame
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
@@ -799,16 +813,16 @@ public class RiskFrame extends JFrame implements RiskView{
         List<CountryName> countryOwnAdj = c.getAdjCountries(c.getName());
 
         for (CountryName countryName : countryOwnAdj) {
-           JButton b = new JButton(countryName.toString());
-           b.addActionListener(new ActionListener() {
-               @Override
-               public void actionPerformed(ActionEvent e) {
-                   defC = e.getActionCommand();
-                   f.dispose();
-                   worldNews.append(defC);
-               }
-           });
-           aPanel.add(b);
+            JButton b = new JButton(countryName.toString());
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    defC = e.getActionCommand();
+                    f.dispose();
+                    worldNews.append(defC);
+                }
+            });
+            aPanel.add(b);
         }
 
         //Spacing the panel away from the label
@@ -822,9 +836,18 @@ public class RiskFrame extends JFrame implements RiskView{
         f.setLocationRelativeTo(null);
         f.setVisible(true);
         f.setResizable(true);
+
+    }
+
+    private void armySource(){
+
+        map.setVisible(false);
+        centerPanel.setVisible(true);
+
     }
 
     public static void main(String[] args) {
         new RiskFrame();
     }
+
 }
