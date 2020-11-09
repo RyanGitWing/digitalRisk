@@ -57,7 +57,7 @@ public class PlayerTest {
         assertEquals(0, player.getOwnedCountries().size());
     }
 
-    @org.junit.Test
+    @Test
     public void addNewCountry() {
         // setup
         player.addNewCountry(new Country(CountryName.SouthernEurope));

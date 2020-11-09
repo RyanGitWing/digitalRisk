@@ -1,14 +1,16 @@
 import java.util.Scanner;
+
 /**
  * @author Ryan Nguyen
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.09.2020
  */
-
 public class Parser
-
 {
-    private CommandWords commands;  // holds all valid command words
-    private Scanner reader;         // source of command input
+    private final CommandWords commands;  // holds all valid command words
+    private final Scanner reader;         // source of command input
 
     /**
      * Create a parser to read from the terminal window.
@@ -50,6 +52,5 @@ public class Parser
         else {
             return new Command(null, word2);
         }
-
     }
 }

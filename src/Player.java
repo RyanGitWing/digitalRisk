@@ -74,4 +74,19 @@ public class Player {
         ownedCountries.add(newCountry);
     }
 
+    /**
+     * Prints the player status.
+     */
+    public void printPlayerStatus() {
+        System.out.println(getName() + " owns " +
+                getOwnedCountries().size() + " countries and "
+                + getArmyCount() + " armies.");
+
+        String ownedCountries = "";
+        for (Country c : getOwnedCountries())
+        {
+            ownedCountries += c.getCountryName().name() + ": " + c.getArmyOccupied() + "\n";
+        }
+        System.out.println (ownedCountries);
+    }
 }

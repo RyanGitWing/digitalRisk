@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 /**
  * Class for testing Board and WorldMaps.
- * Convert to CustomWorldMap for custom map functionality.
+ * todo: Convert to CustomWorldMap for custom map functionality.
  *
  * @author Fareen. L
  * @version 11.09.2020

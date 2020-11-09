@@ -15,9 +15,7 @@ public class Board
     private final IWorldMap worldMap;
     private final int countryCount;
     private final int continentCount;
-    private int initArmySize;
     private HashMap<ContinentName, Continent> boardMap;
-    private List<Player> players;
     private List<Country> countries;
 
 
@@ -31,9 +29,7 @@ public class Board
         this.countryCount = worldMap.getAdjCountries().keySet().size();
         this.continentCount = worldMap.getContinents().keySet().size();
         this.boardMap = new HashMap<>();
-        this.players = new ArrayList<>();
         this.countries = new ArrayList<>();
-        this.initArmySize = 0;
         _setupMap();
     }
 
@@ -47,9 +43,7 @@ public class Board
         this.countryCount = worldMap.getAdjCountries().keySet().size();
         this.continentCount = worldMap.getContinents().keySet().size();
         this.boardMap = new HashMap<>();
-        this.players = new ArrayList<>();
         this.countries = new ArrayList<>();
-        this.initArmySize = 0;
         _setupMap();
     }
 
@@ -92,10 +86,8 @@ public class Board
 
         if (playerList.size() > 6 || playerList.size() < 2) throw new IndexOutOfBoundsException();
 
-        this.players = playerList;
-        this.initArmySize = _getArmyCount(this.players.size());
-        _shuffleCountries();
-        _randAlloc();
+        _shuffleCountries(playerList);
+        _randAlloc(playerList, _getArmyCount(playerList.size()));
     }
 
     /**
@@ -129,13 +121,13 @@ public class Board
     /**
      * Shuffles countries between players.
      */
-    private void _shuffleCountries() {
+    private void _shuffleCountries(List<Player> players) {
         Collections.shuffle(this.countries);
         int playerID = 0;
 
         // assign random countries to players
         for (int i = 0; i < this.countryCount; i++) {
-            this.players.get(playerID).addNewCountry(getCountry(this.countries.get(i).getCountryName()));
+            players.get(playerID).addNewCountry(getCountry(this.countries.get(i).getCountryName()));
             playerID = (playerID + 1) % players.size();
         }
     }
@@ -143,12 +135,12 @@ public class Board
     /**
      * Randomly allocates armies to each players' countries.
      */
-    private void _randAlloc() {
+    private void _randAlloc(List<Player> players, int iniArmySize) {
         Random randGen = new Random();
 
-        for(Player player: this.players) {
-            int armyCount = this.initArmySize;
-            player.setArmyCount(initArmySize);
+        for(Player player: players) {
+            int armyCount = iniArmySize;
+            player.setArmyCount(iniArmySize);
 
             // initially assign 1 army unit to each country
             for (Country country : player.getOwnedCountries()) {
@@ -162,11 +154,12 @@ public class Board
 
             //randomly allocate rest of the army
             while (armyCount != 0) {
-
-                int army = randGen.nextInt(armyCount) + 1;
+                int army = (randGen.nextInt(armyCount + 1) %
+                        (randGen.nextInt(player.getOwnedCountries().size()) + 1));
                 nextCountry.setArmyOccupied(nextCountry.getArmyOccupied() + army);
                 getCountry(nextCountry.getCountryName()).setArmyOccupied(nextCountry.getArmyOccupied());
                 armyCount -= army;
+                if (countryIterator.hasNext()) nextCountry = countryIterator.next();
             }
         }
     }

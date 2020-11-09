@@ -1,5 +1,5 @@
 /**
-* @author Ryan Nguyen
+ * @author Ryan Nguyen
  * @version 10.25.2020
  */
 
@@ -20,8 +20,8 @@ public class CommandWords
 
     /**
      * Check whether a given String is a valid command word.
-     * @return true if a given string is a valid command,
-     * false if it isn't.
+     *
+     * @return True if a valid command, false otherwise.
      */
     public boolean isCommand(String aString)
     {

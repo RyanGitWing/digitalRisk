@@ -6,20 +6,23 @@ import java.util.*;
  *
  * @author Ryan Nguyen
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.09.2020
  */
 public class Game
 {
-    private Parser parser;
+    private static Parser parser;
 
     private Dice die;
 
-    private ArrayList<Player> playerList;
+    private static ArrayList<Player> playerList;
 
-    private int numPlayers;
+    private static int numPlayers;
 
     private int playerIndex;
 
-    private Board board;
+    private static Board board;
 
     private boolean hasAtk;
 
@@ -32,7 +35,7 @@ public class Game
 
 
     /**
-     * Create the game and initialise its internal map.
+     * Creates the game and initialise its internal map.
      */
     public Game()
     {
@@ -47,41 +50,48 @@ public class Game
      */
     public void play()
     {
-        retrievePlayers();
-        printWelcome();
+        _retrievePlayers();
+        _printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-
         boolean finished = false;
+
         while (! finished) {
             Command command = parser.getCommand();
-            finished = processCommand(command);
+            finished = _processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye!");
     }
 
     /**
-     * Gets the number of players from the user.
+     * Gets the number of players from the user and sets them up.
      */
-    private void retrievePlayers()
+    private void _retrievePlayers()
     {
         Scanner reader = new Scanner(System.in);
 
-        System.out.println("Enter the number of players between 2 and 6: ");
-        numPlayers = reader.nextInt();
+        System.out.print("Enter the number of players between 2 and 6: ");
+        try {
+            numPlayers = reader.nextInt();
+        }
+        catch(Exception e) {
+            System.out.println("Invalid number entered.");
+            _retrievePlayers();
+            return;
+        }
 
         // If the number of players is less than 2 then request a larger amount.
         if (numPlayers < 2) {
             System.out.println("Not enough players!");
-            retrievePlayers();
+            _retrievePlayers();
             return;
         }
 
         // If the number of players exceeds 6 request a different number of player
         else if (numPlayers > 6) {
             System.out.println("Too many players!");
-            retrievePlayers();
+            _retrievePlayers();
             return;
         }
 
@@ -100,54 +110,39 @@ public class Game
     }
 
     /**
-     * Method which returns the state of the game.
-     * The number of armies and countries own by each player.
-     *
-     */
-    private void getGameStatus()
-    {
-        System.out.println("The current state of the world is: \n");
-
-        for (Player p : playerList){
-            System.out.println(p.getName() + " owns " + p.getOwnedCountries().size() + " countries and " + p.getArmyCount() + " armies.");
-        }
-
-        System.out.println();
-        for (Player p : playerList)
-        {
-            String ownedCountries = "";
-            for (int i = 0; i < p.getOwnedCountries().size(); i++)
-            {
-                ownedCountries += p.getOwnedCountries().get(i).getCountryName() + " ";
-            }
-            System.out.println (p.getName() + " owns the following countries: " + ownedCountries);
-        }
-        System.out.println();
-        System.out.println("It's currently " + currentPlayer.getName() + " turn. \n");
-    }
-
-    /**
      * Print out the opening message for the player.
      */
-    private void printWelcome()
+    private void _printWelcome()
     {
         System.out.println();
         System.out.println("Welcome to Risk!");
-        System.out.println("Risk is a turn-based world domination game.");
-        getGameStatus();
+        System.out.println("Risk is a turn-based world domination game.\n");
+        _getGameStatus();
         System.out.println("Type 'help' if you need help. \n");
     }
 
+    /**
+     * Method which returns the state of the game.
+     * The number of armies and countries owned by each player.
+     */
+    private void _getGameStatus()
+    {
+        System.out.println("THE CURRENT STATE OF THE WORLD");
+
+        for (Player p : playerList){
+            p.printPlayerStatus();
+        }
+
+        System.out.println("It's currently " + currentPlayer.getName() + "'s turn. \n");
+    }
 
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command)
+    private boolean _processCommand(Command command)
     {
-        boolean wantToQuit = false;
-
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return false;
@@ -156,81 +151,53 @@ public class Game
         String commandWord = command.getCommandWord();
         switch (commandWord) {
             case "help":
-                printHelp();
+                _printHelp();
                 break;
             case "quit":
-                wantToQuit = quit(command);
-                break;
+                return true;
             case "status":
-                status(command);
+                _status();
                 break;
             case "attack":
-                attackCMD(command);
+                _attackCMD(command);
                 break;
             case "endturn":
                 nextPlayer(command);
                 break;
         }
 
-        return wantToQuit;
+        return false;
     }
 
     /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the
-     * command words.
+     * Print out some help information for the player.
      */
-    private void printHelp()
+    private void _printHelp()
     {
-        System.out.println("Your command words are:");
-        System.out.println("quit help status attack endturn");
-    }
-
-
-
-    /**
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command)
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
-        }
+        System.out.println("Your command words are: quit help status attack endturn");
     }
 
     /**
-     * "Status" was entered. Check the rest of the command to see
-     * whether we checking the status of the game or not.
-     * @param command The command to be processed.
+     * "Status" was entered. Prints out the game status.
      */
-    private void status(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("Status what?");
-
-        }
-
-        getGameStatus();
+    private void _status() {
+        _getGameStatus();
 
     }
 
     /**
      * "Attack" was entered. Check the rest of the command to see
      * where we attacking with how many troops.
+     *
+     * todo: Fareen refactor.
+     *
      * @param command The command to be processed.
      */
-    private void attackCMD(Command command) {
-
+    private void _attackCMD(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("Attack what?");
-
         }
+
         if (!hasAtk) {
 
             Scanner reader = new Scanner(System.in);
@@ -310,6 +277,8 @@ public class Game
     /**
      * This method handles the battle phase between players. By rolling a
      * die based on the number of troops deployed.
+     *
+     * todo: Fareen refactor.
      */
     private void battlePhase() {
 
@@ -425,6 +394,8 @@ public class Game
     /**
      * Remove the player who has no more army from the game.
      *
+     * todo: Fareen refactor.
+     *
      * @param dead The player to remove from the game
      */
     private void removePlayer(Player dead){
@@ -439,6 +410,8 @@ public class Game
     /**
      * "endturn" was entered. Check the rest of the command to see
      * whether we really want to pass our turn to the following player.
+     *
+     * todo: Fareen refactor.
      * @param command The command to be processed.
      */
     private void nextPlayer(Command command) {
@@ -458,7 +431,7 @@ public class Game
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
         hasAtk = false;
-        getGameStatus();
+        _getGameStatus();
 
 
     }
