@@ -64,7 +64,7 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.Ukraine,
                 CountryName.WesternEurope
         });
-        this.continents.put(ContinentName.Europe, new CountryName[] {
+        this.continents.put(ContinentName.Africa, new CountryName[] {
                 CountryName.Congo,
                 CountryName.EastAfrica,
                 CountryName.Egypt,
