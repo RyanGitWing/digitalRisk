@@ -130,13 +130,12 @@ public class Board
      * Shuffles countries between players.
      */
     private void _shuffleCountries() {
-        List<Country> shuffledCountries = countries;
-        Collections.shuffle(Arrays.asList(shuffledCountries));
+        Collections.shuffle(this.countries);
         int playerID = 0;
 
         // assign random countries to players
         for (int i = 0; i < this.countryCount; i++) {
-            this.players.get(playerID).addNewCountry(getCountry(shuffledCountries.get(i).getCountryName()));
+            this.players.get(playerID).addNewCountry(getCountry(this.countries.get(i).getCountryName()));
             playerID = (playerID + 1) % players.size();
         }
     }
