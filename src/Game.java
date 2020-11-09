@@ -284,6 +284,8 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ".");
+            hasAtk = true;
+            return;
         }
 
         // If there are no more troops in the country, player takes over the country.
@@ -301,7 +303,6 @@ public class Game
             }
 
             System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getCountryName() + " from " + enemyPlayer.getName() + ".");
-
         }
 
         hasAtk = true;
