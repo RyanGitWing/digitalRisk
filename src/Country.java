@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * Represents the coutries
+ * Represents a country.
  *
  * @author: Vyasan. J
  * @version: 10.25.2020

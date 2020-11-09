@@ -1,222 +1,197 @@
 import java.util.*;
 
 /**
- *  WorldMap Class
- *
- *  Methods:
- *
- *  getWorldMap()
- *  setMapContinent(continentName)
- *  setMap()
- *  armySizeini(int playerCount)
- *  randNumini (continentName)
- *  randAlloc (playerCount, playerList)
+ *  A class to setup the game board.
  *
  * @author Vis Kirubakaran
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.09.2020
  */
 
 public class Board
 {
-    private HashMap <ContinentName, Continent> worldMap,NorthAmerica, SouthAmerica, Europe, Africa, Asia, Australia;
-    private int armySize;
+    private final IWorldMap worldMap;
+    private final int countryCount;
+    private final int continentCount;
+    private int initArmySize;
+    private HashMap<ContinentName, Continent> boardMap;
+    private List<Player> players;
+    private List<Country> countries;
 
 
     /**
-     *   Initializes all of the HashMaps, then calls setMap() method in WorldMap
+     *  Creates a board with the default world map.
+     *
      * */
     public Board()
     {
-        worldMap = new HashMap<>();
-        NorthAmerica = new HashMap<>();
-        SouthAmerica = new HashMap<>();
-        Europe = new HashMap<>();
-        Asia = new HashMap<>();
-        Africa = new HashMap<>();
-        Australia = new HashMap<>();
-        worldMap = setMap();
-        armySize = 0;
+        this.worldMap = new DefaultWorldMap();
+        this.countryCount = worldMap.getAdjCountries().keySet().size();
+        this.continentCount = worldMap.getContinents().keySet().size();
+        this.boardMap = new HashMap<>();
+        this.players = new ArrayList<>();
+        this.countries = new ArrayList<>();
+        this.initArmySize = 0;
+        _setupMap();
     }
 
     /**
+     * Creates a board with a custom world map.
      *
-     * Returns the HashMap worldMap, with Key of the enum ContinentName, and value is the respective Continent object
-     *
-     * @return worldMap
-     * */
-
-    public HashMap<ContinentName, Continent> getWorldMap() {
-        return worldMap;
-    }
-
-    /**
-     *   setMapContinent(continentName) will create a ContinentMap class object, in order to use ContinentMap's method,
-     *   setUpContinent which will take continentName as input. The method will also make a tempContinent HashMap which
-     *   will store the given ContinentName enum along with the return value of ContinentMap's method, setUpContinent
-     *   in the HashMap tempContinent.
-     *
-     *   @return Finally it will return the HashMap tempContinent, with Key of the enum ContinentName, and value of respective
-     *   Continent object. tempContinent will be stored in the respective Continent HashMap
-     *   according to the given continentName
-     * */
-
-    public HashMap <ContinentName, Continent> setMapContinent (ContinentName continentName)
-    {
-        ContinentMap continentMap = new ContinentMap();
-        HashMap <ContinentName, Continent> tempContinent = new HashMap<>();
-        tempContinent.put(continentName, continentMap.setUpContinent(continentName));
-        return tempContinent;
-    }
-
-    /** setMap() calls setMapContinent(continentName) for each respective Continent HashMap (i.e. NorthAmerica) and uses
-     * the same ContinentName enum and putsAll mapping into the Continent HashMap. Then puts all Continent HashMaps into
-     * worldMap
-     *
-     *
-     * @return worldMap, the final Map with all of the mappings for every ContinentName enum, Continent class object
+     * @param worldMap The custom world map.
      */
-
-    public HashMap<ContinentName, Continent> setMap ()
-    {
-        NorthAmerica = setMapContinent(ContinentName.NorthAmerica);
-        SouthAmerica = setMapContinent(ContinentName.SouthAmerica);
-        Europe = setMapContinent(ContinentName.Europe);
-        Africa = setMapContinent(ContinentName.Africa);
-        Asia = setMapContinent(ContinentName.Asia);
-        Australia = setMapContinent(ContinentName.Australia);
-        worldMap.putAll(NorthAmerica);
-        worldMap.putAll(SouthAmerica);
-        worldMap.putAll(Europe);
-        worldMap.putAll(Africa);
-        worldMap.putAll(Asia);
-        worldMap.putAll(Australia);
-        return worldMap;
+    public Board(IWorldMap worldMap) {
+        this.worldMap = worldMap;
+        this.countryCount = worldMap.getAdjCountries().keySet().size();
+        this.continentCount = worldMap.getContinents().keySet().size();
+        this.boardMap = new HashMap<>();
+        this.players = new ArrayList<>();
+        this.countries = new ArrayList<>();
+        this.initArmySize = 0;
+        _setupMap();
     }
 
     /**
-     * getCountry(continentName, countryName) will take two enum inputs continentName, countryName. This method will use
-     * the enums along with worldMap in a while loop to obtain the Country class Object of the given CountryName enum
+     * Returns the board map.
      *
-     * @param countryName
-     * @return Country
+     * @return A hashtable of ContinentNames and corresponding continents.
      */
+    public HashMap<ContinentName, Continent> getBoardMap() {
+        return boardMap;
+    }
 
-    public Country getCountry (CountryName countryName)
+    /**
+     * Returns a country from the board.
+     *
+     * @param countryName The name of the country to be retrieved.
+     * @return Country A country from the board.
+     */
+    public Country getCountry(CountryName countryName)
     {
-        Country countryToReturn = new Country(countryName);
-
-        for (Continent c: worldMap.values())
+        for (Continent continent: boardMap.values())
         {
-            for (Country country: c.getContinent())
+            for (Country country: continent.getCountries())
             {
                 if (country.getCountryName() == countryName)
                 {
-                    countryToReturn = country;
+                    return country;
                 }
             }
         }
-        return countryToReturn;
+        return null;
     }
-    public int armySizeini (int playerCount)
+
+    /**
+     * Shuffles countries between players and assigns random armies to each country.
+     *
+     * @param playerList The list of players.
+     */
+    public void setupPlayers(List <Player> playerList) {
+
+        if (playerList.size() > 6 || playerList.size() < 2) throw new IndexOutOfBoundsException();
+
+        this.players = playerList;
+        this.initArmySize = _getArmyCount(this.players.size());
+        _shuffleCountries();
+        _randAlloc();
+    }
+
+    /**
+     * Sets up the board map.
+     */
+    private void _setupMap()
     {
+        // extract data from world maps
+        HashMap<ContinentName, CountryName[]> continents = this.worldMap.getContinents();
+        HashMap<CountryName, CountryName[]> adjCountries = this.worldMap.getAdjCountries();
 
-        if (playerCount == 2) {
-            armySize = 50;
+
+        // create continents and countries with corresponding adjacent countries
+        for (ContinentName continentName : continents.keySet()) {
+
+            Continent continent = new Continent(continentName);
+
+            for(CountryName countryName : continents.get(continentName)) {
+
+                Country country = new Country(countryName);
+                // grab adjacent countries and assign to local variable country
+                country.setAdjCountry(Arrays.asList(adjCountries.get(countryName)));
+                continent.addCountry(country);
+                countries.add(country);
+            }
+
+            this.boardMap.put(continentName, continent);
         }
-        if (playerCount == 3) {
-            armySize = 35;
-        }
-        if (playerCount == 4) {
-            armySize = 30;
-        }
-        if (playerCount == 5) {
-            armySize = 25;
-        }
-        if (playerCount == 6) {
-            armySize = 20;
-        }
-        return armySize;
     }
-    public int randNumini (ContinentName continentName)
-    {
-        Random randInt = new Random();
-        int randNum = 0;
 
-        if (continentName == ContinentName.NorthAmerica){
-            randNum = randInt.nextInt(9);
+    /**
+     * Shuffles countries between players.
+     */
+    private void _shuffleCountries() {
+        List<Country> shuffledCountries = countries;
+        Collections.shuffle(Arrays.asList(shuffledCountries));
+        int playerID = 0;
+
+        // assign random countries to players
+        for (int i = 0; i < this.countryCount; i++) {
+            this.players.get(playerID).addNewCountry(getCountry(shuffledCountries.get(i).getCountryName()));
+            playerID = (playerID + 1) % players.size();
         }
-        if (continentName == ContinentName.SouthAmerica){
-            randInt = new Random();
-            randNum = randInt.nextInt(4);
-        }
-        if (continentName == ContinentName.Europe){
-            randInt = new Random();
-            randNum = randInt.nextInt(7);
-        }
-        if (continentName == ContinentName.Africa){
-            randInt = new Random();
-            randNum = randInt.nextInt(6);
-        }
-        if (continentName == ContinentName.Asia){
-            randInt = new Random();
-            randNum = randInt.nextInt(12);
-        }
-        if (continentName == ContinentName.Australia){
-            randInt = new Random();
-            randNum = randInt.nextInt(4);
-        }
-        return randNum;
     }
-    public void randAlloc (int playerCount, List <Player> playerList) {
-        Random randInt = new Random();
-        Iterator<Continent> continentIterator = worldMap.values().iterator();
-        Continent nextContinent = continentIterator.next();
-        List <Integer> randIndTrack = new ArrayList<>();
 
-        for (Player p : playerList) {
-            p.setArmyCount(armySizeini(playerCount));
-            armySize = p.getArmyCount();
-            while (armySize > 0) {
-                int randNum = randNumini(nextContinent.getName());
-                int randNum2 = randInt.nextInt(10) + 1;
-                if (nextContinent.getContinent().get(randNum).getRuler() != null)
-                {
-                    while (nextContinent.getContinent().get(randNum).getRuler() != null) {
-                        randNum = randNumini(nextContinent.getName());
-                        if (nextContinent.getContinent().get(randNum).getRuler() == null) break;
-                        else {
-                            if (!randIndTrack.contains(randNum) && nextContinent.getContinent().get(randNum).getRuler() != null)
-                                randIndTrack.add(randNum);
-                            if (randIndTrack.size() == nextContinent.getContinent().size()) break;
-                        }
-                    }
-                    if (!continentIterator.hasNext())
-                    {
-                        continentIterator = worldMap.values().iterator();
-                    }
-                    nextContinent = continentIterator.next();
-                    randNum = randNumini(nextContinent.getName());
-                    randIndTrack.clear();
-                }
-                Country randCountry = nextContinent.getContinent().get(randNum);
-                if (randCountry.getRuler() == null && armySize > 0)
-                {
-                    randCountry.setRuler(p);
-                    p.addNewCountry(randCountry);
-                    if ( (armySize - randNum2) < 0)
-                    {
-                        randNum2 = randInt.nextInt(armySize) + 1;
-                    }
-                    randCountry.setArmyOccupied(randNum2);
-                    armySize -= randNum2;
-                    if (!continentIterator.hasNext())
-                    {
-                        continentIterator = worldMap.values().iterator();
-                    }
-                    nextContinent = continentIterator.next();
-                    randIndTrack.clear();
-                }
+    /**
+     * Randomly allocates armies to each players' countries.
+     */
+    private void _randAlloc() {
+        Random randGen = new Random();
+
+        for(Player player: this.players) {
+            int armyCount = this.initArmySize;
+            player.setArmyCount(initArmySize);
+
+            // initially assign 1 army unit to each country
+            for (Country country : player.getOwnedCountries()) {
+                country.setArmyOccupied(1);
+                country.setRuler(player);
+                armyCount--;
+            }
+
+            Iterator<Country> countryIterator = player.getOwnedCountries().iterator();
+            Country nextCountry = countryIterator.next();
+
+            //randomly allocate rest of the army
+            while (armyCount != 0) {
+
+                int army = randGen.nextInt(armyCount) + 1;
+                nextCountry.setArmyOccupied(nextCountry.getArmyOccupied() + army);
+                getCountry(nextCountry.getCountryName()).setArmyOccupied(nextCountry.getArmyOccupied());
+                armyCount -= army;
             }
         }
+    }
+
+    /**
+     * Gets the starting army size assigned to each player depending on the number of players.
+     *
+     * @param playerCount The number of players.
+     * @return The army size allocated to each player.
+     */
+    private int _getArmyCount(int playerCount)
+    {
+        switch(playerCount) {
+            case 2:
+                return 50;
+            case 3:
+                return 35;
+            case 4:
+                return 30;
+            case 5:
+                return 25;
+            case 6:
+                return 20;
+        }
+        return 0;
     }
 }

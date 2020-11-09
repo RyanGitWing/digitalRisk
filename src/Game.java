@@ -19,11 +19,7 @@ public class Game
 
     private int playerIndex;
 
-    private Board wMap;
-
-    private ContinentMap contMap;
-
-    private CountryMap cMap;
+    private Board board;
 
     private boolean hasAtk;
 
@@ -42,68 +38,16 @@ public class Game
     {
         parser = new Parser();
         playerList = new ArrayList<>();
-        wMap = new Board();
-        contMap = new ContinentMap();
-        cMap = new CountryMap();
+        board = new Board();
         hasAtk = false;
     }
-
-    /**
-     * Get a number of player between 2 and 6 from the user input for the
-     * game to start.
-     */
-    public void retrievePlayers()
-    {
-
-        Scanner reader = new Scanner(System.in);
-
-        System.out.println("Enter a number of players between 2 and 6: ");
-        numPlayers = reader.nextInt();
-
-
-        // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) { 
-            System.out.println("Not enough players!");
-            retrievePlayers();
-            return;
-        }
-
-        // If the number of players exceeds 6 request a different number of player
-        else if (numPlayers > 6) {
-            System.out.println("Too many players!");
-            retrievePlayers();
-            return;
-        }
-
-        // Insert players in a list.
-        else { 
-            playerList = new ArrayList<>();
-
-            for (int i = 0; i < numPlayers; i++) {
-
-                playerList.add(new Player("Player" + (i + 1)));
-
-            }
-
-            // Initialize the starting player.
-            playerIndex = 0;
-            currentPlayer = playerList.get(playerIndex);
-
-        }
-        wMap.randAlloc(numPlayers, playerList);
-
-    }
-
-
 
     /**
      *  Main play routine.  Loops until end of play.
      */
     public void play()
     {
-
         retrievePlayers();
-
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
@@ -117,6 +61,43 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * Gets the number of players from the user.
+     */
+    private void retrievePlayers()
+    {
+        Scanner reader = new Scanner(System.in);
+
+        System.out.println("Enter the number of players between 2 and 6: ");
+        numPlayers = reader.nextInt();
+
+        // If the number of players is less than 2 then request a larger amount.
+        if (numPlayers < 2) {
+            System.out.println("Not enough players!");
+            retrievePlayers();
+            return;
+        }
+
+        // If the number of players exceeds 6 request a different number of player
+        else if (numPlayers > 6) {
+            System.out.println("Too many players!");
+            retrievePlayers();
+            return;
+        }
+
+        // Create a list of players and initialize.
+        else {
+            playerList = new ArrayList<>();
+            for (int i = 0; i < numPlayers; i++) {
+                playerList.add(new Player("Player" + (i + 1)));
+            }
+            // Initialize the starting player.
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+        }
+        // randomly allocate countries and armies to players.
+        board.setupPlayers(playerList);
+    }
 
     /**
      * Method which returns the state of the game.
@@ -257,7 +238,7 @@ public class Game
             System.out.println("Which country is attacking?");
             String attacker = reader.nextLine();
 
-            countryOwn = wMap.getCountry(CountryName.valueOf(attacker));
+            countryOwn = board.getCountry(CountryName.valueOf(attacker));
 
             List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
             String countryAtkOpt = "";
@@ -272,7 +253,7 @@ public class Game
                 System.out.println("Which country do you want to attack?");
                 String defender = reader.nextLine();
 
-                enemyCountry = wMap.getCountry(CountryName.valueOf(defender));
+                enemyCountry = board.getCountry(CountryName.valueOf(defender));
 
                 // Check to make sure the current player is not attacking a country they own.
                 if (!currentPlayer.equals(enemyCountry.getRuler())) {

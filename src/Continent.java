@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * Represents the continents
+ * Represents a continent.
  *
  * @author Vyasan.J
  * @version 10.25.2020
@@ -38,7 +38,7 @@ public class Continent {
      *
      *@return The list of countries in the continent.
      */
-    public List<Country> getContinent(){
+    public List<Country> getCountries(){
         return this.countries;
     }
 

@@ -3,15 +3,19 @@ import java.util.*;
 /**
  * The default in game world map.
  *
+ * DO NOT CHANGE!
+ *
  * @author Fareen. L
  * @version 11.08.2020
  */
-public class DefaultWorldMap {
+public class DefaultWorldMap implements IWorldMap {
 
     private HashMap<ContinentName, CountryName[]> continents;
     private HashMap<CountryName, CountryName[]> adjCountries;
 
     public DefaultWorldMap() {
+        continents = new HashMap<>();
+        adjCountries = new HashMap<>();
         _generateContinents();
         _generateAdjacentCountries();
     }
@@ -30,6 +34,9 @@ public class DefaultWorldMap {
      */
     public HashMap<CountryName, CountryName[]> getAdjCountries() { return adjCountries; }
 
+    /**
+     * Generates the default continents.
+     */
     private void _generateContinents() {
         this.continents.put(ContinentName.NorthAmerica, new CountryName[] {
                 CountryName.Alaska,
@@ -87,6 +94,9 @@ public class DefaultWorldMap {
         });
     }
 
+    /**
+     * Generates the default adjacent countries.
+     */
     private void _generateAdjacentCountries() {
 
         // North America

@@ -1,50 +1,69 @@
-import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests for Player class.
  *
  * @author Fareen Lavji
- * @version 11.08.2020
+ * @version 11.09.2020
  */
 public class PlayerTest {
 
+    Player player;
+    @Before
+    public void setUp() throws Exception {
+        player = new Player("Player");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        player = null;
+        assertNull(player);
+    }
+
     @Test
     public void getArmyCount() {
-        Player player = new Player("Player");
-        Assert.assertEquals(0, player.getArmyCount());
+        // act and assert
+        assertEquals(0, player.getArmyCount());
     }
 
     @Test
     public void setArmyCount() {
-        Player player = new Player("Player");
+        // setup
         player.setArmyCount(5);
-        Assert.assertEquals(5, player.getArmyCount());
+
+        // act and assert
+        assertEquals(5, player.getArmyCount());
     }
 
     @Test
     public void getName() {
-        Player player = new Player("Player");
-        Assert.assertEquals("Player", player.getName());
+        // act and assert
+        assertEquals("Player", player.getName());
     }
 
     @Test
     public void getPlayerTurn() {
-        Player player = new Player("Player");
-        Assert.assertEquals(null, player.getPlayerTurn());
+        // act and assert
+        assertEquals(null, player.getPlayerTurn());
     }
 
     @Test
     public void getOwnedCountries() {
-        Player player = new Player("Player");
-        Assert.assertEquals(0, player.getOwnedCountries().size());
+        // act and assert
+        assertEquals(0, player.getOwnedCountries().size());
     }
 
     @org.junit.Test
     public void addNewCountry() {
-        Player player = new Player("Player");
+        // setup
         player.addNewCountry(new Country(CountryName.SouthernEurope));
         player.addNewCountry(new Country(CountryName.China));
-        Assert.assertEquals(2, player.getOwnedCountries().size());
+
+        // act and assert
+        assertEquals(2, player.getOwnedCountries().size());
     }
 }
