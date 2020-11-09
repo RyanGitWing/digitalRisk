@@ -28,7 +28,7 @@ public class Game
 
     private Country countryOwn, enemyCountry;
 
-    private List <RiskView> riskViews;
+    private List <RiskFrame> riskFrames;
 
 
     /**
@@ -40,7 +40,7 @@ public class Game
         wMap = new WorldMap();
         hasAtk = false;
 
-        riskViews = new ArrayList<>();
+        riskFrames = new ArrayList<>();
     }
 
     /**
@@ -52,16 +52,16 @@ public class Game
         playerList = new ArrayList<>();
         wMap = new WorldMap();
         hasAtk = false;
-        riskViews = new ArrayList<>();
+        riskFrames = new ArrayList<>();
 
         this.numPlayers = playerCount;
 
         retrievePlayers();
     }
 
-    public void addRiskView(RiskView rv) { riskViews.add(rv);}
+    public void addRiskView(RiskFrame rv) { riskFrames.add(rv);}
 
-    public void removeRiskView(RiskView rv) { riskViews.remove(rv);}
+    public void removeRiskView(RiskFrame rv) { riskFrames.remove(rv);}
 
     /**
      * Get a number of player between 2 and 6 from the user input for the
@@ -140,31 +140,18 @@ public class Game
      * "Attack" was entered. Check the rest of the command to see
      * where we attacking with how many troops.
      */
-    public void attackCMD() {
+    public void attackCMD(Country attacker, int numArmy, Country defender) {
 
         if (!hasAtk) {
 
-            Scanner reader = new Scanner(System.in);
-
-            System.out.println("Which country is attacking?");
-            String attacker = reader.nextLine();
-
-            countryOwn = wMap.getCountry(CountryName.valueOf(attacker));
+            countryOwn = attacker;
 
             List<CountryName> countryOwnAdj = countryOwn.getAdjCountries(countryOwn.getName());
-            String countryAtkOpt = "";
-            for (CountryName countryName : countryOwnAdj) {
-                countryAtkOpt += countryName + " ";
-            }
-            System.out.println("The available countries to attack are: " + countryAtkOpt);
 
             // Check to see if the current player owns this country.
             if (currentPlayer.equals(countryOwn.getRuler())) {
 
-                System.out.println("Which country do you want to attack?");
-                String defender = reader.nextLine();
-
-                enemyCountry = wMap.getCountry(CountryName.valueOf(defender));
+                enemyCountry = defender;
                 enemyPlayer = enemyCountry.getRuler();
 
                 // Check to make sure the current player is not attacking a country they own.
@@ -173,8 +160,7 @@ public class Game
                     // Check to see if the country being attacked is an adjacent country.
                     if (countryOwnAdj.contains(enemyCountry.getName())) {
 
-                        System.out.println("With how many army? " + countryOwn.getName() + " has " + countryOwn.getArmyOccupied() + " and " + enemyCountry.getName() + " has " + enemyCountry.getArmyOccupied());
-                        numAtkArmy = reader.nextInt();
+                        numAtkArmy = numArmy;
 
                         // Check if the country being attack has zero army
                         // If so then takeover the country without commencing battlephase

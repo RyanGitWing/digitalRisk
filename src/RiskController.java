@@ -4,11 +4,19 @@ import java.awt.event.ActionListener;
 
 public class RiskController implements ActionListener {
 
+    RiskFrame frame = new RiskFrame();
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object o = e.getSource();
 
-        JMenuItem item = (JMenuItem) o;
+
+        String event = e.getActionCommand();
+
+        if (e.getSource() instanceof JButton) {
+            String country = e.getActionCommand();
+            frame.adjSource(country);
+
+        }
 
     }
 }

@@ -13,6 +13,7 @@ public class Country {
     private int armyOccupied;
     private HashMap<CountryName, List<CountryName>> adjCountries;
 
+
     /**
      *Creates a new country object
      *
