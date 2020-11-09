@@ -1,90 +1,93 @@
 import java.util.*;
 
 /**
- * Represents the coutries
+ * Represents a country.
  *
  * @author: Vyasan. J
  * @version: 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.08.2020
  */
 public class Country {
 
     private final CountryName name;
     private Player ruler;
     private int armyOccupied;
-    private HashMap<CountryName, List<CountryName>> adjCountries;
+    private List<CountryName> adjCountries;
 
     /**
-     *Creates a new country object
+     * Creates a new country object and sets up initial values.
      *
-     * @param name - the name of the country
+     * @param name The name of the country.
      */
     public Country(CountryName name){
         this.name = name;
         ruler = null;
         armyOccupied = 0;
-        adjCountries = new HashMap<>();
+        adjCountries = new ArrayList<>();
     }
 
     /**
-     * Sets the ruler of the country
+     * Returns country's name.
      *
-     *@param ruler - the ruler of the country
+     * @return The name of the country.
      */
-    public void setRuler(Player ruler){
-        this.ruler = ruler;
-    }
-
-    /**
-     * Sets the army occupied in the country
-     *
-     *@param army - amount of army in the country
-     */
-    public void addArmyOccupied(int army){
-        armyOccupied = army;
-    }
-
-    /**
-     * Sets the countries adjacent to the current country
-     *
-     *@param adj - adjacent country
-     */
-    public void setAdjCountry(CountryName country, List<CountryName> adj){
-        adjCountries.put(country, adj);
-    }
-
-    /**
-     * Returns countries name
-     *
-     *@return the name of the country
-     */
-    public CountryName getName(){
+    public CountryName getCountryName(){
         return this.name;
     }
 
     /**
-     * Returns countries ruler
+     * Returns country's ruler.
      *
-     *@return the ruler of the country
+     * @return The ruler of the country
      */
     public Player getRuler(){
         return this.ruler;
     }
 
     /**
-     * Returns army occupied in country
+     * Sets the ruler of the country.
      *
-     *@return the amount of army in countrty
+     * @param ruler The ruler of the country.
+     */
+    public void setRuler(Player ruler){
+        this.ruler = ruler;
+    }
+
+    /**
+     * Returns the number of army occupying in country.
+     *
+     * @return The amount of army in country.
      */
     public int getArmyOccupied(){
         return this.armyOccupied;
     }
 
     /**
-     * Returns adjacent countries
+     * Sets the number of army occupying in the country.
      *
-     *@return a list of adjacent countries
+     * @param army The amount of army in the country.
      */
-    public List<CountryName> getAdjCountries(CountryName country){
-        return adjCountries.get(country);
+    public void setArmyOccupied(int army){
+        armyOccupied = army;
+    }
+
+    /**
+     * Returns adjacent countries.
+     *
+     * @return A list of adjacent countries
+     */
+    public List<CountryName> getAdjCountries(){
+        return adjCountries;
+    }
+
+    /**
+     * Sets the countries adjacent to the current country
+     *
+     * @param adj The adjacent country
+     */
+    public void setAdjCountry(List<CountryName> adj){
+        adjCountries = adj;
     }
 }
