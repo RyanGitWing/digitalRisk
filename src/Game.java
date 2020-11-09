@@ -391,7 +391,7 @@ public class Game
             numAtkArmy--;
         }
 
-        if (atkList.size() >= 2 && defList.get(1) >= 2){
+        if (atkList.size() >= 2 && defList.size() >= 2){
 
             if (atkList.get(1) > defList.get(1)) {
                 enemyCountry.getRuler().SetArmyCount(enemyCountry.getRuler().GetArmyCount() - 1);
