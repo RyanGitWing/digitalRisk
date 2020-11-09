@@ -73,6 +73,10 @@ public class Player {
 
         ownedCountries.add(newCountry);
     }
+    
+    public void removeCountry(Country removeC) {
+        ownedCountries.remove(removeC);
+    }
 
     /**
      * Prints the player status.
