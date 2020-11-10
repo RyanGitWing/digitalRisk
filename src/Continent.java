@@ -1,19 +1,23 @@
 import java.util.*;
 
 /**
- * Represents the continents
+ * Represents a continent.
  *
  * @author Vyasan.J
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.08.2020
  */
 public class Continent {
-    ArrayList<Country> countries;
+
+    private ArrayList<Country> countries;
     private final ContinentName name;
 
     /**
-     *Creates a new continent object
+     * Creates a new continent object.
      *
-     *@param name - the name of the continent
+     * @param name The name of the continent.
      */
     public Continent(ContinentName name){
         this.name = name;
@@ -21,30 +25,29 @@ public class Continent {
     }
 
     /**
-     *Adds a country to the continent
+     * Returns the name of the continent.
      *
-     *@param c - country being added to continent
-     */
-    public void addCountry(Country c){
-        countries.add(c);
-    }
-
-    /**
-     *Returns the name of the continent
-     *
-     *@return name of the continent
+     *@return The name of the continent.
      */
     public ContinentName getName(){
-        return name;
+        return this.name;
     }
 
     /**
-     *Returns the list of countries in the continent
+     * Returns the list of countries in the continent.
      *
-     *@return list of countries in the continent
+     *@return The list of countries in the continent.
      */
-    public List<Country> getContinent(){
-        return countries;
+    public List<Country> getCountries(){
+        return this.countries;
     }
 
+    /**
+     * Adds a country to the continent.
+     *
+     * @param country The country being added to continent.
+     */
+    public void addCountry(Country country){
+        countries.add(country);
+    }
 }
