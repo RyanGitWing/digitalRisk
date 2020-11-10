@@ -8,6 +8,12 @@ import java.util.List;
  * @version 10.25.2020
  *
  * @version 11.08.2020
+ *
+ * @author Fareen. L
+ * @version 11.09.2020
+ *
+ * @author Ryan. N
+ * @version 11.09.2020
  */
 public class Player {
 

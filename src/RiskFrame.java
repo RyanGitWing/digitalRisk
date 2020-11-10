@@ -8,7 +8,13 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
+ * The Risk framework for the game GUI.
  *
+ * @author Vis. K
+ * @version 11.09.2020
+ *
+ * @author Ryan. N
+ * @version 11.09.2020
  */
 
 public class RiskFrame extends JFrame implements RiskView{
@@ -37,6 +43,9 @@ public class RiskFrame extends JFrame implements RiskView{
 
     private String status;
 
+    /**
+     * Creates a RiskFrame object.
+     */
     public RiskFrame() {
 
         super("Risk Game");
@@ -90,6 +99,9 @@ public class RiskFrame extends JFrame implements RiskView{
         worldNews.setText(status);
     }
 
+    /**
+     * Creates an image panel.
+     */
     private void imgPanel() {
 
         centerPanel = new JPanel();
@@ -545,6 +557,9 @@ public class RiskFrame extends JFrame implements RiskView{
         map.setVisible(false);
     }
 
+    /**
+     * Create a menu object.
+     */
     private void theMenu(){
 
         //Making the menu bar
@@ -798,6 +813,11 @@ public class RiskFrame extends JFrame implements RiskView{
 
     }
 
+    /**
+     * Checks for adjacent countries.
+     *
+     * @param cN The name of the country to check adjacent countries for.
+     */
     public void adjSource(String cN) {
         Country c = worldMap.getCountry(CountryName.valueOf(cN));
 
@@ -830,7 +850,6 @@ public class RiskFrame extends JFrame implements RiskView{
                     defC = e.getActionCommand();
                     f.dispose();
                     armySource();
-                    riskGame._getGameStatus();
                 }
             });
             aPanel.add(b);
@@ -850,6 +869,9 @@ public class RiskFrame extends JFrame implements RiskView{
 
     }
 
+    /**
+     * Checks country army.
+     */
     private void armySource(){
 
         JFrame f = new JFrame();
@@ -882,7 +904,6 @@ public class RiskFrame extends JFrame implements RiskView{
                     f.dispose();
                     status = riskGame._getGameStatus();
                     worldNews.append(riskGame.attackCMD(atkC, numAtkArmy, defC));
-                    worldNews.append("\n" + status);
                     map.setVisible(false);
                     centerPanel.setVisible(true);
                 }
@@ -913,7 +934,6 @@ public class RiskFrame extends JFrame implements RiskView{
     @Override
     public void handleGameUpdate(RiskEvent e) {
     riskGame = (Game) e.getSource();
-    worldNews.append(riskGame._getGameStatus());
 
     }
 }

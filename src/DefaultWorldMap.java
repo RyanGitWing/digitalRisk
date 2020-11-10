@@ -155,7 +155,8 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.Venezuela });
         this.adjCountries.put(CountryName.Venezuela, new CountryName[] {
                 CountryName.Brazil,
-                CountryName.Peru });
+                CountryName.Peru,
+                CountryName.CentralAmerica});
 
         // Europe
         this.adjCountries.put(CountryName.GreatBritain, new CountryName[] {

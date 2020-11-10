@@ -4,16 +4,20 @@ import java.util.*;
  * Risk Game, a turn-based world domination game where players take turn fighting each other to the death until only
  * one player remain conquering the whole world.
  *
- * @author Ryan Nguyen
+ * @author Ryan. N
  * @version 10.25.2020
  *
  * @author Fareen. L
  * @version 11.09.2020
+ *
+ * @author Vis. K
+ *
+ * @author Ryan. N
+ * @version 11.09.2020
+ *
  */
 public class Game
 {
-    private static Parser parser;
-
     private Dice die;
 
     private static ArrayList<Player> playerList;
@@ -36,7 +40,7 @@ public class Game
 
 
     /**
-     * Creates the game and initialise its internal map.
+     * Creates a game and initialise its internal map.
      */
     public Game()
     {
@@ -45,8 +49,9 @@ public class Game
     }
 
     /**
-     * Create the game and initialise its internal map
-     * @param playerCount the number of players playing the game
+     * Creates a game and initialise its internal map.
+     *
+     * @param playerCount The number of players playing the game.
      */
     public Game(int playerCount)
     {
@@ -59,14 +64,34 @@ public class Game
         _retrievePlayers();
     }
 
+    /**
+     * Returns the game board.
+     *
+     * @return The board containing the world map.
+     */
     public Board getBoardMap() {
         return board;
     }
 
+    /**
+     * Adds a RiskView object to the game.
+     *
+     * @param rv The RiskView object to add to the game.
+     */
     public void addRiskView(RiskFrame rv) { riskViews.add(rv);}
 
+    /**
+     * Removes a RiskView object from the game.
+     *
+     * @param rv The RiskView object to remove from the game.
+     */
     public void removeRiskView(RiskFrame rv) { riskViews.remove(rv);}
 
+    /**
+     * Returns the current player.
+     *
+     * @return The current player.
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
@@ -117,6 +142,14 @@ public class Game
         return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
+    /**
+     * Attack action method.
+     *
+     * @param attacker The attacking player.
+     * @param numArmy The number of army used to attack.
+     * @param defender The defending player.
+     * @return The result of the battle.
+     */
     public String attackCMD(String attacker, int numArmy, String defender) {
 
         countryOwn = board.getCountry(CountryName.valueOf(attacker));
@@ -161,7 +194,7 @@ public class Game
 
     /**
      * This method handles the battle phase between players. By rolling a
-     * die based on the number of troops deployed.
+     * dice based on the number of troops deployed.
      */
     private void battlePhase() {
 
@@ -293,11 +326,7 @@ public class Game
 
 
     /**
-     * "endturn" was entered. Check the rest of the command to see
-     * whether we really want to pass our turn to the following player.
-     *
-     * todo: Fareen refactor.
-     *
+     * Updates the current player to next player.
      */
     public void nextPlayer() {
 
@@ -312,7 +341,5 @@ public class Game
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
         _getGameStatus();
-
-
     }
 }
