@@ -34,6 +34,7 @@ public class Game
 
     private List <RiskView> riskViews;
 
+    private String outcome = "\n", diceValue = "\n";
 
 
     /**
@@ -125,72 +126,36 @@ public class Game
         return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
-    public void attackCMD(String attacker, int numArmy, String defender) {
+    public String attackCMD(String attacker, int numArmy, String defender) {
 
-        if (!hasAtk) {
+        countryOwn = board.getCountry(CountryName.valueOf(attacker));
 
-            countryOwn = board.getCountry(CountryName.valueOf(attacker));
+        enemyCountry = board.getCountry(CountryName.valueOf(defender));
+        enemyPlayer = enemyCountry.getRuler();
 
-            List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
+        numAtkArmy = numArmy;
 
-            // Check to see if the current player owns this country.
-            if (currentPlayer.equals(countryOwn.getRuler())) {
+        // Check if the country being attack has zero army
+        // If so then takeover the country without commencing battlephase
+        if (enemyCountry.getArmyOccupied() == 0) {
 
-                enemyCountry = board.getCountry(CountryName.valueOf(defender));
-                enemyPlayer = enemyCountry.getRuler();
+            enemyCountry.setRuler(currentPlayer);
+            currentPlayer.addNewCountry(enemyCountry);
+            enemyCountry.setArmyOccupied(numAtkArmy);
+            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+            outcome += "You have claimed " + enemyCountry;
 
-                // Check to make sure the current player is not attacking a country they own.
-                if (!currentPlayer.equals(enemyPlayer)) {
-
-                    // Check to see if the country being attacked is an adjacent country.
-                    if (countryOwnAdj.contains(enemyCountry.getCountryName())) {
-
-                        numAtkArmy = numArmy;
-
-                        // Check if the country being attack has zero army
-                        // If so then takeover the country without commencing battlephase
-                        if (enemyCountry.getArmyOccupied() == 0) {
-
-                            enemyCountry.setRuler(currentPlayer);
-                            currentPlayer.addNewCountry(enemyCountry);
-                            enemyCountry.setArmyOccupied(numAtkArmy);
-                            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
-
-                        }
-
-                        // Check to see if the current player has the military force to attack.
-                        else if (numAtkArmy <= countryOwn.getArmyOccupied() && numAtkArmy <= 3) {
-
-                            // Onto war!!!
-                            battlePhase();
-                            System.out.println("Battle Phase Over!");
-
-                        } else {
-                            System.out.println("You do not own this many troops for " + attacker + ".");
-                            System.out.println("Try attacking again or another cmd.");
-                        }
-
-                    } else {
-                        System.out.println(defender + " is not adjacent to " + attacker + ".");
-                        System.out.println("Try attacking again or another cmd.");
-                    }
-
-                } else {
-                    System.out.println("You own this country stupid!!!");
-                    System.out.println("Try attacking again or another cmd.");
-                }
-
-            } else {
-                System.out.println("You do not own this country.");
-                System.out.println("Try attacking again or another cmd.");
-            }
         }
 
+        // Check to see if the current player has the military force to attack.
         else {
-            System.out.println("You have already attacked!");
-        }
 
+            // Onto war!!!
+            battlePhase();
 
+            }
+
+        return diceValue + outcome;
     }
 
     /**
@@ -212,8 +177,8 @@ public class Game
 
             die.rollDice();
             atkList.add(die.getValue());
-            System.out.println(currentPlayer.getName() + " Dice: " + (i + 1) +  " Value: " + atkList.get(i));
-            System.out.println();
+            diceValue += currentPlayer.getName() + " Dice: " + (i + 1) +  " Value: " + atkList.get(i);
+            diceValue += "\n";
 
         }
 
@@ -227,8 +192,8 @@ public class Game
 
             die.rollDice();
             defList.add(die.getValue());
-            System.out.println(enemyPlayer.getName() + " Dice: " + (i + 1) + " Value: " + defList.get(i));
-            System.out.println();
+            diceValue += enemyPlayer.getName() + " Dice: " + (i + 1) + " Value: " + defList.get(i);
+            diceValue += "\n";
 
         }
 
@@ -286,7 +251,7 @@ public class Game
                 removePlayer(currentPlayer);
             }
 
-            System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ".");
+            outcome = "NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ". \n";
             return;
         }
 
@@ -304,11 +269,9 @@ public class Game
                 removePlayer(enemyPlayer);
             }
 
-            System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getCountryName() + " from " + enemyPlayer.getName() + ".");
+            outcome = "NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getCountryName() + " from " + enemyPlayer.getName() + ". \n";
 
         }
-
-        hasAtk = true;
 
     }
 

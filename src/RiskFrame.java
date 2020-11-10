@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ *
+ */
+
 public class RiskFrame extends JFrame implements RiskView{
 
     private JMenuItem quitGame, saveGame, loadGame, help;
@@ -107,7 +111,7 @@ public class RiskFrame extends JFrame implements RiskView{
     private JPanel continentPanel (Continent continent)
     {
         JPanel jPanel = new JPanel(new GridBagLayout());
-        jPanel.setBackground(Color.BLUE);
+        jPanel.setBackground(Color.WHITE);
 
         for (Country country: continent.getCountries())
         {
@@ -136,40 +140,9 @@ public class RiskFrame extends JFrame implements RiskView{
             });
             jButton.setActionCommand(country.getCountryName().toString());
             jButton.setBackground(Color.black);
-            if (country.getRuler().equals(null))
-            {
-                jButton.setForeground(Color.white); // Default Colour text for no ruler
-            }
-            else
-                {
-                    if (country.getRuler().getName().equals("Player1"))
-                    {
-                        jButton.setForeground(Color.RED);
-                    }
-                    if (country.getRuler().getName().equals("Player2"))
-                    {
-                        jButton.setForeground(Color.ORANGE);
-                    }
-                    if (country.getRuler().getName().equals("Player3"))
-                    {
-                        jButton.setForeground(Color.YELLOW);
-                    }
-                    if (country.getRuler().getName().equals("Player4"))
-                    {
-                        jButton.setForeground(Color.GREEN);
-                    }
-                    if (country.getRuler().getName().equals("Player5"))
-                    {
-                        jButton.setForeground(Color.PINK);
-                    }
-                    if (country.getRuler().getName().equals("Player6"))
-                    {
-                        jButton.setForeground(Color.CYAN);
-                    }
-                }
             if (continent.getName() == ContinentName.NorthAmerica)
             {
-                //jButton.setBackground(Color.YELLOW);
+                jButton.setBackground(Color.YELLOW);
                 if (country.getCountryName() == CountryName.Alaska)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -236,7 +209,8 @@ public class RiskFrame extends JFrame implements RiskView{
             }
             if (continent.getName() == ContinentName.SouthAmerica)
             {
-                //jButton.setBackground(Color.RED);
+                jButton.setBackground(Color.RED);
+                jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Venezuela)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -268,7 +242,8 @@ public class RiskFrame extends JFrame implements RiskView{
             }
             if (continent.getName() == ContinentName.Europe)
             {
-                //jButton.setBackground(Color.BLUE);
+                jButton.setBackground(Color.BLUE);
+                jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Iceland)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -321,7 +296,7 @@ public class RiskFrame extends JFrame implements RiskView{
             }
             if (continent.getName() == ContinentName.Africa)
             {
-                //jButton.setBackground(Color.ORANGE);
+                jButton.setBackground(Color.ORANGE);
                 if (country.getCountryName() == CountryName.NorthAfrica)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -367,7 +342,7 @@ public class RiskFrame extends JFrame implements RiskView{
             }
             if (continent.getName() == ContinentName.Asia)
             {
-                //jButton.setBackground(Color.GREEN);
+                jButton.setBackground(Color.GREEN);
                 if (country.getCountryName() == CountryName.Ural)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -456,7 +431,8 @@ public class RiskFrame extends JFrame implements RiskView{
             }
             if (continent.getName() == ContinentName.Australia)
             {
-                //jButton.setBackground(Color.MAGENTA);
+                jButton.setBackground(Color.MAGENTA);
+                jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Indonesia)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -503,7 +479,7 @@ public class RiskFrame extends JFrame implements RiskView{
 
         worldMap = riskGame.getBoardMap();
         map = new JPanel(new GridBagLayout());
-        map.setBackground(Color.BLUE);
+        map.setBackground(Color.WHITE);
         map.setPreferredSize (new Dimension(1500,1000));
 
         JLabel aLabel = new JLabel("Which Country would you like to attack with?");
@@ -831,6 +807,7 @@ public class RiskFrame extends JFrame implements RiskView{
 
         f.setLayout(new BorderLayout());
         f.setSize(500,100);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //A panel for the buttons
         JPanel aPanel = new JPanel();
@@ -904,9 +881,9 @@ public class RiskFrame extends JFrame implements RiskView{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     f.dispose();
-                    riskGame.attackCMD(atkC, numAtkArmy, defC);
                     status = riskGame._getGameStatus();
-                    worldNews.append(status);
+                    worldNews.append(riskGame.attackCMD(atkC, numAtkArmy, defC));
+                    worldNews.append("\n" + status);
                     map.setVisible(false);
                     centerPanel.setVisible(true);
                 }
