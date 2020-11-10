@@ -104,11 +104,13 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.NorthwestTerritories });
         this.adjCountries.put(CountryName.WesternCanada, new CountryName[] {
                 CountryName.NorthwestTerritories,
-                CountryName.CentralCanada });
+                CountryName.CentralCanada,
+                CountryName.WesternCanada,
+                CountryName.WesternUS});
         this.adjCountries.put(CountryName.CentralAmerica, new CountryName[] {
                 CountryName.EasternUS,
                 CountryName.WesternUS,
-                CountryName.Scandinavia });
+                CountryName.Venezuela});
         this.adjCountries.put(CountryName.EasternUS, new CountryName[] {
                 CountryName.CentralAmerica,
                 CountryName.CentralCanada,
@@ -137,7 +139,7 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.WesternCanada,
                 CountryName.CentralAmerica,
                 CountryName.EasternUS,
-                CountryName.EasternCanada });
+                CountryName.CentralCanada });
 
         // South America
         this.adjCountries.put(CountryName.Argentina, new CountryName[] {
@@ -146,8 +148,7 @@ public class DefaultWorldMap implements IWorldMap {
         this.adjCountries.put(CountryName.Brazil, new CountryName[] {
                 CountryName.Argentina,
                 CountryName.Peru,
-                CountryName.Venezuela,
-                CountryName.NorthAfrica });
+                CountryName.Venezuela});
         this.adjCountries.put(CountryName.Peru, new CountryName[] {
                 CountryName.Argentina,
                 CountryName.Brazil,
@@ -163,7 +164,7 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.Scandinavia,
                 CountryName.WesternEurope });
         this.adjCountries.put(CountryName.Iceland, new CountryName[] {
-                CountryName.SouthernEurope,
+                CountryName.GreatBritain,
                 CountryName.Greenland });
         this.adjCountries.put(CountryName.NorthernEurope, new CountryName[] {
                 CountryName.GreatBritain,
@@ -291,7 +292,7 @@ public class DefaultWorldMap implements IWorldMap {
         // Australia
         this.adjCountries.put(CountryName.EasternAustralia, new CountryName[] {
                 CountryName.NewGuinea,
-                CountryName.WesternAustralia });
+                CountryName.WesternAustralia});
         this.adjCountries.put(CountryName.Indonesia, new CountryName[] {
                 CountryName.NewGuinea,
                 CountryName.WesternAustralia,
@@ -301,6 +302,7 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.Indonesia });
         this.adjCountries.put(CountryName.WesternAustralia, new CountryName[] {
                 CountryName.EasternAustralia,
-                CountryName.NewGuinea });
+                CountryName.NewGuinea,
+                CountryName.Indonesia});
     }
 }
