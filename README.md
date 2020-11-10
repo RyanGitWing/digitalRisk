@@ -1,7 +1,9 @@
 # digitalRisk
 
 Game Authors: Vyasan Jogarasan, Ryan Nguyen, Fareen Lavji, Vis Kirubakaran
+
 readme Author: Vyasan Jogarasan, Fareen Lavji
+
 Version: 10.09.2020
 
 Deliverables: -
