@@ -4,420 +4,306 @@ import java.util.*;
  * Risk Game, a turn-based world domination game where players take turn fighting each other to the death until only
  * one player remain conquering the whole world.
  *
- * @author Ryan Nguyen
+ * @author Ryan. N
  * @version 10.25.2020
+ *
+ * @author Fareen. L
+ * @version 11.09.2020
+ *
+ * @author Vis. K
+ *
+ * @author Ryan. N
+ * @version 11.09.2020
+ *
  */
 public class Game
 {
-    private Parser parser;
-
     private Dice die;
 
-    private ArrayList<Player> playerList;
+    private static ArrayList<Player> playerList;
 
-    private int numPlayers;
+    private static int numPlayers;
 
     private int playerIndex;
 
-    private WorldMap wMap;
+    private static Board board;
 
-    private ContinentMap contMap;
-
-    private CountryMap cMap;
-
-    private boolean hasAtk;
-
-    private Player currentPlayer;
+    private Player currentPlayer, enemyPlayer;
 
     private int numAtkArmy;
 
     private Country countryOwn, enemyCountry;
 
+    private List <RiskView> riskViews;
+
+    private String outcome = "\n", diceValue = "\n";
 
 
     /**
-     * Create the game and initialise its internal map.
+     * Creates a game and initialise its internal map.
      */
     public Game()
     {
-        parser = new Parser();
         playerList = new ArrayList<>();
-        wMap = new WorldMap();
-        contMap = new ContinentMap();
-        cMap = new CountryMap();
+        board = new Board();
     }
 
     /**
-     * Get a number of player between 2 and 6 from the user input for the
-     * game to start.
-     * @return the number of player.
-     */
-    public int retrievePlayers()
-    {
-
-        Scanner reader = new Scanner(System.in);
-
-        System.out.println("Enter a number of players between 2 and 6: ");
-        numPlayers = reader.nextInt();
-
-        // If the number of players is less than 2 then request a larger amount.
-        if (numPlayers < 2) {
-            System.out.println("Not enough players!");
-            retrievePlayers();
-        }
-
-        // If the number of players exceeds 6 request a different number of player
-        else if (numPlayers > 6) {
-            System.out.println("Too many players!");
-            retrievePlayers();
-        }
-
-        // Insert players in a list.
-        else {
-            playerList = new ArrayList<>();
-
-            for (int i = 0; i < numPlayers; i++) {
-
-                playerList.add(new Player("Player" + (i + 1), null));
-
-            }
-
-            // Initialize the starting player.
-            playerIndex = 0;
-            currentPlayer = playerList.get(playerIndex);
-
-        }
-
-        return numPlayers;
-
-    }
-
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play()
-    {
-
-        retrievePlayers();
-
-        printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-
-        boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-        }
-        System.out.println("Thank you for playing.  Good bye.");
-    }
-
-    /**
-     * Method which prints the status of the player.
+     * Creates a game and initialise its internal map.
      *
-     * @param p The player we want information on
+     * @param playerCount The number of players playing the game.
      */
-    private void getPlayerStatus (Player p)
+    public Game(int playerCount)
     {
-        for (Continent c: wMap.getWorldMap().values())
-        {
-            for (int i = 0; i < wMap.getWorldMap().size();i++)
-            {
-                if (c.getContinent().get(i).getRuler() == p)
-                {
-                    System.out.println (c.getContinent().get(i).getName() + " is ruled by Player " + c.getContinent().get(i).getRuler() + " with " + c.getContinent().get(i).getArmyOccupied() + "armies");
-                }
-                if (c.getContinent().get(i).getRuler() == null) {
-                    System.out.println(c.getContinent().get(i).getName() + " is ruled by no one ");
-                    i++;
-                }
-            }
-        }
+        playerList = new ArrayList<>();
+        board = new Board();
+        riskViews = new ArrayList<>();
+
+        this.numPlayers = playerCount;
+
+        _retrievePlayers();
     }
+
+    /**
+     * Returns the game board.
+     *
+     * @return The board containing the world map.
+     */
+    public Board getBoardMap() {
+        return board;
+    }
+
+    /**
+     * Adds a RiskView object to the game.
+     *
+     * @param rv The RiskView object to add to the game.
+     */
+    public void addRiskView(RiskFrame rv) { riskViews.add(rv);}
+
+    /**
+     * Removes a RiskView object from the game.
+     *
+     * @param rv The RiskView object to remove from the game.
+     */
+    public void removeRiskView(RiskFrame rv) { riskViews.remove(rv);}
+
+    /**
+     * Returns the current player.
+     *
+     * @return The current player.
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * Gets the number of players from the user and sets them up.
+     */
+    private void _retrievePlayers()
+    {
+        playerList = new ArrayList<>();
+
+        for (int i = 0; i < numPlayers; i++) {
+
+            playerList.add(new Player("Player" + (i + 1)));
+
+        }
+
+        // Initialize the starting player.
+        playerIndex = 0;
+        currentPlayer = playerList.get(playerIndex);
+
+        board.setupPlayers(playerList);
+    }
+
 
     /**
      * Method which returns the state of the game.
-     * The number of armies and countries own by each player.
-     *
-     * @return The status of each player.
+     * The number of armies and countries owned by each player.
      */
-    private void getGameStatus()
+    public String _getGameStatus()
     {
-        System.out.println("The current state of the world is: \n");
+        String playersInfo = "";
+        String pInfo = "";
+
+        String currentTurn = "";
 
         for (Player p : playerList){
-            System.out.println(p.getName() + " owns " + 0 + " countries and " + 0 + " armies."); // System.out.println(p.getName() + " owns " + p.GetCountryCount() + " countries and " + p.GetArmyCount() + " armies. \n"); todo
+            playersInfo += p.toString();
+            String ownedCountries = "";
+            for (Country c : p.getOwnedCountries())
+            {
+                ownedCountries += c.getCountryName().name() + " ";
+            }
+            pInfo += p.getName() + " owns the following countries: " + ownedCountries + "\n";
         }
 
-        System.out.println();
-
-        // This part does not work bc it needs player to be assigned to country and armies todo
-        /**
-         for (Player p : playerList) {
-            getPlayerStatus(p);
-         }
-
-        System.out.println();
-        */
-        System.out.println("It's currently " + currentPlayer.getName() + " turn. \n");
+        currentTurn += "It's currently " + currentPlayer.getName() + "'s turn. \n";
+        return playersInfo + "\n" + pInfo + "\n" + currentTurn;
     }
 
     /**
-     * Print out the opening message for the player.
+     * Attack action method.
+     *
+     * @param attacker The attacking player.
+     * @param numArmy The number of army used to attack.
+     * @param defender The defending player.
+     * @return The result of the battle.
      */
-    private void printWelcome()
-    {
-        System.out.println();
-        System.out.println("Welcome to Risk!");
-        System.out.println("Risk is a turn-based world domination game.");
-        getGameStatus();
-        System.out.println("Type 'help' if you need help. \n");
-    }
+    public String attackCMD(String attacker, int numArmy, String defender) {
+
+        countryOwn = board.getCountry(CountryName.valueOf(attacker));
+
+        List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
+
+        enemyCountry = board.getCountry(CountryName.valueOf(defender));
+        enemyPlayer = enemyCountry.getRuler();
 
 
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
-    private boolean processCommand(Command command)
-    {
-        boolean wantToQuit = false;
+        if (!currentPlayer.equals(enemyPlayer)) {
 
-        if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
+            numAtkArmy = numArmy;
+            // Check if the country being attack has zero army
+            // If so then takeover the country without commencing battlephase
+            if (enemyCountry.getArmyOccupied() == 0) {
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
-        }
+                enemyCountry.setRuler(currentPlayer);
+                currentPlayer.addNewCountry(enemyCountry);
+                enemyCountry.setArmyOccupied(numAtkArmy);
+                countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+                outcome += "You have claimed " + enemyCountry;
 
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
-
-        else if (commandWord.equals("status")) {
-            status(command);
-        }
-
-        else if (commandWord.equals("attack")) {
-            attackCMD(command);
-        }
-
-        else if (commandWord.equals("endturn")) {
-            nextPlayer(command);
-        }
-
-        return wantToQuit;
-    }
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the
-     * command words.
-     */
-    private void printHelp()
-    {
-        System.out.println("Your command words are:");
-        System.out.println("quit help status attack endturn");
-    }
-
-
-
-    /**
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command)
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
-        }
-    }
-
-    /**
-     * "Status" was entered. Check the rest of the command to see
-     * whether we checking the status of the game or not.
-     * @param command The command to be processed.
-     */
-    private void status(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("Status what?");
-
-        }
-
-        getGameStatus();
-
-    }
-
-    /**
-     * "Attack" was entered. Check the rest of the command to see
-     * where we attacking with how many troops.
-     * @param command The command to be processed.
-     */
-    private void attackCMD(Command command) {
-
-        if (command.hasSecondWord()) {
-            System.out.println("Attack what?");
-
-        }
-
-        Scanner reader = new Scanner(System.in);
-
-        System.out.println("Which country is attacking?");
-        String attacker = reader.nextLine();
-
-        System.out.println("From which continent is this from?"); // Should check if the country is part of this continent. todo
-        String continentAttacker = reader.nextLine();
-
-        countryOwn = wMap.getCountry(ContinentName.valueOf(continentAttacker), CountryName.valueOf(attacker));
-
-        // Check to see if the current player owns this country.
-        if(currentPlayer.equals(countryOwn.getRuler())) {
-
-            System.out.println("Which country do you want to attack?");
-            String defender = reader.nextLine();
-
-            System.out.println("From which continent is from?"); // Should check if the country is part of this continent. todo
-            String continentDefender = reader.nextLine();
-
-            enemyCountry = wMap.getCountry(ContinentName.valueOf(continentDefender), CountryName.valueOf(defender));
-
-            // Check to make sure the current player is not attacking a country they own.
-            if (!currentPlayer.equals(enemyCountry.getRuler())) {
-
-                // Check to see if the country being attacked is an adjacent country.
-                if (defender.equals(countryOwn.getAdjCountries(CountryName.valueOf(attacker)))) {
-
-                    System.out.println("With how many army?");
-
-                    numAtkArmy = reader.nextInt();
-
-                    // Check to see if the current player has the military force to attack.
-                    if (numAtkArmy <= countryOwn.getArmyOccupied() && numAtkArmy <= 3) {
-
-                        // Onto war!!!
-                        battlePhase();
-
-                    } else {
-                        System.out.println("You do not own this many troops for " + attacker + ".");
-                        System.out.println("Try attacking again or another cmd.");
-                    }
-
-                } else {
-                    System.out.println(defender + "is not adjacent to " + attacker + ".");
-                    System.out.println("Try attacking again or another cmd.");
-                }
-
-            } else {
-                System.out.println("You own this country stupid!!!");
-                System.out.println("Try attacking again or another cmd.");
             }
 
-        } else {
-            System.out.println("You do not own this country.");
-            System.out.println("Try attacking again or another cmd.");
+            // Check to see if the current player has the military force to attack.
+            else {
+
+                // Onto war!!!
+                battlePhase();
+
+            }
         }
 
+        else {
+            outcome = "\n You own this country stupid!!!\n" + "Attack another country \n";
+            return outcome;
+        }
+
+        return diceValue + outcome;
     }
 
     /**
      * This method handles the battle phase between players. By rolling a
-     * die based on the number of troops deployed.
+     * dice based on the number of troops deployed.
      */
     private void battlePhase() {
 
-        // An array to store dice.
-        int[] atkList = new int[3];
-        int[] defList = new int[2];
+        // An arraylist to store dice.
+        ArrayList<Integer> atkList = new ArrayList<>();
+        ArrayList<Integer> defList = new ArrayList<>();
 
         die = new Dice();
 
-        // Check to see if current player has attacked.
-        if (hasAtk == false) {
+        int numDefArmy = 0;
 
-            // Fill up the array with the values of the dice.
-            for (int i = 0; i < numAtkArmy; i++) {
-                die.rollDice();
-                atkList[i] = die.getValue();
+        // Fill up the array with the values of the dice.
+        for (int i = 0; i < Math.min(numAtkArmy, countryOwn.getArmyOccupied()); i++) {
+
+            die.rollDice();
+            atkList.add(die.getValue());
+            diceValue += currentPlayer.getName() + " Dice: " + (i + 1) +  " Value: " + atkList.get(i);
+            diceValue += "\n";
+
+        }
+
+        if (enemyCountry.getArmyOccupied() >= 2) {
+            numDefArmy = 2;
+        } else {
+            numDefArmy = 1;
+        }
+
+        for (int i = 0; i < numDefArmy; i++) {
+
+            die.rollDice();
+            defList.add(die.getValue());
+            diceValue += enemyPlayer.getName() + " Dice: " + (i + 1) + " Value: " + defList.get(i);
+            diceValue += "\n";
+
+        }
+
+        // Arrange the dice value in descending order.
+        if (numAtkArmy > 1) {
+            Collections.sort(atkList, Collections.reverseOrder());
+        }
+        else {
+
+        }
+        if (numDefArmy > 1) {
+            Collections.sort(defList, Collections.reverseOrder());
+        }
+
+        // Compare the values from the attacker side and defender side
+        if (atkList.get(0) > defList.get(0)) {
+            enemyPlayer.setArmyCount(enemyPlayer.getArmyCount() - 1); // sub an army from enemy player
+            enemyCountry.setArmyOccupied(enemyCountry.getArmyOccupied() - 1); // sub an army from enemy country
+            numDefArmy--;
+        }
+
+        else {
+            currentPlayer.setArmyCount(currentPlayer.getArmyCount() - 1); // sub an army from current player
+            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - 1); // sub an army from current country
+            numAtkArmy--;
+        }
+
+        if (atkList.size() >= 2 && defList.size() >= 2){
+
+            if (atkList.get(1) > defList.get(1)) {
+                enemyPlayer.setArmyCount(enemyPlayer.getArmyCount() - 1);
+                enemyCountry.setArmyOccupied(enemyCountry.getArmyOccupied() - 1);
+                numDefArmy--;
             }
 
-            for (int i = 0; i < Math.min(defList.length, enemyCountry.getArmyOccupied()); i++) {
-                die.rollDice();
-                defList[i] = die.getValue();
+            else {
+                currentPlayer.setArmyCount(currentPlayer.getArmyCount() - 1);
+                countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - 1);
+                numAtkArmy--;
             }
 
-            // Arrange the dice value in ascending order.
-            Arrays.sort(atkList);
-            Arrays.sort(defList);
+        }
 
-            // Compare the values from the attacker side and defender side
-            // until one has reached zero.
-            while (atkList[0] != 0 || defList[0] != 0) {
+        // If there are no more troops in the country, player takes over the country.
+        if (countryOwn.getArmyOccupied() == 0) {
 
-                if (atkList[0] > defList[0]) {
+            countryOwn.setRuler(enemyPlayer); // Set the new Ruler
+            enemyPlayer.addNewCountry(countryOwn); // Add the country to the new Ruler
+            countryOwn.setArmyOccupied(numDefArmy); // put the army that was fighting in the new country
+            currentPlayer.removeNewCountry(countryOwn);
+            enemyCountry.setArmyOccupied(enemyCountry.getArmyOccupied() - numDefArmy); // sub the num of army that was fighting
 
-                    enemyCountry.armyOccupied--; // Should assign enemyCountry.getArmyOccupied() to variable and than substract. todo
-                    defList[0] = defList[1];
-                    defList[1] = 0;
-
-                }
-
-                if (atkList[0] < defList[0]){
-
-                    countryOwn.armyOccupied--; // Should assign countryOwn.getArmyOccupied() to variable and than substract. todo
-                    numAtkArmy--;
-                    atkList[0] = atkList[1];
-                    atkList[1] = atkList[2];
-                    atkList[2] = 0;
-
-                }
-
-                if (atkList[0] == defList[0]){
-
-                    int temp = atkList[0];
-                    atkList[0] = atkList[2];
-                    atkList[2] = temp;
-
-                }
-
+            // If the the current player total army count falls to zero, remove player from game.
+            if (currentPlayer.getArmyCount() == 0) {
+                removePlayer(currentPlayer);
             }
 
-            // If there are no more troops in the country, player takes over the country.
-            if (countryOwn.getArmyOccupied() == 0) {
+            outcome = "NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ". \n";
+            return;
+        }
 
-                // If the the current player total army count falls to zero, remove player from game.
-                if (currentPlayer.GetArmyCount() == 0) {
-                    removePlayer(currentPlayer);
-                }
+        // If there are no more troops in the country, player takes over the country.
+        if (enemyCountry.getArmyOccupied() == 0) {
 
-                System.out.println("NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getName() + " to " + enemyCountry.getRuler().getName() + ".");
-                currentPlayer.TurnLost(countryOwn);
+            enemyCountry.setRuler(currentPlayer);
+            currentPlayer.addNewCountry(enemyCountry);
+            enemyCountry.setArmyOccupied(numAtkArmy); // Should check to make sure at least one army in countryOwn
+            enemyPlayer.removeNewCountry(enemyCountry);
+            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+
+            // If the enemy total army count falls to zero, remove player from game.
+            if (enemyPlayer.getArmyCount() == 0) {
+                removePlayer(enemyPlayer);
             }
 
-            // If there are no more troops in the country, player takes over the country.
-            if (enemyCountry.getArmyOccupied() == 0) {
-
-                // If the enemy total army count falls to zero, remove player from game.
-                if (enemyCountry.getRuler().GetArmyCount() == 0) {
-                    removePlayer(enemyCountry.getRuler());
-                }
-
-                System.out.println("NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getName() + " from " + enemyCountry.getRuler().getName() + ".");
-                currentPlayer.TurnWon(countryOwn, numAtkArmy, enemyCountry);
-
-            }
-
-            hasAtk = true;
+            outcome = "NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getCountryName() + " from " + enemyPlayer.getName() + ". \n";
 
         }
 
@@ -425,6 +311,8 @@ public class Game
 
     /**
      * Remove the player who has no more army from the game.
+     *
+     * todo: Fareen refactor.
      *
      * @param dead The player to remove from the game
      */
@@ -438,15 +326,9 @@ public class Game
 
 
     /**
-     * "endturn" was entered. Check the rest of the command to see
-     * whether we really want to pass our turn to the following player.
-     * @param command The command to be processed.
+     * Updates the current player to next player.
      */
-    private void nextPlayer(Command command) {
-
-        if(command.hasSecondWord()) {
-            System.out.println("End turn what?");
-        }
+    public void nextPlayer() {
 
         playerIndex++;
 
@@ -458,14 +340,6 @@ public class Game
 
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
-        hasAtk = false;
-        getGameStatus();
-
-
-    }
-
-    public static void main (String[] args){
-        Game game = new Game();
-        game.play();
+        _getGameStatus();
     }
 }
