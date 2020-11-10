@@ -1,4 +1,4 @@
-# digitalRisk
+# Digital Risk
 
 Game Authors: Vyasan Jogarasan, Ryan Nguyen, Fareen Lavji, Vis Kirubakaran
 
