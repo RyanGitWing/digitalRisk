@@ -807,7 +807,6 @@ public class RiskFrame extends JFrame implements RiskView{
 
         f.setLayout(new BorderLayout());
         f.setSize(500,100);
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //A panel for the buttons
         JPanel aPanel = new JPanel();
@@ -831,7 +830,7 @@ public class RiskFrame extends JFrame implements RiskView{
                     defC = e.getActionCommand();
                     f.dispose();
                     armySource();
-                    riskGame.updateStatus();
+                    riskGame._getGameStatus();
                 }
             });
             aPanel.add(b);

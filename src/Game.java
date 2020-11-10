@@ -24,8 +24,6 @@ public class Game
 
     private static Board board;
 
-    private boolean hasAtk;
-
     private Player currentPlayer, enemyPlayer;
 
     private int numAtkArmy;
@@ -44,7 +42,6 @@ public class Game
     {
         playerList = new ArrayList<>();
         board = new Board();
-        hasAtk = false;
     }
 
     /**
@@ -55,17 +52,11 @@ public class Game
     {
         playerList = new ArrayList<>();
         board = new Board();
-        hasAtk = false;
         riskViews = new ArrayList<>();
 
         this.numPlayers = playerCount;
 
         _retrievePlayers();
-    }
-
-    public String updateStatus ()
-    {
-        return _getGameStatus();
     }
 
     public Board getBoardMap() {
@@ -130,30 +121,40 @@ public class Game
 
         countryOwn = board.getCountry(CountryName.valueOf(attacker));
 
+        List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
+
         enemyCountry = board.getCountry(CountryName.valueOf(defender));
         enemyPlayer = enemyCountry.getRuler();
 
-        numAtkArmy = numArmy;
 
-        // Check if the country being attack has zero army
-        // If so then takeover the country without commencing battlephase
-        if (enemyCountry.getArmyOccupied() == 0) {
+        if (!currentPlayer.equals(enemyPlayer)) {
 
-            enemyCountry.setRuler(currentPlayer);
-            currentPlayer.addNewCountry(enemyCountry);
-            enemyCountry.setArmyOccupied(numAtkArmy);
-            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
-            outcome += "You have claimed " + enemyCountry;
+            numAtkArmy = numArmy;
+            // Check if the country being attack has zero army
+            // If so then takeover the country without commencing battlephase
+            if (enemyCountry.getArmyOccupied() == 0) {
 
-        }
-
-        // Check to see if the current player has the military force to attack.
-        else {
-
-            // Onto war!!!
-            battlePhase();
+                enemyCountry.setRuler(currentPlayer);
+                currentPlayer.addNewCountry(enemyCountry);
+                enemyCountry.setArmyOccupied(numAtkArmy);
+                countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+                outcome += "You have claimed " + enemyCountry;
 
             }
+
+            // Check to see if the current player has the military force to attack.
+            else {
+
+                // Onto war!!!
+                battlePhase();
+
+            }
+        }
+
+        else {
+            outcome = "\n You own this country stupid!!!\n" + "Attack another country \n";
+            return outcome;
+        }
 
         return diceValue + outcome;
     }
@@ -310,7 +311,6 @@ public class Game
 
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
-        hasAtk = false;
         _getGameStatus();
 
 
