@@ -26,7 +26,7 @@ Known Issues: -
 * The GUI is handled in one class and can be split up and modularized.
 
 Road Map Ahead: -
-- [] Refactor the Game class and GUI
-- [] Fix known issues and make GUI more user - friendly
-- [] Implement the AI
-- [] Implement army movement, custom country initialization, and bonus armies
+- [ ] Refactor the Game class and GUI
+- [ ] Fix known issues and make GUI more user - friendly
+- [ ] Implement the AI
+- [ ] Implement army movement, custom country initialization, and bonus armies
