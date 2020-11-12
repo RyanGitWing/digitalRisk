@@ -105,7 +105,6 @@ public class Player {
     }
 
     public void removeNewCountry(Country newCountry) {
-
         ownedCountries.remove(newCountry);
     }
 }
