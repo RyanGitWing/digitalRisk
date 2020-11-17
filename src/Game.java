@@ -11,10 +11,13 @@ import java.util.*;
  * @version 11.09.2020
  *
  * @author Vis. K
+ * @version 11.09.2020
  *
  * @author Ryan. N
  * @version 11.09.2020
  *
+ * @author Vis. K
+ * @version 11.11.2020
  */
 public class Game
 {
@@ -36,7 +39,7 @@ public class Game
 
     private List <RiskView> riskViews;
 
-    private String outcome = "\n", diceValue = "\n";
+    private String outcome = "", diceValue = "", atkOutput = "";
 
 
     /**
@@ -65,12 +68,15 @@ public class Game
     }
 
     /**
-     * Returns the game board.
-     *
-     * @return The board containing the world map.
-     */
-    public Board getBoardMap() {
-        return board;
+    * Updates the RiskViews in riskViews as the game progresses.
+    *
+    * */
+    public void update ()
+    {
+        for (RiskView rv : riskViews)
+        {
+            rv.handleGameUpdate(new RiskEvent(this));
+        }
     }
 
     /**
@@ -86,6 +92,16 @@ public class Game
      * @param rv The RiskView object to remove from the game.
      */
     public void removeRiskView(RiskFrame rv) { riskViews.remove(rv);}
+
+    /**
+     * Returns the game board.
+     *
+     * @return The board containing the world map.
+     */
+    public Board getBoardMap() {
+        return board;
+    }
+
 
     /**
      * Returns the current player.
@@ -125,8 +141,8 @@ public class Game
     {
         String playersInfo = "";
         String pInfo = "";
-
         String currentTurn = "";
+        String status = "";
 
         for (Player p : playerList){
             playersInfo += p.toString();
@@ -139,7 +155,9 @@ public class Game
         }
 
         currentTurn += "It's currently " + currentPlayer.getName() + "'s turn. \n";
-        return playersInfo + "\n" + pInfo + "\n" + currentTurn;
+
+        status += playersInfo + "\n" + pInfo + "\n" + currentTurn + "\n" + atkOutput;
+        return status;
     }
 
     /**
@@ -152,6 +170,8 @@ public class Game
      */
     public String attackCMD(String attacker, int numArmy, String defender) {
 
+        String atkOutput = "" ;
+
         countryOwn = board.getCountry(CountryName.valueOf(attacker));
 
         List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
@@ -159,10 +179,10 @@ public class Game
         enemyCountry = board.getCountry(CountryName.valueOf(defender));
         enemyPlayer = enemyCountry.getRuler();
 
-
         if (!currentPlayer.equals(enemyPlayer)) {
 
             numAtkArmy = numArmy;
+
             // Check if the country being attack has zero army
             // If so then takeover the country without commencing battlephase
             if (enemyCountry.getArmyOccupied() == 0) {
@@ -189,7 +209,11 @@ public class Game
             return outcome;
         }
 
-        return diceValue + outcome;
+        atkOutput += diceValue + outcome;
+        this.atkOutput = atkOutput;
+        diceValue = "";
+        outcome = "";
+        return atkOutput;
     }
 
     /**
