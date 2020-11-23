@@ -24,9 +24,9 @@ public class RiskFrame extends JFrame implements RiskView{
     /**
      * Creates a RiskFrame object.
      */
-    public RiskFrame(int numPlayers)
+    public RiskFrame(int numHumanPlayers,int numAIPlayers)
     {
-        riskGame = new Game(numPlayers);
+        riskGame = new Game(numHumanPlayers,numAIPlayers);
         riskGame.addRiskView(this);
 
         this.setLayout(new BorderLayout());
