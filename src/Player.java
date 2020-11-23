@@ -14,6 +14,9 @@ import java.util.List;
  *
  * @author Ryan. N
  * @version 11.09.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 public class Player {
 
@@ -21,6 +24,11 @@ public class Player {
     private List<Country> ownedCountries;
     private int totArmyCount;
     private boolean PlayerTurn;
+
+
+    public Player(){
+        NAME = "";
+    }
 
     /**
      * Creates a new player object with initial country ownership and armies.
@@ -107,4 +115,10 @@ public class Player {
     public void removeNewCountry(Country newCountry) {
         ownedCountries.remove(newCountry);
     }
+
+    public boolean isAI(){
+        return false;
+    }
+
+
 }
