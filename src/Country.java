@@ -8,10 +8,14 @@ import java.util.*;
  *
  * @author Fareen. L
  * @version 11.08.2020
+ *
+ * @author Fareen. L
+ * @version 11.23.2020
  */
 public class Country {
 
-    private final CountryName name;
+    private final CountryName countryName;
+    private final ContinentName continentName;
     private Player ruler;
     private int armyOccupied;
     private List<CountryName> adjCountries;
@@ -19,10 +23,11 @@ public class Country {
     /**
      * Creates a new country object and sets up initial values.
      *
-     * @param name The name of the country.
+     * @param countryName The name of the country.
      */
-    public Country(CountryName name){
-        this.name = name;
+    public Country(CountryName countryName, ContinentName continentName){
+        this.countryName = countryName;
+        this.continentName = continentName;
         ruler = null;
         armyOccupied = 0;
         adjCountries = new ArrayList<>();
@@ -34,8 +39,15 @@ public class Country {
      * @return The name of the country.
      */
     public CountryName getCountryName(){
-        return this.name;
+        return this.countryName;
     }
+
+    /**
+     * Returns the name of the continent the country belongs to.
+     *
+     * @return A continent name.
+     */
+    public ContinentName getContinentName() { return this.continentName; }
 
     /**
      * Returns country's ruler.
