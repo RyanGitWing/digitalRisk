@@ -84,7 +84,7 @@ public class Board
      */
     public void setupPlayers(List <Player> playerList) {
 
-        if (playerList.size() > 6 || playerList.size() < 2) throw new IndexOutOfBoundsException();
+        if (playerList.size() > 6 || playerList.size() < 1) throw new IndexOutOfBoundsException();
 
         _shuffleCountries(playerList);
         _randAlloc(playerList, _getArmyCount(playerList.size()));

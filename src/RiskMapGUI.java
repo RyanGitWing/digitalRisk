@@ -92,6 +92,7 @@ public class RiskMapGUI extends JPanel
             JButton jButton = new JButton(country.getCountryName().toString());
             jButton.setToolTipText(country.getRuler().getName() + " "  + "Army: " + country.getArmyOccupied());
             jButton.setActionCommand(country.getCountryName().toString());
+            if (country.getArmyOccupied() > 1)
             jButton.addActionListener(riskCtrl);
             jButton.setBackground(Color.black);
 

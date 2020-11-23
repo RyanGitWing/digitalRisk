@@ -58,8 +58,8 @@ public class RiskMenu extends JMenuBar implements ActionListener
         }
         if (e.getSource().equals(help))
         {
-            String s = "Attack: Select a country you own, a country to attack, and the number of troop. \n";
-            s += "Game Status: Display the current state of the game \n";
+            String s = "To attack, select a country you own, a country to attack, and the number of troop. \n";
+            s += "Game Status: Display the current state of the game. \n";
             s += "End Turn: End your turn. \n";
             JOptionPane.showMessageDialog(null, s, "Help!", JOptionPane.INFORMATION_MESSAGE);
         }
