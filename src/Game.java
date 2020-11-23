@@ -18,6 +18,9 @@ import java.util.*;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 public class Game
 {
@@ -27,15 +30,21 @@ public class Game
 
     private static int numPlayers;
 
+    private static int numHumanPlayers;
+
+    private static int numAIPlayers;
+
     private int playerIndex;
 
     private static Board board;
 
     private Player currentPlayer, enemyPlayer;
 
-    private int numAtkArmy;
+    private int numAtkArmy, numDefArmy;
 
     private Country countryOwn, enemyCountry;
+
+    private Boolean hasWon;
 
     private List <RiskView> riskViews;
 
@@ -54,15 +63,18 @@ public class Game
     /**
      * Creates a game and initialise its internal map.
      *
-     * @param playerCount The number of players playing the game.
+     * @param humanPlayerCount number of players playing the game.
+     *
      */
-    public Game(int playerCount)
+    public Game(int humanPlayerCount, int AIPlayerCount)
     {
         playerList = new ArrayList<>();
         board = new Board();
         riskViews = new ArrayList<>();
 
-        this.numPlayers = playerCount;
+        this.numHumanPlayers = humanPlayerCount;
+        this.numAIPlayers = AIPlayerCount;
+        this.numPlayers = humanPlayerCount + AIPlayerCount;
 
         _retrievePlayers();
     }
@@ -118,11 +130,15 @@ public class Game
     private void _retrievePlayers()
     {
         playerList = new ArrayList<>();
-
-        for (int i = 0; i < numPlayers; i++) {
+        int i ;
+        for ( i = 0; i < numHumanPlayers; i++) {
 
             playerList.add(new Player("Player" + (i + 1)));
 
+        }
+
+        for (int j = 0; j < numAIPlayers; j++){
+            playerList.add(new AIPlayer("AIPlayer" + (i+1+j)));
         }
 
         // Initialize the starting player.
@@ -228,7 +244,7 @@ public class Game
 
         die = new Dice();
 
-        int numDefArmy = 0;
+        numDefArmy = 0;
 
         // Fill up the array with the values of the dice.
         for (int i = 0; i < Math.min(numAtkArmy, countryOwn.getArmyOccupied()); i++) {
@@ -295,6 +311,19 @@ public class Game
 
         }
 
+        turnOutcome();
+
+    }
+
+    /**
+     * Checks the outcome if a player won a country.
+     *
+     * @return
+     */
+    public Boolean turnOutcome() {
+
+        hasWon = false;
+
         // If there are no more troops in the country, player takes over the country.
         if (countryOwn.getArmyOccupied() == 0) {
 
@@ -310,15 +339,17 @@ public class Game
             }
 
             outcome = "NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ". \n";
-            return;
         }
 
         // If there are no more troops in the country, player takes over the country.
         if (enemyCountry.getArmyOccupied() == 0) {
 
+            hasWon = true;
+
             enemyCountry.setRuler(currentPlayer);
             currentPlayer.addCountry(enemyCountry);
             enemyCountry.setArmyOccupied(numAtkArmy); // Should check to make sure at least one army in countryOwn
+
             enemyPlayer.removeCountry(enemyCountry);
             countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
 
@@ -331,6 +362,19 @@ public class Game
 
         }
 
+        return hasWon;
+
+
+    }
+
+    /**
+     * This fortification command allows players to fortify one of their
+     * Country using the troops of another Country as long as there is a path.
+     *
+     */
+    public void fortify() {
+
+
     }
 
     /**
@@ -342,7 +386,7 @@ public class Game
      */
     private void removePlayer(Player dead){
 
-        System.out.println("NEWS: " + dead + " has been eliminated from the game!");
+        outcome = "NEWS: " + dead + " has been eliminated from the game!";
 
         playerList.remove(dead);
 
@@ -366,4 +410,6 @@ public class Game
         currentPlayer = playerList.get(playerIndex);
         _getGameStatus();
     }
+
+
 }

@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 
 public class CommandPanel extends JPanel implements ActionListener
@@ -65,6 +68,13 @@ public class CommandPanel extends JPanel implements ActionListener
         if (e.getSource().equals(nTurn))
         {
             riskGame.nextPlayer();
+
+            while(riskGame.getCurrentPlayer().isAI()){
+                AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
+                ai.aiAttack(riskGame);
+                riskGame.nextPlayer();
+            }
+
             riskGame.update();
         }
     }

@@ -15,6 +15,9 @@ import java.util.List;
  * @author Ryan. N
  * @version 11.09.2020
  *
+ * @author Vyasan. J
+ * @version 11.22.2020
+ *
  * @author Fareen. L
  * @version 11.23.2020
  */
@@ -25,6 +28,11 @@ public class Player {
     private List<ContinentName> ownedContinents;
     private int totArmyCount;
     private boolean PlayerTurn;
+
+
+    public Player(){
+        NAME = "";
+    }
 
     /**
      * Creates a new player object with initial country ownership and armies.
@@ -189,4 +197,10 @@ public class Player {
     private void removeContinent(ContinentName name) {
         this.ownedContinents.remove(name);
     }
+
+    public boolean isAI(){
+        return false;
+    }
+
+
 }

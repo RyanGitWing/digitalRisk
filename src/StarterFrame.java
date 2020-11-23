@@ -11,15 +11,22 @@ import java.awt.event.ActionListener;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 
 public class StarterFrame extends JFrame implements ActionListener
 {
+    private static int humanPlayers;
+
     public StarterFrame()
      {
          super("Risk Game");
          this.setLayout(new BorderLayout());
-         this.setSize(500,100);
+
+         this.setSize(600,100);
+
          this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
          //A panel for the buttons
@@ -39,7 +46,7 @@ public class StarterFrame extends JFrame implements ActionListener
          this.add(aPanel, BorderLayout.CENTER);
 
          //Creating the buttons for each number of players
-         for (int i = 2; i <= 6; i++)
+         for (int i = 1; i <= 6; i++)
          {
              JButton button = new JButton(i + " Players");
              button.addActionListener(this);
@@ -57,6 +64,10 @@ public class StarterFrame extends JFrame implements ActionListener
          this.setResizable(false);
      }
 
+    public static int getHumanPlayers(){
+        return humanPlayers;
+    }
+
      public static void main(String[] args) {
         new StarterFrame();
         }
@@ -64,9 +75,10 @@ public class StarterFrame extends JFrame implements ActionListener
         @Override
         public void actionPerformed(ActionEvent e) {
         char num = e.getActionCommand().charAt(0);
-        int playerNum = Integer.parseInt(String.valueOf(num));
+        humanPlayers = Integer.parseInt(String.valueOf(num));
         dispose();
-        RiskFrame riskFrame = new RiskFrame(playerNum);
+        new AIFrame();
+
         }
 
     }
