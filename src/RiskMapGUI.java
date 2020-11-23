@@ -6,6 +6,9 @@ import java.awt.*;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 
 public class RiskMapGUI extends JPanel
@@ -100,19 +103,19 @@ public class RiskMapGUI extends JPanel
             if (country.getRuler().getName().equals("Player1")) {
                 jButton.setForeground(Color.RED);
             }
-            if (country.getRuler().getName().equals("Player2")) {
+            if (country.getRuler().getName().equals("Player2")||country.getRuler().getName().equals("AIPlayer2")) {
                 jButton.setForeground(Color.ORANGE);
             }
-            if (country.getRuler().getName().equals("Player3")) {
+            if (country.getRuler().getName().equals("Player3")||country.getRuler().getName().equals("AIPlayer3")) {
                 jButton.setForeground(Color.YELLOW);
             }
-            if (country.getRuler().getName().equals("Player4")) {
+            if (country.getRuler().getName().equals("Player4")||country.getRuler().getName().equals("AIPlayer4")) {
                 jButton.setForeground(Color.GREEN);
             }
-            if (country.getRuler().getName().equals("Player5")){
+            if (country.getRuler().getName().equals("Player5")||country.getRuler().getName().equals("AIPlayer5")){
                 jButton.setForeground(Color.CYAN);
             }
-            if (country.getRuler().getName().equals("Player6")) {
+            if (country.getRuler().getName().equals("Player6")||country.getRuler().getName().equals("AIPlayer6")) {
                 jButton.setForeground(Color.MAGENTA);
             }
             if (country.getRuler() == null) {

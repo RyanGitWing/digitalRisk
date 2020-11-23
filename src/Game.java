@@ -18,6 +18,9 @@ import java.util.*;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Vyasan. J
+ * @version 11.22.2020
  */
 public class Game
 {
@@ -26,6 +29,10 @@ public class Game
     private static ArrayList<Player> playerList;
 
     private static int numPlayers;
+
+    private static int numHumanPlayers;
+
+    private static int numAIPlayers;
 
     private int playerIndex;
 
@@ -56,15 +63,18 @@ public class Game
     /**
      * Creates a game and initialise its internal map.
      *
-     * @param playerCount The number of players playing the game.
+     * @param humanPlayerCount number of players playing the game.
+     *
      */
-    public Game(int playerCount)
+    public Game(int humanPlayerCount, int AIPlayerCount)
     {
         playerList = new ArrayList<>();
         board = new Board();
         riskViews = new ArrayList<>();
 
-        this.numPlayers = playerCount;
+        this.numHumanPlayers = humanPlayerCount;
+        this.numAIPlayers = AIPlayerCount;
+        this.numPlayers = humanPlayerCount + AIPlayerCount;
 
         _retrievePlayers();
     }
@@ -120,11 +130,15 @@ public class Game
     private void _retrievePlayers()
     {
         playerList = new ArrayList<>();
-
-        for (int i = 0; i < numPlayers; i++) {
+        int i ;
+        for ( i = 0; i < numHumanPlayers; i++) {
 
             playerList.add(new Player("Player" + (i + 1)));
 
+        }
+
+        for (int j = 0; j < numAIPlayers; j++){
+            playerList.add(new AIPlayer("AIPlayer" + (i+1+j)));
         }
 
         // Initialize the starting player.
@@ -394,4 +408,6 @@ public class Game
         currentPlayer = playerList.get(playerIndex);
         _getGameStatus();
     }
+
+
 }
