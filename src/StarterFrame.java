@@ -24,7 +24,9 @@ public class StarterFrame extends JFrame implements ActionListener
      {
          super("Risk Game");
          this.setLayout(new BorderLayout());
+
          this.setSize(600,100);
+
          this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
          //A panel for the buttons

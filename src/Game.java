@@ -40,9 +40,11 @@ public class Game
 
     private Player currentPlayer, enemyPlayer;
 
-    private int numAtkArmy;
+    private int numAtkArmy, numDefArmy;
 
     private Country countryOwn, enemyCountry;
+
+    private Boolean hasWon;
 
     private List <RiskView> riskViews;
 
@@ -242,7 +244,7 @@ public class Game
 
         die = new Dice();
 
-        int numDefArmy = 0;
+        numDefArmy = 0;
 
         // Fill up the array with the values of the dice.
         for (int i = 0; i < Math.min(numAtkArmy, countryOwn.getArmyOccupied()); i++) {
@@ -309,6 +311,19 @@ public class Game
 
         }
 
+        turnOutcome();
+
+    }
+
+    /**
+     * Checks the outcome if a player won a country.
+     *
+     * @return
+     */
+    public Boolean turnOutcome() {
+
+        hasWon = false;
+
         // If there are no more troops in the country, player takes over the country.
         if (countryOwn.getArmyOccupied() == 0) {
 
@@ -324,17 +339,17 @@ public class Game
             }
 
             outcome = "NEWS: " + currentPlayer.getName() + " has lost " + countryOwn.getCountryName() + " to " + enemyPlayer.getName() + ". \n";
-            return;
         }
 
         // If there are no more troops in the country, player takes over the country.
         if (enemyCountry.getArmyOccupied() == 0) {
 
+            hasWon = true;
+
             enemyCountry.setRuler(currentPlayer);
             currentPlayer.addNewCountry(enemyCountry);
             enemyCountry.setArmyOccupied(numAtkArmy); // Should check to make sure at least one army in countryOwn
             enemyPlayer.removeNewCountry(enemyCountry);
-            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
 
             // If the enemy total army count falls to zero, remove player from game.
             if (enemyPlayer.getArmyCount() == 0) {
@@ -344,6 +359,19 @@ public class Game
             outcome = "NEWS: " + currentPlayer.getName() + " has won " + enemyCountry.getCountryName() + " from " + enemyPlayer.getName() + ". \n";
 
         }
+
+        return hasWon;
+
+
+    }
+
+    /**
+     * This fortification command allows players to fortify one of their
+     * Country using the troops of another Country as long as there is a path.
+     *
+     */
+    public void fortify() {
+
 
     }
 
@@ -356,7 +384,7 @@ public class Game
      */
     private void removePlayer(Player dead){
 
-        System.out.println("NEWS: " + dead + " has been eliminated from the game!");
+        outcome = "NEWS: " + dead + " has been eliminated from the game!";
 
         playerList.remove(dead);
 
