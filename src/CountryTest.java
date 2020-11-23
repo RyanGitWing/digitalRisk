@@ -19,7 +19,7 @@ public class CountryTest {
 
     @Before
     public void setUp() throws Exception {
-        country = new Country(CountryName.SouthernEurope);
+        country = new Country(CountryName.SouthernEurope, ContinentName.Europe);
     }
 
     @After
@@ -68,7 +68,7 @@ public class CountryTest {
     @Test
     public void getAdjCountry() {
         // setup
-        Country country = new Country(CountryName.SouthernEurope);
+        Country country = new Country(CountryName.SouthernEurope, ContinentName.Europe);
 
         // act and assert
         assertEquals(0, country.getAdjCountries().size());

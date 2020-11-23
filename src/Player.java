@@ -17,11 +17,15 @@ import java.util.List;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Fareen. L
+ * @version 11.23.2020
  */
 public class Player {
 
     private final String NAME;
     private List<Country> ownedCountries;
+    private List<ContinentName> ownedContinents;
     private int totArmyCount;
     private boolean PlayerTurn;
 
@@ -53,6 +57,11 @@ public class Player {
         return this.totArmyCount;
     }
 
+    /**
+     * Sets the total army capacity held by the player.
+     *
+     * @param newArmyCount The army capacity to set.
+     */
     public void setArmyCount(int newArmyCount) {
 
         totArmyCount = newArmyCount;
@@ -78,14 +87,33 @@ public class Player {
         else return null;
     }
 
+    /**
+     * Returns the countries owned by the player.
+     *
+     * @return A list of owned countries.
+     */
     public List<Country> getOwnedCountries() {
 
         return ownedCountries;
     }
 
-    public void addNewCountry(Country newCountry) {
+    /**
+     * Returns the continents owned by the player.
+     *
+     * @return A list of continent names.
+     */
+    public List<ContinentName> getOwnedContinents() {
+        return ownedContinents;
+    }
 
-        ownedCountries.add(newCountry);
+    /**
+     * Adds a country to the player's owned countries.
+     *
+     * @param country The country object to be added.
+     */
+    public void addCountry(Country country) {
+        ownedCountries.add(country);
+        addContinent(country.getContinentName());
     }
 
     @Override
@@ -112,8 +140,62 @@ public class Player {
         System.out.println (ownedCountries);
     }
 
-    public void removeNewCountry(Country newCountry) {
-        ownedCountries.remove(newCountry);
+    /**
+     * Removes a country from the player's owned countries.
+     *
+     * @param country The country to be removed.
+     */
+    public void removeCountry(Country country) {
+
+        ownedCountries.remove(country);
+        removeContinent(country.getContinentName());
+    }
+
+    /**
+     * Checks to see if a player owns all countries in a continent.
+     * If all countries are owned, adds the continent to the player's owned continents.
+     *
+     * @param name The name of the continent.
+     * @return True if added, False otherwise.
+     */
+    private boolean addContinent(ContinentName name) {
+        int defaultCountryCount = 0;
+        int playerCountryCount = 0;
+
+        switch (name) {
+            case SouthAmerica:
+                defaultCountryCount = 4;
+            case NorthAmerica:
+                defaultCountryCount = 9;
+            case Australia:
+                defaultCountryCount = 4;
+            case Africa:
+                defaultCountryCount = 6;
+            case Europe:
+                defaultCountryCount = 7;
+            case Asia:
+                defaultCountryCount = 12;
+        }
+
+        for (Country country : this.ownedCountries) {
+            if (country.getContinentName().equals(name))  { playerCountryCount += 1; }
+        }
+
+        if (playerCountryCount == defaultCountryCount) {
+            this.ownedContinents.add(name);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes a continent from the player's owned continents.
+     *
+     * @param name The continent name to remove.
+     */
+    private void removeContinent(ContinentName name) {
+        this.ownedContinents.remove(name);
     }
 
     public boolean isAI(){

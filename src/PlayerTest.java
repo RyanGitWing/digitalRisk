@@ -60,8 +60,8 @@ public class PlayerTest {
     @Test
     public void addNewCountry() {
         // setup
-        player.addNewCountry(new Country(CountryName.SouthernEurope));
-        player.addNewCountry(new Country(CountryName.China));
+        player.addCountry(new Country(CountryName.SouthernEurope, ContinentName.Europe));
+        player.addCountry(new Country(CountryName.China, ContinentName.Asia));
 
         // act and assert
         assertEquals(2, player.getOwnedCountries().size());

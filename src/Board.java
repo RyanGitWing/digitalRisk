@@ -8,6 +8,9 @@ import java.util.*;
  *
  * @author Fareen. L
  * @version 11.09.2020
+ *
+ * @author Fareen. L
+ * @version 11.23.2020
  */
 
 public class Board
@@ -107,7 +110,7 @@ public class Board
 
             for(CountryName countryName : continents.get(continentName)) {
 
-                Country country = new Country(countryName);
+                Country country = new Country(countryName, continentName);
                 // grab adjacent countries and assign to local variable country
                 country.setAdjCountry(Arrays.asList(adjCountries.get(countryName)));
                 continent.addCountry(country);
@@ -119,6 +122,27 @@ public class Board
     }
 
     /**
+     * Calculates the total number of bonus armies alloted to a player per turn.
+     *
+     * @param player The player to allot the bonus armies to.
+     * @return The bonus army count.
+     */
+    public int getBonusArmy(Player player) {
+        int bonus = 0;
+
+        bonus = BonusArmy.generalBonus(player.getOwnedCountries().size());
+
+        List<ContinentName> ownedContinents = player.getOwnedContinents();
+        if (!ownedContinents.isEmpty()) {
+            for (ContinentName name : ownedContinents) {
+                bonus += BonusArmy.continentBonus(name);
+            }
+        }
+
+        return bonus;
+    }
+
+    /**
      * Shuffles countries between players.
      */
     private void _shuffleCountries(List<Player> players) {
@@ -127,7 +151,7 @@ public class Board
 
         // assign random countries to players
         for (int i = 0; i < this.countryCount; i++) {
-            players.get(playerID).addNewCountry(getCountry(this.countries.get(i).getCountryName()));
+            players.get(playerID).addCountry(getCountry(this.countries.get(i).getCountryName()));
             playerID = (playerID + 1) % players.size();
         }
     }

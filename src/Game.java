@@ -204,7 +204,7 @@ public class Game
             if (enemyCountry.getArmyOccupied() == 0) {
 
                 enemyCountry.setRuler(currentPlayer);
-                currentPlayer.addNewCountry(enemyCountry);
+                currentPlayer.addCountry(enemyCountry);
                 enemyCountry.setArmyOccupied(numAtkArmy);
                 countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
                 outcome += "You have claimed " + enemyCountry;
@@ -328,9 +328,9 @@ public class Game
         if (countryOwn.getArmyOccupied() == 0) {
 
             countryOwn.setRuler(enemyPlayer); // Set the new Ruler
-            enemyPlayer.addNewCountry(countryOwn); // Add the country to the new Ruler
+            enemyPlayer.addCountry(countryOwn); // Add the country to the new Ruler
             countryOwn.setArmyOccupied(numDefArmy); // put the army that was fighting in the new country
-            currentPlayer.removeNewCountry(countryOwn);
+            currentPlayer.removeCountry(countryOwn);
             enemyCountry.setArmyOccupied(enemyCountry.getArmyOccupied() - numDefArmy); // sub the num of army that was fighting
 
             // If the the current player total army count falls to zero, remove player from game.
@@ -347,9 +347,11 @@ public class Game
             hasWon = true;
 
             enemyCountry.setRuler(currentPlayer);
-            currentPlayer.addNewCountry(enemyCountry);
+            currentPlayer.addCountry(enemyCountry);
             enemyCountry.setArmyOccupied(numAtkArmy); // Should check to make sure at least one army in countryOwn
-            enemyPlayer.removeNewCountry(enemyCountry);
+
+            enemyPlayer.removeCountry(enemyCountry);
+            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
 
             // If the enemy total army count falls to zero, remove player from game.
             if (enemyPlayer.getArmyCount() == 0) {
