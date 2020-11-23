@@ -19,7 +19,7 @@ public class StarterFrame extends JFrame implements ActionListener
      {
          super("Risk Game");
          this.setLayout(new BorderLayout());
-         this.setSize(500,100);
+         this.setSize(750,100);
          this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
          //A panel for the buttons
@@ -39,7 +39,7 @@ public class StarterFrame extends JFrame implements ActionListener
          this.add(aPanel, BorderLayout.CENTER);
 
          //Creating the buttons for each number of players
-         for (int i = 2; i <= 6; i++)
+         for (int i = 1; i <= 6; i++)
          {
              JButton button = new JButton(i + " Players");
              button.addActionListener(this);

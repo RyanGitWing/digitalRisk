@@ -124,12 +124,14 @@ public class DefaultWorldMap implements IWorldMap {
                 CountryName.Alaska,
                 CountryName.WesternCanada,
                 CountryName.Greenland,
-                CountryName.CentralCanada });
+                CountryName.CentralCanada});
         this.adjCountries.put(CountryName.CentralCanada, new CountryName[] {
                 CountryName.WesternCanada,
                 CountryName.Greenland,
                 CountryName.NorthwestTerritories,
-                CountryName.EasternCanada });
+                CountryName.EasternCanada,
+                CountryName.EasternUS
+        });
         this.adjCountries.put(CountryName.EasternCanada, new CountryName[] {
                 CountryName.EasternUS,
                 CountryName.Greenland,
