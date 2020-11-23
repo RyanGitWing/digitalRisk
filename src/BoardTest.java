@@ -24,13 +24,13 @@ public class BoardTest {
     @Before
     public void setUp() throws Exception {
         testMap.put(ContinentName.Australia, new Continent(ContinentName.Australia));
-        c1 = new Country(CountryName.EasternAustralia);
+        c1 = new Country(CountryName.EasternAustralia, ContinentName.Australia);
         c1.setAdjCountry(Arrays.asList(new CountryName[] { CountryName.NewGuinea}));
-        Country c2 = new Country(CountryName.Indonesia);
+        Country c2 = new Country(CountryName.Indonesia, ContinentName.Asia);
         c1.setAdjCountry(Arrays.asList(new CountryName[] { CountryName.NewGuinea}));
-        Country c3 = new Country (CountryName.NewGuinea);
+        Country c3 = new Country (CountryName.NewGuinea, ContinentName.SouthAmerica);
         c1.setAdjCountry(Arrays.asList(new CountryName[] { CountryName.NewGuinea}));
-        Country c4 = new Country(CountryName.WesternAustralia);
+        Country c4 = new Country(CountryName.WesternAustralia, ContinentName.SouthAmerica);
         c1.setAdjCountry(Arrays.asList(new CountryName[] { CountryName.NewGuinea}));
         testMap.get(ContinentName.Australia).addCountry(c1);
         testMap.get(ContinentName.Australia).addCountry(c2);
@@ -111,7 +111,7 @@ public class BoardTest {
     public void defaultGameGetCountry() {
         // setup
         board = new Board();
-        Country expected = new Country(CountryName.EasternAustralia);
+        Country expected = new Country(CountryName.EasternAustralia, ContinentName.Australia);
         CountryName[] adjCountries = new CountryName[] {CountryName.NewGuinea, CountryName.WesternAustralia };
         expected.setAdjCountry(Arrays.asList(adjCountries));
 

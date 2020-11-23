@@ -40,7 +40,7 @@ public class ContinentTest {
     @Test
     public void addCountry() {
         // setup
-        continent.addCountry(new Country(CountryName.SouthernEurope));
+        continent.addCountry(new Country(CountryName.SouthernEurope, ContinentName.Europe));
 
         // act and assert
         assertEquals(1, continent.getCountries().size());
