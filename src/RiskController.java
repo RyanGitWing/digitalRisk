@@ -34,8 +34,8 @@ public class RiskController implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         String atkC = e.getActionCommand();
-        String defC =  " ";
-        String armyC = " ";
+        String defC;
+        String armyC;
         int armyCount;
 
         Country country = board.getCountry(CountryName.valueOf(atkC));
@@ -43,154 +43,155 @@ public class RiskController implements ActionListener {
 
         if (!riskGame.getCurrentPlayer().equals(country.getRuler()))
         {
-            JFrame jF = new JFrame();
             String text = "";
             text += "You don't own this country. " + "\n" + "The current ruler is: " + country.getRuler().getName() + "\n" + "The current army is: " + country.getArmyOccupied();
-            JOptionPane.showMessageDialog(jF, text, "Alert", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, text, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         else
+        {
+            List <Country> adjEnemy = new ArrayList<>();
+
+            for (CountryName countryName : countryAdjList)
             {
-                List <Country> adjEnemy = new ArrayList<>();
+                Country boardCountry = board.getCountry(countryName);
+                if (!boardCountry.getRuler().equals(riskGame.getCurrentPlayer())) adjEnemy.add(boardCountry);
+            }
 
-                for (CountryName countryName : countryAdjList)
+            if (adjEnemy.size() != 0)
+            {
+                String[] adjEnemyArr = new String[adjEnemy.size()];
+                for (int i = 0; i < adjEnemy.size(); i++)
                 {
-                    Country boardCountry = board.getCountry(countryName);
-                    if (!boardCountry.getRuler().equals(riskGame.getCurrentPlayer())) adjEnemy.add(boardCountry);
+                    adjEnemyArr[i] = adjEnemy.get(i).getCountryName().toString();
                 }
+                defC = (String) JOptionPane.showInputDialog(null,
+                        "Choose a country to attack", "List of Enemy Adj Countries",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        adjEnemyArr, "");
 
-                if (adjEnemy.size() != 0)
+                if (defC != null)
                 {
-                    String[] adjEnemyArr = new String[adjEnemy.size()];
-                    for (int i = 0; i < adjEnemy.size(); i++)
+                    int size = country.getArmyOccupied();
+
+                    if (size > 3)
                     {
-                        adjEnemyArr[i] = adjEnemy.get(i).getCountryName().toString();
+                        size = 3;
                     }
-                    defC = (String) JOptionPane.showInputDialog(null,
-                            "Choose a country to attack", "List of Enemy Adj Countries",
-                            JOptionPane.INFORMATION_MESSAGE, null,
-                            adjEnemyArr, "");
 
-                    if (!(defC.equals(null)))
+                    String[] armyNum = new String[size];
+
+                    for (int i = 0; i < armyNum.length; i++)
                     {
-                        int size = country.getArmyOccupied();
+                        armyNum [i] = String.valueOf(i + 1);
+                    }
 
-                        if (size > 3)
+                    if (armyNum.length > 1)
+                    {
+                        armyC = (String) JOptionPane.showInputDialog(null,
+                                "Choose the amount of army to deploy", "Amount of army available to deploy",
+                                JOptionPane.INFORMATION_MESSAGE, null,
+                                armyNum, "");
+
+                        if (armyC != null)
                         {
-                            size = 3;
-                        }
+                            armyCount = Integer.parseInt(armyC);
 
-                        String[] armyNum = new String[size];
+                            if (armyCount > 0) {
 
-                        for (int i = 0; i < armyNum.length; i++)
-                        {
-                            armyNum [i] = String.valueOf(i + 1);
-                        }
+                                riskGame.attackCMD(atkC, armyCount, defC);
+                                riskGame.update();
+                                JOptionPane.showMessageDialog(null, riskGame.getAtkOutput() , "Alert", JOptionPane.WARNING_MESSAGE);
+                                if (riskGame.turnOutcome()) {
 
-                        if (armyNum.length > 1)
-                        {
-                            armyC = (String) JOptionPane.showInputDialog(null,
-                                    "Choose the amount of army to deploy", "Amount of army available to deploy",
-                                    JOptionPane.INFORMATION_MESSAGE, null,
-                                    armyNum, "");
+                                    String[] occArmy = new String[country.getArmyOccupied() - 1];
 
-                            if (armyC != null)
-                            {
-                                armyCount = Integer.parseInt(armyC);
-
-                                if (armyCount > 0) {
-
-                                    riskGame.attackCMD(atkC, armyCount, defC);
-                                    riskGame.update();
-
-                                    if (riskGame.turnOutcome() == true) {
-
-                                        String[] occArmy = new String[country.getArmyOccupied() - 1];
-
-                                        for (int i = 0; i < occArmy.length; i++)
-                                        {
-                                            occArmy [i] = String.valueOf(i + 1);
-                                        }
-
-                                        String armyD = (String) JOptionPane.showInputDialog(null,
-                                                "How many troops would you like to allocate to the new Country?", "Amount of army to move",
-                                                JOptionPane.INFORMATION_MESSAGE, null,
-                                                occArmy, "");
-
-                                        riskGame.getBoardMap().getCountry(CountryName.valueOf(defC)).setArmyOccupied(Integer.parseInt(armyD));
-                                        riskGame.getBoardMap().getCountry(CountryName.valueOf(atkC)).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
-                                        riskGame.update();
+                                    for (int i = 0; i < occArmy.length; i++)
+                                    {
+                                        occArmy [i] = String.valueOf(i + 1);
                                     }
 
-                                    int cont = JOptionPane.showConfirmDialog(null, "Would you like to continue to attack?",
-                                            "Attack Phase", JOptionPane.YES_NO_OPTION);
+                                    String armyD = (String) JOptionPane.showInputDialog(null,
+                                            "How many troops would you like to allocate to the new Country?", "Amount of army to move",
+                                            JOptionPane.INFORMATION_MESSAGE, null,
+                                            occArmy, "");
 
-                                    if (cont == JOptionPane.NO_OPTION) {
+                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(defC)).setArmyOccupied(Integer.parseInt(armyD));
+                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(atkC)).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
+                                    riskGame.update();
+                                }
 
-                                        List<CountryName> ownedC = new ArrayList<>();
+                                int cont = JOptionPane.showConfirmDialog(null, "Would you like to continue to attack?",
+                                        "Attack Phase", JOptionPane.YES_NO_OPTION);
 
-                                        for (Country c : riskGame.getCurrentPlayer().getOwnedCountries()) {
-                                            if (riskGame.getBoardMap().getCountry(c.getCountryName()).getArmyOccupied() > 1) {
-                                                ownedC.add(c.getCountryName());
-                                            }
+                                if (cont == JOptionPane.NO_OPTION) {
+
+                                    List<CountryName> ownedC = new ArrayList<>(); // List that will be used to story CountryNames of countries with > 1 army
+
+                                    for (Country c : riskGame.getCurrentPlayer().getOwnedCountries()) {
+                                        if (riskGame.getBoardMap().getCountry(c.getCountryName()).getArmyOccupied() > 1) {
+                                            ownedC.add(c.getCountryName());
                                         }
+                                    }
 
-                                        String[] ownC = new String[ownedC.size()];
-                                        for (int i = 0; i < ownC.length; i++)
+                                    String[] ownC = new String[ownedC.size()];
+                                    for (int i = 0; i < ownC.length; i++)
+                                    {
+                                        ownC[i] = ownedC.get(i).toString() +
+                                                " " + riskGame.getBoardMap().getCountry(ownedC.get(i)).getArmyOccupied();
+                                    }
+                                    String ourC = (String) JOptionPane.showInputDialog(null,
+                                            "Choose a country to fortify with", "List of own Countries",
+                                            JOptionPane.INFORMATION_MESSAGE, null,
+                                            ownC, "");
+
+                                    if (ourC != null) {
+
+                                        String[] fortC = new String[riskGame.getCurrentPlayer().getOwnedCountries().size() - 1];
+                                        for (int i = 0; i < fortC.length; i++)
                                         {
-                                            ownC[i] = ownedC.get(i).toString() +
-                                            " " + riskGame.getBoardMap().getCountry(ownedC.get(i)).getArmyOccupied();
-                                        }
-                                        String ourC = (String) JOptionPane.showInputDialog(null,
-                                                "Choose a country to fortify with", "List of own Countries",
-                                                JOptionPane.INFORMATION_MESSAGE, null,
-                                                ownC, "");
-
-                                        if (!(ownC.equals(null))) {
-
-                                            String[] fortC = new String[riskGame.getCurrentPlayer().getOwnedCountries().size() - 1];
-                                            for (int i = 0; i < fortC.length; i++)
+                                            String compare = ourC.substring(0,ourC.indexOf(" "));
+                                            if (!riskGame.getCurrentPlayer().getOwnedCountries().get(i).getCountryName().toString().equals(compare))
                                             {
-                                                String compare = ourC.substring(0,ourC.indexOf(" "));
-                                                if (!riskGame.getCurrentPlayer().getOwnedCountries().get(i).getCountryName().toString().equals(compare))
-
                                                 fortC[i] = riskGame.getCurrentPlayer().getOwnedCountries().get(i).getCountryName().toString() +
                                                         " " + riskGame.getCurrentPlayer().getOwnedCountries().get(i).getArmyOccupied();
                                             }
-                                            String frtC = (String) JOptionPane.showInputDialog(null,
-                                                    "Choose a country to fortify", "List of own Countries",
-                                                    JOptionPane.INFORMATION_MESSAGE, null,
-                                                    fortC, "");
+                                        }
+                                        String frtC = (String) JOptionPane.showInputDialog(null,
+                                                "Choose a country to fortify", "List of own Countries",
+                                                JOptionPane.INFORMATION_MESSAGE, null,
+                                                fortC, "");
 
-                                            if (frtC != null) {
+                                        if (frtC != null) {
 
-                                                String name = ourC.substring(0,ourC.indexOf(" "));
-                                                String[] armyDeploy = new String[riskGame.getBoardMap().getCountry(CountryName.valueOf(name)).getArmyOccupied()-1];
+                                            String name = ourC.substring(0,ourC.indexOf(" "));
+                                            String[] armyDeploy = new String[riskGame.getBoardMap().getCountry(CountryName.valueOf(name)).getArmyOccupied()-1];
 
-                                                for (int i = 0; i < armyDeploy.length; i++)
-                                                {
-                                                    armyDeploy [i] = String.valueOf(i + 1);
-                                                }
+                                            for (int i = 0; i < armyDeploy.length; i++)
+                                            {
+                                                armyDeploy [i] = String.valueOf(i + 1);
+                                            }
 
+                                            String fortifyC = frtC.substring(0,frtC.indexOf(" "));
+                                            String fortifyWC = ourC.substring(0,ourC.indexOf(" "));
+                                            if ((riskGame.pathCheck(fortifyWC, new ArrayList<>(), fortifyC))) {
                                                 String armyDpl = (String) JOptionPane.showInputDialog(null,
                                                         "Choose the amount of army to deploy", "Amount of army available to deploy",
                                                         JOptionPane.INFORMATION_MESSAGE, null,
                                                         armyDeploy, "");
-
-                                                String fortifyC = frtC.substring(0,frtC.indexOf(" "));
-                                                //fortify(name, fortifyC, armyDpl);
+                                                riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyC)).getArmyOccupied() + Integer.parseInt(armyDpl));
+                                                riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyWC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyWC)).getArmyOccupied() - Integer.parseInt(armyDpl));
+                                                riskGame.nextPlayer();
                                                 riskGame.update();
                                             }
-
                                         }
-                                    } else {
-                                        System.out.println("Doesn't work!");
                                     }
                                 }
                             }
                         }
                     }
                 }
-                else JOptionPane.showMessageDialog(null, "You own all nearby countries." + "\n" + countryAdjList, "Alert!", JOptionPane.WARNING_MESSAGE);
             }
+            else JOptionPane.showMessageDialog(null, "You own all nearby countries." + "\n" + countryAdjList, "Alert!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 }
