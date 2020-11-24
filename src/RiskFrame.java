@@ -62,6 +62,7 @@ public class RiskFrame extends JFrame implements RiskView{
     /**
      * Updates the main frame holding all of the GUI elements accordingly to progress in the Game.
      */
+
     @Override
     public void handleGameUpdate(RiskEvent e) {
         riskGame = (Game) e.getSource();

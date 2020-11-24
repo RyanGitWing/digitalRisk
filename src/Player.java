@@ -42,6 +42,7 @@ public class Player {
     public Player(String name) {
         this.NAME = name;
         this.ownedCountries = new ArrayList<>();
+        this.ownedContinents = new ArrayList<>();
         this.totArmyCount = 0;
         this.PlayerTurn = false;
     }
@@ -198,11 +199,6 @@ public class Player {
         this.ownedContinents.remove(name);
     }
 
-    /**
-     * Checks to see if a player is AI.
-     *
-     * @return False.
-     */
     public boolean isAI(){
         return false;
     }

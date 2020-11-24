@@ -15,9 +15,6 @@ public class AIFrame extends JFrame implements ActionListener
 {
     private static int AIPlayers = 0;
 
-    /**
-     * Setups the AI player framework.
-     */
     public AIFrame()
     {
 
@@ -54,7 +51,7 @@ public class AIFrame extends JFrame implements ActionListener
 
 
         //Creating the buttons for each number of players
-        for (int i = 1; i <= 6-StarterFrame.getHumanPlayers(); i++)
+        for (int i = 0; i <= 6-StarterFrame.getHumanPlayers(); i++)
         {
             JButton button = new JButton(i + " Players");
             button.addActionListener(this);
@@ -71,21 +68,12 @@ public class AIFrame extends JFrame implements ActionListener
         this.setResizable(false);
     }
 
-    /**
-     * Returns the number of AI players.
-     *
-     * @return The number of AI players.
-     */
     public static int getAIPlayers(){
         return AIPlayers;
     }
 
 
-    /**
-     * Action listener.
-     *
-     * @param e An event.
-     */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         char num = e.getActionCommand().charAt(0);

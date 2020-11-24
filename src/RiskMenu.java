@@ -50,11 +50,6 @@ public class RiskMenu extends JMenuBar implements ActionListener
         this.setBackground(Color.white);
     }
 
-    /**
-     * Action performed event handler.
-     *
-     * @param e The event.
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(quitGame))
@@ -69,4 +64,5 @@ public class RiskMenu extends JMenuBar implements ActionListener
             JOptionPane.showMessageDialog(null, s, "Help!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
 }

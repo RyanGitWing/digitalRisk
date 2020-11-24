@@ -59,11 +59,6 @@ public class CommandPanel extends JPanel implements ActionListener
         //playerStatPanel.add(dice ,BorderLayout.SOUTH);
     }
 
-    /**
-     * An action performed event handler.
-     *
-     * @param e The event.
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(stat))
@@ -76,6 +71,7 @@ public class CommandPanel extends JPanel implements ActionListener
 
             while(riskGame.getCurrentPlayer().isAI()){
                 AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
+                ai.aiDeploy(riskGame);
                 ai.aiAttack(riskGame);
                 riskGame.nextPlayer();
             }
@@ -83,4 +79,6 @@ public class CommandPanel extends JPanel implements ActionListener
             riskGame.update();
         }
     }
+
+
 }

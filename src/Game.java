@@ -64,6 +64,7 @@ public class Game
      * Creates a game and initialise its internal map.
      *
      * @param humanPlayerCount number of players playing the game.
+     *
      */
     public Game(int humanPlayerCount, int AIPlayerCount)
     {
@@ -80,6 +81,7 @@ public class Game
 
     /**
     * Updates the RiskViews in riskViews as the game progresses.
+    *
     * */
     public void update ()
     {
@@ -135,15 +137,23 @@ public class Game
 
         }
 
-        for (int j = 0; j < numAIPlayers; j++){
-            playerList.add(new AIPlayer("AIPlayer" + (i+1+j)));
+        if(numAIPlayers == 0){
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+
+            board.setupPlayers(playerList);
         }
+        else {
+            for (int j = 0; j < numAIPlayers; j++) {
+                playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j)));
+            }
 
-        // Initialize the starting player.
-        playerIndex = 0;
-        currentPlayer = playerList.get(playerIndex);
+            // Initialize the starting player.
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
 
-        board.setupPlayers(playerList);
+            board.setupPlayers(playerList);
+        }
     }
 
 
@@ -245,7 +255,7 @@ public class Game
         numDefArmy = 0;
 
         // Fill up the array with the values of the dice.
-        for (int i = 0; i < Math.min(numAtkArmy, countryOwn.getArmyOccupied()); i++) {
+        for (int i = 0; i < numAtkArmy; i++) {
 
             die.rollDice();
             atkList.add(die.getValue());
@@ -368,6 +378,7 @@ public class Game
     /**
      * This fortification command allows players to fortify one of their
      * Country using the troops of another Country as long as there is a path.
+     *
      */
     public void fortify() {
 
@@ -376,6 +387,8 @@ public class Game
 
     /**
      * Remove the player who has no more army from the game.
+     *
+     * todo: Fareen refactor.
      *
      * @param dead The player to remove from the game
      */
@@ -405,4 +418,6 @@ public class Game
         currentPlayer = playerList.get(playerIndex);
         _getGameStatus();
     }
+
+
 }
