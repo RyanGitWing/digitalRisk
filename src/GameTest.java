@@ -42,7 +42,7 @@ public class GameTest {
     @Test
     public void getCurrentPlayer() {
         // setup
-        Game game = new Game(2);
+        Game game = new Game(2, 0);
 
         // act and assess
         assertEquals("Player1", game.getCurrentPlayer().getName());
@@ -61,7 +61,7 @@ public class GameTest {
     @Test
     public void nextPlayer() {
         // setup and act
-        Game game = new Game(2);
+        Game game = new Game(2, 0);
         game.nextPlayer();
         String actual = game.getCurrentPlayer().getName();
         game.nextPlayer();

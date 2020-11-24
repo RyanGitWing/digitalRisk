@@ -20,7 +20,6 @@ public class RiskNews extends JPanel
 
     /**
      * This panel displays the information of the game, like the current state of the game.
-     *
      */
     public RiskNews(String status)
     {

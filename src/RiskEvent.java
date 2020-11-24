@@ -21,6 +21,11 @@ public class RiskEvent extends EventObject {
         this.status = game._getGameStatus();
     }
 
+    /**
+     * Returns the status of the game.
+     *
+     * @return The game status.
+     */
     public String getStatus() {
         return status;
     }

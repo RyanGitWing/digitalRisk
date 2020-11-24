@@ -447,5 +447,4 @@ public class RiskMapGUI extends JPanel
         }
         return jPanel;
     }
-
 }

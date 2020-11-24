@@ -7,12 +7,21 @@
 
 public class AIPlayer extends Player{
 
-
+    /**
+     * Creates an AI player.
+     *
+     * @param name The name of the AI player.
+     */
     AIPlayer(String name){
         super(name);
     }
 
 
+    /**
+     * Method used to imitate a regular player attack in the game.
+     *
+     * @param riskGame The current game.
+     */
     public void aiAttack(Game riskGame){
         int ownedCountriesSize = getOwnedCountries().size();
 
@@ -33,6 +42,11 @@ public class AIPlayer extends Player{
     }
 
 
+    /**
+     * Checks to see if the player is AI.
+     *
+     * @return True.
+     */
     @Override
     public boolean isAI(){
         return true;

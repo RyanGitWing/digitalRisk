@@ -20,65 +20,71 @@ public class StarterFrame extends JFrame implements ActionListener
 {
     private static int humanPlayers;
 
+    /**
+    * The starter frame for the game. Allows the user to choose the number of human players.
+    */
     public StarterFrame()
-     {
-         super("Risk Game");
-         this.setLayout(new BorderLayout());
+    {
+        super("Risk Game");
+        this.setLayout(new BorderLayout());
 
-         this.setSize(600,100);
+        this.setSize(600,100);
 
-         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-         //A panel for the buttons
-         JPanel aPanel = new JPanel();
-         aPanel.setLayout(new FlowLayout());
+        //A panel for the buttons
+        JPanel aPanel = new JPanel();
+        aPanel.setLayout(new FlowLayout());
 
-         //A label that shows a text requesting the user to do something
-         JLabel label = new JLabel("\n Select the number of Players playing.");
+        //A label that shows a text requesting the user to do something
+        JLabel label = new JLabel("\n Select the number of Players playing.");
 
-         //Align the label to be centered to the frame
-         label.setHorizontalAlignment(JLabel.CENTER);
-         label.setVerticalAlignment(JLabel.CENTER);
+        //Align the label to be centered to the frame
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
 
 
-         //Adding the label to North and the panel to the Center
-         this.add(label, BorderLayout.NORTH);
-         this.add(aPanel, BorderLayout.CENTER);
+        //Adding the label to North and the panel to the Center
+        this.add(label, BorderLayout.NORTH);
+        this.add(aPanel, BorderLayout.CENTER);
 
-         //Creating the buttons for each number of players
-         for (int i = 1; i <= 6; i++)
-         {
+        //Creating the buttons for each number of players
+        for (int i = 1; i <= 6; i++)
+        {
              JButton button = new JButton(i + " Players");
              button.addActionListener(this);
 
              //Adding the buttons to the panel
              aPanel.add(button);
-         }
+        }
 
-         //Spacing the panel away from the label
-         aPanel.add(Box.createVerticalStrut(50));
+        //Spacing the panel away from the label
+        aPanel.add(Box.createVerticalStrut(50));
 
-         //Centering the frame to be in the middle of the screen
-         this.setLocationRelativeTo(null);
-         this.setVisible(true);
-         this.setResizable(false);
-     }
+        //Centering the frame to be in the middle of the screen
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setResizable(false);
+    }
 
+    /**
+    * Returns the number of human players.
+    *
+    * @return The number of human players.
+    */
     public static int getHumanPlayers(){
         return humanPlayers;
     }
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         new StarterFrame();
-        }
+    }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
         char num = e.getActionCommand().charAt(0);
         humanPlayers = Integer.parseInt(String.valueOf(num));
         dispose();
         new AIFrame();
-
-        }
-
     }
+}
