@@ -7,6 +7,7 @@ import java.util.List;
  * @author Fareen. L
  * @version 10.25.2020
  *
+ * @author Vis. K
  * @version 11.08.2020
  *
  * @author Fareen. L
@@ -19,6 +20,9 @@ import java.util.List;
  * @version 11.22.2020
  *
  * @author Fareen. L
+ * @version 11.23.2020
+ *
+ * @author Vis. K
  * @version 11.23.2020
  */
 public class Player {
@@ -42,6 +46,7 @@ public class Player {
     public Player(String name) {
         this.NAME = name;
         this.ownedCountries = new ArrayList<>();
+        this.ownedContinents = new ArrayList<>();
         this.totArmyCount = 0;
         this.PlayerTurn = false;
     }
@@ -125,22 +130,6 @@ public class Player {
     }
 
     /**
-     * Prints the player status.
-     */
-    public void printPlayerStatus() {
-        System.out.println(getName() + " owns " +
-                getOwnedCountries().size() + " countries and "
-                + getArmyCount() + " armies.");
-
-        String ownedCountries = "";
-        for (Country c : getOwnedCountries())
-        {
-            ownedCountries += c.getCountryName().name() + ": " + c.getArmyOccupied() + "\n";
-        }
-        System.out.println (ownedCountries);
-    }
-
-    /**
      * Removes a country from the player's owned countries.
      *
      * @param country The country to be removed.
@@ -198,11 +187,6 @@ public class Player {
         this.ownedContinents.remove(name);
     }
 
-    /**
-     * Checks to see if a player is AI.
-     *
-     * @return False.
-     */
     public boolean isAI(){
         return false;
     }

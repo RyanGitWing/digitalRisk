@@ -7,32 +7,21 @@
 
 public class AIPlayer extends Player{
 
-    /**
-     * Creates an AI player.
-     *
-     * @param name The name of the AI player.
-     */
+
     AIPlayer(String name){
         super(name);
     }
 
 
-    /**
-     * Method used to imitate a regular player attack in the game.
-     *
-     * @param riskGame The current game.
-     */
     public void aiAttack(Game riskGame){
-        int ownedCountriesSize = getOwnedCountries().size();
-
-
+        int ownedCountriesSize = this.getOwnedCountries().size();
         for(int i = 0; i < ownedCountriesSize; i++){
-            int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
-            if(getOwnedCountries().get(i).getArmyOccupied() >= 3){
+            int adjCountriesSize = this.getOwnedCountries().get(i).getAdjCountries().size();
+            if(this.getOwnedCountries().get(i).getArmyOccupied() >= 3){
                 for(int j = 0; j < adjCountriesSize; j++){
-                    Country adj = riskGame.getBoardMap().getCountry(getOwnedCountries().get(i).getAdjCountries().get(j));
-                    if(getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this)){
-                        riskGame.attackCMD(getOwnedCountries().get(i).getCountryName().toString(),3,adj.getCountryName().toString());
+                    Country adj = riskGame.getBoardMap().getCountry(this.getOwnedCountries().get(i).getAdjCountries().get(j));
+                    if(this.getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this)){
+                        riskGame.attackCMD(this.getOwnedCountries().get(i).getCountryName().toString(),3,adj.getCountryName().toString());
                     }
                 }
             }
@@ -42,11 +31,6 @@ public class AIPlayer extends Player{
     }
 
 
-    /**
-     * Checks to see if the player is AI.
-     *
-     * @return True.
-     */
     @Override
     public boolean isAI(){
         return true;

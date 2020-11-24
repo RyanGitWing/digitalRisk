@@ -13,13 +13,15 @@ import java.awt.*;
  * @author Vis. K
  * @version 11.11.2020
  *
+ * @author Vis. K
+ * @version 11.23.2020
  */
 
 public class RiskFrame extends JFrame implements RiskView{
 
     private Game riskGame;
     private RiskMapGUI  mapGUI;
-    private final RiskNews riskNews;
+    private LegendGUI legendGUI;
 
     /**
      * Creates a RiskFrame object.
@@ -42,14 +44,13 @@ public class RiskFrame extends JFrame implements RiskView{
         RiskMenu menu = new RiskMenu();
         this.setJMenuBar(menu);
 
-        //Add the text panel to the frame
-        String status = riskGame._getGameStatus();
-        riskNews = new RiskNews(status);
-        this.add(riskNews, BorderLayout.SOUTH);
-
         //Add the commands to the frame
         CommandPanel commandPanel = new CommandPanel(riskGame);
         this.add(commandPanel, BorderLayout.WEST);
+
+        //private final RiskNews riskNews;
+        legendGUI = new LegendGUI(riskGame);
+        this.add(legendGUI, BorderLayout.SOUTH);
 
         // Add the map to the frame
         mapGUI = new RiskMapGUI(riskGame);
@@ -62,13 +63,16 @@ public class RiskFrame extends JFrame implements RiskView{
     /**
      * Updates the main frame holding all of the GUI elements accordingly to progress in the Game.
      */
+
     @Override
     public void handleGameUpdate(RiskEvent e) {
         riskGame = (Game) e.getSource();
         this.remove(mapGUI);
         mapGUI = new RiskMapGUI(riskGame);
         this.add(mapGUI, BorderLayout.CENTER);
+        this.remove(legendGUI);
+        legendGUI = new LegendGUI(riskGame);
+        this.add(legendGUI, BorderLayout.SOUTH);
         this.revalidate();
-        riskNews.updateNews(e.getStatus());
     }
 }

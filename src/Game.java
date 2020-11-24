@@ -25,30 +25,20 @@ import java.util.*;
 public class Game
 {
     private Dice die;
-
     private static ArrayList<Player> playerList;
-
     private static int numPlayers;
-
     private static int numHumanPlayers;
-
     private static int numAIPlayers;
-
     private int playerIndex;
-
     private static Board board;
-
     private Player currentPlayer, enemyPlayer;
-
     private int numAtkArmy, numDefArmy;
-
     private Country countryOwn, enemyCountry;
-
     private Boolean hasWon;
-
     private List <RiskView> riskViews;
-
-    private String outcome = "", diceValue = "", atkOutput = "";
+    private String outcome = "";
+    private String diceValue = "";
+    private String atkOutput = "";
 
 
     /**
@@ -64,6 +54,7 @@ public class Game
      * Creates a game and initialise its internal map.
      *
      * @param humanPlayerCount number of players playing the game.
+     *
      */
     public Game(int humanPlayerCount, int AIPlayerCount)
     {
@@ -80,6 +71,7 @@ public class Game
 
     /**
     * Updates the RiskViews in riskViews as the game progresses.
+    *
     * */
     public void update ()
     {
@@ -112,7 +104,15 @@ public class Game
         return board;
     }
 
+    public String getAtkOutput() {
+        String output = atkOutput;
+        atkOutput = "";
+        return output;
+    }
 
+    public static ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
     /**
      * Returns the current player.
      *
@@ -366,16 +366,9 @@ public class Game
     }
 
     /**
-     * This fortification command allows players to fortify one of their
-     * Country using the troops of another Country as long as there is a path.
-     */
-    public void fortify() {
-
-
-    }
-
-    /**
      * Remove the player who has no more army from the game.
+     *
+     * todo: Fareen refactor.
      *
      * @param dead The player to remove from the game
      */
@@ -405,4 +398,30 @@ public class Game
         currentPlayer = playerList.get(playerIndex);
         _getGameStatus();
     }
+
+    public boolean pathCheck(String curr, List <String> visited, String goal) {
+        boolean path = false;
+        Country currCountry = getBoardMap().getCountry(CountryName.valueOf(curr)); // current country
+        List<CountryName> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
+        List<CountryName> ownedC = new ArrayList<>(); // list of adj owned countries
+        for (CountryName countryName : adjC) {
+            if (getBoardMap().getCountry(countryName).getRuler().getName().equals(currentPlayer.getName())) {
+                ownedC.add(countryName); // add the adj country to ownedC list
+            }
+        }
+        if (curr.equals(goal))
+        {
+            path = true; // from initial curr to the final goal country, a path has been found
+        }
+        else {
+            if (!(visited.contains(curr))) visited.add(curr); // add to visited countries list
+            for (CountryName countryName : ownedC) {
+                // recursive call all countryName in ownedC that are not in visited countries list
+                if (!visited.contains(countryName.toString())) return pathCheck(countryName.toString(), visited, goal);
+            }
+        }
+        return path;
+    }
+
+
 }
