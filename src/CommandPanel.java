@@ -16,6 +16,9 @@ import java.util.List;
  * @author Vyasan. J
  * @version 11.22.2020
  *
+ * @author Vyasan. J
+ * @version 11.23.2020
+ *
  * @author Vis. K
  * @version 11.23.2020
  */
@@ -49,8 +52,6 @@ public class CommandPanel extends JPanel implements ActionListener
 
         //Adding the box to the panel
         this.add(box);
-
-        //playerStatPanel.add(dice ,BorderLayout.SOUTH);
     }
 
     /**
@@ -73,9 +74,11 @@ public class CommandPanel extends JPanel implements ActionListener
             {
                 CPlyrC[i] = currPlyrCountries.get(i).getCountryName().toString() + " " + currPlyrCountries.get(i).getArmyOccupied();
             }
+
+            if ((!riskGame.getCurrentPlayer().isAI())) JOptionPane.showMessageDialog(null, "You have received " + reinforce + " bonus army.", "Bonus Army!", JOptionPane.WARNING_MESSAGE);
+
             // army bonus/reinforcement placement for Human
             while (reinforce != 0 && (!riskGame.getCurrentPlayer().isAI())) {
-                JOptionPane.showMessageDialog(null, "You have received " + reinforce + " bonus army.", "Bonus Army!", JOptionPane.WARNING_MESSAGE);
                 String bonusCountry = (String) JOptionPane.showInputDialog(null,
                         "Choose which country will receive your bonus army", "List of Owned Countries",
                         JOptionPane.INFORMATION_MESSAGE, null,
@@ -98,10 +101,6 @@ public class CommandPanel extends JPanel implements ActionListener
                 }
                 riskGame.update();
             }
-
-            riskGame.nextPlayer();
-            riskGame.update();
-
             if (riskGame.getCurrentPlayer().isAI()) {
                 AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
                 ai.aiDeploy(riskGame);
