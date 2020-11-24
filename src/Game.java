@@ -25,29 +25,17 @@ import java.util.*;
 public class Game
 {
     private Dice die;
-
     private static ArrayList<Player> playerList;
-
     private static int numPlayers;
-
     private static int numHumanPlayers;
-
     private static int numAIPlayers;
-
     private int playerIndex;
-
     private static Board board;
-
     private Player currentPlayer, enemyPlayer;
-
     private int numAtkArmy, numDefArmy;
-
     private Country countryOwn, enemyCountry;
-
     private Boolean hasWon;
-
     private List <RiskView> riskViews;
-
     private String outcome = "", diceValue = "", atkOutput = "";
 
 
@@ -112,6 +100,25 @@ public class Game
         return board;
     }
 
+    /**
+     * Returns the result of a battle (Dice Rolls and if a country was claimed and by whom).
+     *
+     * @return String containing battle outcome.
+     */
+    public String getAtkOutput() {
+        String output = atkOutput;
+        atkOutput = "";
+        return output;
+    }
+
+    /**
+     * Returns the list of players.
+     *
+     * @return The list containing the players in the game.
+     */
+    public static ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 
     /**
      * Returns the current player.
@@ -132,9 +139,7 @@ public class Game
         for ( i = 0; i < numHumanPlayers; i++) {
 
             playerList.add(new Player("Player" + (i + 1)));
-
         }
-
         for (int j = 0; j < numAIPlayers; j++){
             playerList.add(new AIPlayer("AIPlayer" + (i+1+j)));
         }
@@ -144,34 +149,6 @@ public class Game
         currentPlayer = playerList.get(playerIndex);
 
         board.setupPlayers(playerList);
-    }
-
-
-    /**
-     * Method which returns the state of the game.
-     * The number of armies and countries owned by each player.
-     */
-    public String _getGameStatus()
-    {
-        String playersInfo = "";
-        String pInfo = "";
-        String currentTurn = "";
-        String status = "";
-
-        for (Player p : playerList){
-            playersInfo += p.toString();
-            String ownedCountries = "";
-            for (Country c : p.getOwnedCountries())
-            {
-                ownedCountries += c.getCountryName().name() + " ";
-            }
-            pInfo += p.getName() + " owns the following countries: " + ownedCountries + "\n";
-        }
-
-        currentTurn += "It's currently " + currentPlayer.getName() + "'s turn. \n";
-
-        status += playersInfo + "\n" + pInfo + "\n" + currentTurn + "\n" + atkOutput;
-        return status;
     }
 
     /**
@@ -211,10 +188,8 @@ public class Game
 
             // Check to see if the current player has the military force to attack.
             else {
-
                 // Onto war!!!
                 battlePhase();
-
             }
         }
 
@@ -366,15 +341,6 @@ public class Game
     }
 
     /**
-     * This fortification command allows players to fortify one of their
-     * Country using the troops of another Country as long as there is a path.
-     */
-    public void fortify() {
-
-
-    }
-
-    /**
      * Remove the player who has no more army from the game.
      *
      * @param dead The player to remove from the game
@@ -386,7 +352,6 @@ public class Game
         playerList.remove(dead);
 
     }
-
 
     /**
      * Updates the current player to next player.
@@ -403,6 +368,35 @@ public class Game
 
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
-        _getGameStatus();
+    }
+
+    /**
+     * Checks for a path based on adjacent owned countries of the current player from a starting country and a goal country.
+     * While updating the list of visited countries, through traversal.
+     *
+     * @return path Whether or not a path exists, true if it does and false if not
+     */
+    public boolean pathCheck(String curr, List <String> visited, String goal) {
+        boolean path = false;
+        Country currCountry = getBoardMap().getCountry(CountryName.valueOf(curr)); // current country
+        List<CountryName> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
+        List<CountryName> ownedC = new ArrayList<>(); // list of adj owned countries
+        for (CountryName countryName : adjC) {
+            if (getBoardMap().getCountry(countryName).getRuler().getName().equals(currentPlayer.getName())) {
+                ownedC.add(countryName); // add the adj country to ownedC list
+            }
+        }
+        if (curr.equals(goal))
+        {
+            path = true; // from initial curr to the final goal country, a path has been found
+        }
+        else {
+            if (!(visited.contains(curr))) visited.add(curr); // add to visited countries list
+            for (CountryName countryName : ownedC) {
+                // recursive call all countryName in ownedC that are not in visited countries list
+                if (!visited.contains(countryName.toString())) return pathCheck(countryName.toString(), visited, goal);
+            }
+        }
+        return path;
     }
 }

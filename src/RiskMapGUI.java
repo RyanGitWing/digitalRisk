@@ -9,6 +9,9 @@ import java.awt.*;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Vis. K
+ * @version 11.23.2020
  */
 
 public class RiskMapGUI extends JPanel
@@ -93,10 +96,8 @@ public class RiskMapGUI extends JPanel
         for (Country country: continent.getCountries())
         {
             JButton jButton = new JButton(country.getCountryName().toString());
-            jButton.setToolTipText(country.getRuler().getName() + " "  + "Army: " + country.getArmyOccupied());
             jButton.setActionCommand(country.getCountryName().toString());
-            if (country.getArmyOccupied() > 1)
-            jButton.addActionListener(riskCtrl);
+            if (country.getArmyOccupied() > 1) jButton.addActionListener(riskCtrl);
             jButton.setBackground(Color.black);
 
             // Handles colours based on ruler of country, white for neutral country owned by no one.
@@ -124,7 +125,6 @@ public class RiskMapGUI extends JPanel
 
             if (continent.getName() == ContinentName.NorthAmerica)
             {
-                //jButton.setBackground(Color.YELLOW);
                 if (country.getCountryName() == CountryName.Alaska)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -191,8 +191,6 @@ public class RiskMapGUI extends JPanel
             }
             if (continent.getName() == ContinentName.SouthAmerica)
             {
-                //jButton.setBackground(Color.RED);
-                //jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Venezuela)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -224,8 +222,6 @@ public class RiskMapGUI extends JPanel
             }
             if (continent.getName() == ContinentName.Europe)
             {
-                //jButton.setBackground(Color.BLUE);
-                //jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Iceland)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -278,7 +274,6 @@ public class RiskMapGUI extends JPanel
             }
             if (continent.getName() == ContinentName.Africa)
             {
-                //jButton.setBackground(Color.ORANGE);
                 if (country.getCountryName() == CountryName.NorthAfrica)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -324,7 +319,6 @@ public class RiskMapGUI extends JPanel
             }
             if (continent.getName() == ContinentName.Asia)
             {
-                //jButton.setBackground(Color.GREEN);
                 if (country.getCountryName() == CountryName.Ural)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
@@ -413,8 +407,6 @@ public class RiskMapGUI extends JPanel
             }
             if (continent.getName() == ContinentName.Australia)
             {
-                //jButton.setBackground(Color.MAGENTA);
-                //jButton.setForeground(Color.WHITE);
                 if (country.getCountryName() == CountryName.Indonesia)
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
