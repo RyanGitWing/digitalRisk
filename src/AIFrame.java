@@ -54,7 +54,7 @@ public class AIFrame extends JFrame implements ActionListener
 
 
         //Creating the buttons for each number of players
-        for (int i = 1; i <= 6-StarterFrame.getHumanPlayers(); i++)
+        for (int i = 0; i <= 6-StarterFrame.getHumanPlayers(); i++)
         {
             JButton button = new JButton(i + " Players");
             button.addActionListener(this);
