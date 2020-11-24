@@ -140,15 +140,25 @@ public class Game
 
             playerList.add(new Player("Player" + (i + 1)));
         }
-        for (int j = 0; j < numAIPlayers; j++){
-            playerList.add(new AIPlayer("AIPlayer" + (i+1+j)));
+
+
+        if(numAIPlayers == 0){
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+
+            board.setupPlayers(playerList);
         }
+        else {
+            for (int j = 0; j < numAIPlayers; j++) {
+                playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j)));
+            }
 
-        // Initialize the starting player.
-        playerIndex = 0;
-        currentPlayer = playerList.get(playerIndex);
+            // Initialize the starting player.
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
 
-        board.setupPlayers(playerList);
+            board.setupPlayers(playerList);
+        }
     }
 
     /**
