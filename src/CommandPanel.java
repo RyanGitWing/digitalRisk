@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * The JPanel containing the Commands Section.
@@ -14,11 +15,13 @@ import java.awt.event.ActionListener;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Vis. K
+ * @version 11.23.2020
  */
 
 public class CommandPanel extends JPanel implements ActionListener
 {
-    private final JButton stat;
     private final JButton nTurn;
     private final Game riskGame;
 
@@ -33,21 +36,12 @@ public class CommandPanel extends JPanel implements ActionListener
         this.setPreferredSize(new Dimension(300, 0));
         this.setBackground(Color.green);
 
-        //Make the status button
-        stat = new JButton("Game Status");
-        stat.addActionListener(this);
-
         //Make the end turn button
         nTurn = new JButton("End Turn");
         nTurn.addActionListener(this);
 
         //A box to store the buttons inside
         Box box = Box.createVerticalBox();
-
-        //Adding status to the box, aligning it, and spacing it from the following button
-        box.add(stat);
-        box.add(Box.createVerticalStrut(250));
-        stat.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         //Adding end turn to the box, aligning it
         box.add(nTurn);
@@ -66,22 +60,55 @@ public class CommandPanel extends JPanel implements ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(stat))
-        {
-            riskGame.update();
-        }
         if (e.getSource().equals(nTurn))
         {
             riskGame.nextPlayer();
+            riskGame.update();
 
-            while(riskGame.getCurrentPlayer().isAI()){
+            // call reinforcement/bonus army method. - returns an int
+            int reinforce = riskGame.getBoardMap().getBonusArmy(riskGame.getCurrentPlayer()); // tot bonus army
+            List<Country> currPlyrCountries = riskGame.getCurrentPlayer().getOwnedCountries();
+            String [] CPlyrC = new String[currPlyrCountries.size()];
+            for (int i = 0; i < CPlyrC.length; i++)
+            {
+                CPlyrC[i] = currPlyrCountries.get(i).getCountryName().toString() + " " + currPlyrCountries.get(i).getArmyOccupied();
+            }
+            // army bonus/reinforcement placement for Human
+            while (reinforce != 0 && (!riskGame.getCurrentPlayer().isAI())) {
+                JOptionPane.showMessageDialog(null, "You have received " + reinforce + " bonus army.", "Bonus Army!", JOptionPane.WARNING_MESSAGE);
+                String bonusCountry = (String) JOptionPane.showInputDialog(null,
+                        "Choose which country will receive your bonus army", "List of Owned Countries",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        CPlyrC, "");
+                String[] army = new String[reinforce];
+                for (int i = 0; i < army.length; i++) {
+                    army[i] = String.valueOf(i+1);
+                }
+                if (bonusCountry != null) {
+                    String armyB = (String) JOptionPane.showInputDialog(null,
+                            "Choose how much army to place:", "Available Bonus: " + reinforce,
+                            JOptionPane.INFORMATION_MESSAGE, null,
+                            army, "");
+                    if (armyB != null)
+                    {
+                        String bonusC = bonusCountry.substring(0,bonusCountry.indexOf(" "));
+                        riskGame.getBoardMap().getCountry(CountryName.valueOf(bonusC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(bonusC)).getArmyOccupied() + Integer.parseInt(armyB));
+                        reinforce -= Integer.parseInt(armyB);
+                    }
+                }
+                riskGame.update();
+            }
+
+            riskGame.nextPlayer();
+            riskGame.update();
+
+            if (riskGame.getCurrentPlayer().isAI()) {
                 AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
                 ai.aiDeploy(riskGame);
                 ai.aiAttack(riskGame);
                 riskGame.nextPlayer();
+                riskGame.update();
             }
-
-            riskGame.update();
         }
     }
 }
