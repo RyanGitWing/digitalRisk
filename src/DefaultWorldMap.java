@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -8,7 +9,7 @@ import java.util.*;
  * @author Fareen. L
  * @version 11.08.2020
  */
-public class DefaultWorldMap implements IWorldMap {
+public class DefaultWorldMap implements IWorldMap, Serializable {
 
     private HashMap<ContinentName, CountryName[]> continents;
     private HashMap<CountryName, CountryName[]> adjCountries;

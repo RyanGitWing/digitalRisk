@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Fareen. L
  * @version 11.23.2020
  */
-public class Player {
+public class Player implements Serializable {
 
     private final String NAME;
     private List<Country> ownedCountries;

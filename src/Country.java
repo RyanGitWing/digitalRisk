@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,7 +13,7 @@ import java.util.*;
  * @author Fareen. L
  * @version 11.23.2020
  */
-public class Country {
+public class Country implements Serializable {
 
     private final CountryName countryName;
     private final ContinentName continentName;

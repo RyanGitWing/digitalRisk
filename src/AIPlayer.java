@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @version 11.22.2020
  */
 
-public class AIPlayer extends Player{
+public class AIPlayer extends Player implements Serializable {
 
     /**
      * Creates an AI player.

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -13,7 +14,7 @@ import java.util.*;
  * @version 11.23.2020
  */
 
-public class Board
+public class Board implements Serializable
 {
     private final IWorldMap worldMap;
     private final int countryCount;

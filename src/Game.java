@@ -1,5 +1,3 @@
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.*;
 
@@ -25,7 +23,7 @@ import java.util.*;
  * @author Vyasan. J
  * @version 11.22.2020
  */
-public class Game
+public class Game implements Serializable
 {
     private Dice die;
     private static ArrayList<Player> playerList;
@@ -45,10 +43,17 @@ public class Game
     /**
      * Creates a game and initialise its internal map.
      */
-    public Game()
+    public Game(ArrayList<Player> pL, int tP, int hP, int aI, int pI, Board b, Player c)
     {
-        playerList = new ArrayList<>();
-        board = new Board();
+        playerList = pL;
+        numPlayers = tP;
+        numHumanPlayers = hP;
+        numAIPlayers = aI;
+        playerIndex = pI;
+        board = b;
+        currentPlayer = c;
+
+        riskViews = new ArrayList<>();
     }
 
     /**
@@ -413,16 +418,16 @@ public class Game
         return path;
     }
 
-    public void saveG(String file){
+    public void saveG(String file) throws IOException{
+        GameState gS = new GameState(playerList,numPlayers, numHumanPlayers, numAIPlayers, playerIndex, board, currentPlayer);
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(this);
+            out.writeObject(gS);
             out.close();
             fileOut.close();
         } catch (IOException e){
             e.printStackTrace();
-
         }
     }
 
@@ -430,10 +435,11 @@ public class Game
         try {
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            Game riskGame = (Game) in.readObject();
+            GameState gS = (GameState) in.readObject();
+            Game game = new Game(gS.getPL(), gS.getTP(), gS.getHP(), gS.getAI(), gS.getPI(), gS.getB(), gS.getC());
             in.close();
             fileIn.close();
-            return riskGame;
+            return game;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

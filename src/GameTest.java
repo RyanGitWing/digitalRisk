@@ -1,5 +1,8 @@
 import org.junit.*;
 
+import java.io.File;
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,14 +21,6 @@ public class GameTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void getBoardMap() {
-        // setup
-        Game game = new Game();
-
-        // act and assess
-        assertNotNull(game.getBoardMap());
-    }
 
     @Test
     public void addRiskView() {
@@ -68,4 +63,15 @@ public class GameTest {
         assertEquals("Player2", actual);
         assertEquals("Player1", game.getCurrentPlayer().getName());
     }
+/*
+    @Test
+    public void saveGTest() throws IOException {
+
+        Game game = new  Game(2, 0);
+        game.saveG("save.ser");
+        assertTrue(new File("save.ser").exists());
+
+    }
+
+ */
 }
