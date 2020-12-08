@@ -1,3 +1,6 @@
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -408,5 +411,32 @@ public class Game
             }
         }
         return path;
+    }
+
+    public void saveG(String file){
+        try {
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch (IOException e){
+            e.printStackTrace();
+
+        }
+    }
+
+    public static Game loadG(String file){
+        try {
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            Game riskGame = (Game) in.readObject();
+            in.close();
+            fileIn.close();
+            return riskGame;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
