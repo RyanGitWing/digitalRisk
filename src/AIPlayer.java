@@ -54,7 +54,7 @@ public class AIPlayer extends Player{
         int ownedSize = owned.size();
         int weakestIndex = 0;
 
-        for (int i = 0; i > ownedSize; i++) {
+        for (int i = 0; i < ownedSize; i++) {
             if (owned.get(i).getArmyOccupied() < owned.get(weakestIndex).getArmyOccupied()) {
                 weakestIndex = i;
             }
