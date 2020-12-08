@@ -101,7 +101,7 @@ public class CommandPanel extends JPanel implements ActionListener
                 }
                 riskGame.update();
             }
-            if (riskGame.getCurrentPlayer().isAI()) {
+            while(riskGame.getCurrentPlayer().isAI()) {
                 AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
                 ai.aiDeploy(riskGame);
                 ai.aiAttack(riskGame);
