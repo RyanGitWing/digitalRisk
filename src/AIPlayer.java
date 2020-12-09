@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * This class models an AIPlayer which is an extension of the Player class
  *
@@ -39,6 +41,26 @@ public class AIPlayer extends Player{
 
         }
 
+    }
+
+    /**
+     * Method used for AI to deploy bonus armies
+     *
+     * @param riskGame - current game that's running
+     */
+    public void aiDeploy(Game riskGame) {
+        int bonus = riskGame.getBoardMap().getBonusArmy(this);
+        List<Country> owned = this.getOwnedCountries();
+        int ownedSize = owned.size();
+        int weakestIndex = 0;
+
+        for (int i = 0; i > ownedSize; i++) {
+            if (owned.get(i).getArmyOccupied() < owned.get(weakestIndex).getArmyOccupied()) {
+                weakestIndex = i;
+            }
+        }
+
+        owned.get(weakestIndex).setArmyOccupied(owned.get(weakestIndex).getArmyOccupied()+bonus);
     }
 
 

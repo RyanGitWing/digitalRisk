@@ -98,7 +98,7 @@ public class RiskMapGUI extends JPanel
         jPanel.setBackground(Color.BLUE);
         for (Country country: continent.getCountries())
         {
-            JButton jButton = new JButton(country.getCountryName().toString());
+            JButton jButton = new JButton(country.getCountryName().toString() + ": " + country.getArmyOccupied());
             jButton.setActionCommand(country.getCountryName().toString());
             if (country.getArmyOccupied() > 1) jButton.addActionListener(riskCtrl);
             jButton.setBackground(Color.black);
