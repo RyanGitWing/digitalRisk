@@ -22,6 +22,9 @@ public class AIPlayer extends Player implements Serializable {
 
     /**
      * Method used to imitate a regular player attack in the game.
+     * The aiAttacks with countries that it owns which also has more than 
+     * or equal to 4 army occupied and will attack any adjacent countries that
+     * the ai does not own and has an army that is less than the attacking country
      *
      * @param riskGame The current game.
      */
@@ -46,6 +49,8 @@ public class AIPlayer extends Player implements Serializable {
 
     /**
      * Method used for AI to deploy bonus armies
+     * The ai will go through all the countries that it owns 
+     * and deploy its bonus army to the country with the lowest army count
      *
      * @param riskGame - current game that's running
      */
