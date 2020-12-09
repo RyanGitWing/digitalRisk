@@ -44,7 +44,7 @@ public class Board implements Serializable
      *
      * @param filePath The custom world map file path.
      */
-    public Board(String filePath) {
+    public Board(String filePath) throws Exception {
         this.worldMap = _deserialize(filePath);
         this.countryCount = worldMap.getAdjCountries().keySet().size();
         this.boardMap = new HashMap<>();
@@ -153,7 +153,7 @@ public class Board implements Serializable
      * @param filePath The filepath for the custom map. Must be a .json.
      * @return An IWorldMap object for the board.
      */
-    private IWorldMap _deserialize(String filePath) {
+    private IWorldMap _deserialize(String filePath) throws Exception {
         IWorldMap map = null;
         try {
             FileInputStream fStream = new FileInputStream(filePath);
@@ -162,7 +162,7 @@ public class Board implements Serializable
             oStream.close();
             fStream.close();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new Exception("Invalid file type.");
         }
 
         return map;

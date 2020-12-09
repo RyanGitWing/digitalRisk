@@ -64,8 +64,7 @@ public class Game implements Serializable
      *
      * @param humanPlayerCount number of players playing the game.
      */
-    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath)
-    {
+    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath) throws Exception {
         playerList = new ArrayList<>();
 
         if (mapPath.isEmpty()) board = new Board();
