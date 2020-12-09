@@ -22,6 +22,9 @@ import java.util.*;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public class Game implements Serializable
 {
@@ -39,7 +42,6 @@ public class Game implements Serializable
     private List <RiskView> riskViews;
     private String outcome = "", diceValue = "", atkOutput = "";
 
-
     /**
      * Creates a game and initialise its internal map.
      */
@@ -56,15 +58,18 @@ public class Game implements Serializable
         riskViews = new ArrayList<>();
     }
 
+
     /**
      * Creates a game and initialise its internal map.
      *
      * @param humanPlayerCount number of players playing the game.
      */
-    public Game(int humanPlayerCount, int AIPlayerCount)
+    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath)
     {
         playerList = new ArrayList<>();
-        board = new Board();
+
+        if (mapPath.isEmpty()) board = new Board();
+        else board = new Board(mapPath);
         riskViews = new ArrayList<>();
 
         this.numHumanPlayers = humanPlayerCount;
@@ -181,11 +186,11 @@ public class Game implements Serializable
 
         String atkOutput = "" ;
 
-        countryOwn = board.getCountry(CountryName.valueOf(attacker));
+        countryOwn = board.getCountry(attacker);
 
-        List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
+        List<String> countryOwnAdj = countryOwn.getAdjCountries();
 
-        enemyCountry = board.getCountry(CountryName.valueOf(defender));
+        enemyCountry = board.getCountry(defender);
         enemyPlayer = enemyCountry.getRuler();
 
         if (!currentPlayer.equals(enemyPlayer)) {
@@ -396,10 +401,10 @@ public class Game implements Serializable
      */
     public boolean pathCheck(String curr, List <String> visited, String goal) {
         boolean path = false;
-        Country currCountry = getBoardMap().getCountry(CountryName.valueOf(curr)); // current country
-        List<CountryName> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
-        List<CountryName> ownedC = new ArrayList<>(); // list of adj owned countries
-        for (CountryName countryName : adjC) {
+        Country currCountry = getBoardMap().getCountry(curr); // current country
+        List<String> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
+        List<String> ownedC = new ArrayList<>(); // list of adj owned countries
+        for (String countryName : adjC) {
             if (getBoardMap().getCountry(countryName).getRuler().getName().equals(currentPlayer.getName())) {
                 ownedC.add(countryName); // add the adj country to ownedC list
             }
@@ -410,7 +415,7 @@ public class Game implements Serializable
         }
         else {
             if (!(visited.contains(curr))) visited.add(curr); // add to visited countries list
-            for (CountryName countryName : ownedC) {
+            for (String countryName : ownedC) {
                 // recursive call all countryName in ownedC that are not in visited countries list
                 if (!visited.contains(countryName.toString())) return pathCheck(countryName.toString(), visited, goal);
             }

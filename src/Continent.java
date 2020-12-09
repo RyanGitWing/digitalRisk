@@ -13,14 +13,14 @@ import java.util.*;
 public class Continent implements Serializable {
 
     private ArrayList<Country> countries;
-    private final ContinentName name;
+    private final String name;
 
     /**
      * Creates a new continent object.
      *
      * @param name The name of the continent.
      */
-    public Continent(ContinentName name){
+    public Continent(String name){
         this.name = name;
         countries = new ArrayList<>();
     }
@@ -30,7 +30,7 @@ public class Continent implements Serializable {
      *
      *@return The name of the continent.
      */
-    public ContinentName getName(){
+    public String getName(){
         return this.name;
     }
 

@@ -21,6 +21,9 @@ import java.awt.*;
  *
  * @author Vis. K
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 
 public class RiskFrame extends JFrame implements RiskView{
@@ -34,7 +37,7 @@ public class RiskFrame extends JFrame implements RiskView{
      */
     public RiskFrame(int numHumanPlayers,int numAIPlayers)
     {
-        riskGame = new Game(numHumanPlayers,numAIPlayers);
+        riskGame = new Game(numHumanPlayers,numAIPlayers, "defaultMap.json");
         riskGame.addRiskView(this);
 
         this.setLayout(new BorderLayout());

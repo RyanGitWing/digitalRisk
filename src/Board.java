@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -12,6 +13,9 @@ import java.util.*;
  *
  * @author Fareen. L
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 
 public class Board implements Serializable
@@ -19,7 +23,7 @@ public class Board implements Serializable
     private final IWorldMap worldMap;
     private final int countryCount;
     private final int continentCount;
-    private HashMap<ContinentName, Continent> boardMap;
+    private HashMap<String, Continent> boardMap;
     private List<Country> countries;
 
 
@@ -40,10 +44,10 @@ public class Board implements Serializable
     /**
      * Creates a board with a custom world map.
      *
-     * @param worldMap The custom world map.
+     * @param filePath The custom world map file path.
      */
-    public Board(IWorldMap worldMap) {
-        this.worldMap = worldMap;
+    public Board(String filePath) {
+        this.worldMap = _deserialize(filePath);
         this.countryCount = worldMap.getAdjCountries().keySet().size();
         this.continentCount = worldMap.getContinents().keySet().size();
         this.boardMap = new HashMap<>();
@@ -56,7 +60,7 @@ public class Board implements Serializable
      *
      * @return A hashtable of ContinentNames and corresponding continents.
      */
-    public HashMap<ContinentName, Continent> getBoardMap() {
+    public HashMap<String, Continent> getBoardMap() {
         return boardMap;
     }
 
@@ -66,7 +70,7 @@ public class Board implements Serializable
      * @param countryName The name of the country to be retrieved.
      * @return Country A country from the board.
      */
-    public Country getCountry(CountryName countryName)
+    public Country getCountry(String countryName)
     {
         for (Continent continent: boardMap.values())
         {
@@ -95,21 +99,42 @@ public class Board implements Serializable
     }
 
     /**
+     * Calculates the total number of bonus armies alloted to a player per turn.
+     *
+     * @param player The player to allot the bonus armies to.
+     * @return The bonus army count.
+     */
+    public int getBonusArmy(Player player) {
+        int bonus = 0;
+
+        bonus = BonusArmy.generalBonus(player.getOwnedCountries().size());
+
+        List<String> ownedContinents = player.getOwnedContinents();
+        if (!ownedContinents.isEmpty()) {
+            for (String name : ownedContinents) {
+                bonus += BonusArmy.continentBonus(name);
+            }
+        }
+
+        return bonus;
+    }
+
+    /**
      * Sets up the board map.
      */
     private void _setupMap()
     {
         // extract data from world maps
-        HashMap<ContinentName, CountryName[]> continents = this.worldMap.getContinents();
-        HashMap<CountryName, CountryName[]> adjCountries = this.worldMap.getAdjCountries();
+        HashMap<String, String[]> continents = this.worldMap.getContinents();
+        HashMap<String, String[]> adjCountries = this.worldMap.getAdjCountries();
 
 
         // create continents and countries with corresponding adjacent countries
-        for (ContinentName continentName : continents.keySet()) {
+        for (String continentName : continents.keySet()) {
 
             Continent continent = new Continent(continentName);
 
-            for(CountryName countryName : continents.get(continentName)) {
+            for(String countryName : continents.get(continentName)) {
 
                 Country country = new Country(countryName, continentName);
                 // grab adjacent countries and assign to local variable country
@@ -122,25 +147,19 @@ public class Board implements Serializable
         }
     }
 
-    /**
-     * Calculates the total number of bonus armies alloted to a player per turn.
-     *
-     * @param player The player to allot the bonus armies to.
-     * @return The bonus army count.
-     */
-    public int getBonusArmy(Player player) {
-        int bonus = 0;
-
-        bonus = BonusArmy.generalBonus(player.getOwnedCountries().size());
-
-        List<ContinentName> ownedContinents = player.getOwnedContinents();
-        if (!ownedContinents.isEmpty()) {
-            for (ContinentName name : ownedContinents) {
-                bonus += BonusArmy.continentBonus(name);
-            }
+    private IWorldMap _deserialize(String filePath) {
+        IWorldMap map = null;
+        try {
+            FileInputStream fStream = new FileInputStream(filePath);
+            ObjectInputStream oStream = new ObjectInputStream(fStream);
+            map = (IWorldMap) oStream.readObject();
+            oStream.close();
+            fStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return bonus;
+        return map;
     }
 
     /**
