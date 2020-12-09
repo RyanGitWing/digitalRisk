@@ -28,13 +28,40 @@ public class AIPlayer extends Player implements Serializable {
      *
      * @param riskGame The current game.
      */
-    public void aiAttack(Game riskGame){
+    public void aiAggroAttack(Game riskGame){
         int ownedCountriesSize = getOwnedCountries().size();
 
 
         for(int i = 0; i < ownedCountriesSize; i++){
             int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
             if(getOwnedCountries().get(i).getArmyOccupied() >= 4){
+                for(int j = 0; j < adjCountriesSize; j++){
+                    Country adj = riskGame.getBoardMap().getCountry(getOwnedCountries().get(i).getAdjCountries().get(j));
+                    if(getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this) && getOwnedCountries().get(i).getArmyOccupied() >= 4){
+                        riskGame.attackCMD(getOwnedCountries().get(i).getCountryName().toString(),3,adj.getCountryName().toString());
+                    }
+                }
+            }
+
+        }
+
+    }
+    
+    /**
+     * Method used to imitate a regular player attack in the game.
+     * The aiAttacks with countries that it owns which also has more than 
+     * or equal to 7 army occupied and will attack any adjacent countries that
+     * the ai does not own and has an army that is less than the attacking country
+     *
+     * @param riskGame The current game.
+     */
+    public void aiPassiveAttack(Game riskGame){
+        int ownedCountriesSize = getOwnedCountries().size();
+
+
+        for(int i = 0; i < ownedCountriesSize; i++){
+            int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
+            if(getOwnedCountries().get(i).getArmyOccupied() >= 7){
                 for(int j = 0; j < adjCountriesSize; j++){
                     Country adj = riskGame.getBoardMap().getCountry(getOwnedCountries().get(i).getAdjCountries().get(j));
                     if(getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this) && getOwnedCountries().get(i).getArmyOccupied() >= 4){
