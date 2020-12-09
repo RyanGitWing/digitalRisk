@@ -50,7 +50,7 @@ public class RiskFrame extends JFrame implements RiskView{
         this.setLocationRelativeTo(null);
 
         //Add the menu to the frame
-        RiskMenu menu = new RiskMenu();
+        RiskMenu menu = new RiskMenu(riskGame);
         this.setJMenuBar(menu);
 
         //LegendGUI (Players and their colours in MapGUI);

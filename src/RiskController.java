@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @version 12.07.2020
  */
 
-public class RiskController implements ActionListener {
+public class RiskController implements ActionListener{
 
     private final Game riskGame;
     private final Board board;
