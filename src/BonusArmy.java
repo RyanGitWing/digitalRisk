@@ -3,6 +3,9 @@
  *
  * @author Fareen. L
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public abstract class BonusArmy {
 
@@ -12,19 +15,19 @@ public abstract class BonusArmy {
      * @param continentName The name of the continent the player owns.
      * @return The bonus army received for owning the specified continent.
      */
-    public static int continentBonus(ContinentName continentName) {
+    public static int continentBonus(String continentName) {
         switch (continentName) {
-            case Asia:
+            case "Asia":
                 return 7;
-            case Europe:
+            case "Europe":
                 return 5;
-            case Africa:
+            case "Africa":
                 return 3;
-            case Australia:
+            case "Australia":
                 return 2;
-            case NorthAmerica:
+            case "NorthAmerica":
                 return 5;
-            case SouthAmerica:
+            case "SouthAmerica":
                 return 2;
         }
         return 0;

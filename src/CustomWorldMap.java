@@ -1,23 +1,22 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
 
 /**
- * The default in game world map.
- *
- * DO NOT CHANGE!
- *
- * @author Fareen. L
- * @version 11.08.2020
+ * Use this to build and output custom maps.
  *
  * @author Fareen. L
  * @version 12.07.2020
  */
-public class DefaultWorldMap implements IWorldMap, Serializable {
+public class CustomWorldMap implements IWorldMap, Serializable {
 
     private HashMap<String, String[]> continents;
     private HashMap<String, String[]> adjCountries;
+    private String name = "America";
 
-    public DefaultWorldMap() {
+    public CustomWorldMap() {
         continents = new HashMap<>();
         adjCountries = new HashMap<>();
         _generateContinents();
@@ -39,62 +38,73 @@ public class DefaultWorldMap implements IWorldMap, Serializable {
     public HashMap<String, String[]> getAdjCountries() { return adjCountries; }
 
     /**
+     * Returns the name of the custom map.
+     *
+     * @return A name.
+     */
+    public String getName() { return name; }
+
+    /**
      * Generates the default continents.
      */
     private void _generateContinents() {
-        this.continents.put("NorthAmerica", new String[] {
-                "Alaska",
-                "WesternCanada",
-                "CentralAmerica",
-                "EasternUS",
-                "Greenland",
-                "NorthwestTerritories",
-                "CentralCanada",
-                "EasternCanada",
-                "WesternUS"
+        this.continents.put("North", new String[] {
+                "Montana",
+                "Wyoming",
+                "NorthAndSouthDakota",
         });
-        this.continents.put("SouthAmerica", new String[] {
-                "Argentina",
-                "Brazil",
-                "Peru",
-                "Venezuela"
+        this.continents.put("Midwest", new String[] {
+                "Colorado",
+                "Nebraska",
+                "Kansas",
+                "Missouri"
+
         });
-        this.continents.put("Europe", new String[] {
-                "GreatBritain",
-                "Iceland",
-                "NorthernEurope",
-                "Scandinavia",
-                "SouthernEurope",
-                "Ukraine",
-                "WesternEurope"
+        this.continents.put("South", new String[] {
+                "NewMexico",
+                "Oklahoma",
+                "Texas",
+                "Arkansas",
+                "Louisiana"
         });
-        this.continents.put("Africa", new String[] {
-                "Congo",
-                "EastAfrica",
-                "Egypt",
-                "Madagascar",
-                "NorthAfrica",
-                "SouthAfrica"
+        this.continents.put("West", new String[] {
+                "Washington",
+                "Oregon",
+                "NorthCalifornia",
+                "SouthCalifornia",
+                "Idaho",
+                "Nevada",
+                "Utah",
+                "Arizona"
         });
-        this.continents.put("Asia", new String[] {
-                "Afghanistan",
-                "China",
-                "India",
-                "Irkutsk",
-                "Japan",
-                "Kamchatka",
-                "MiddleEast",
-                "Mongolia",
-                "Siam",
-                "Siberia",
-                "Ural",
-                "Yakutsk"
+        this.continents.put("TheLakes", new String[] {
+                "Minnesota",
+                "Iowa",
+                "WisconsinAndUpperMichigan",
+                "Illinois",
+                "LowerMichigan",
+                "Indiana",
+                "Ohio"
         });
-        this.continents.put("Australia", new String[] {
-                "EasternAustralia",
-                "Indonesia",
-                "NewGuinea",
-                "WesternAustralia"
+        this.continents.put("EastCoast", new String[] {
+                "Kentucky",
+                "Tennessee",
+                "Mississippi",
+                "Alabama",
+                "Georgia",
+                "Florida",
+                "NorthAndSouthCarolina",
+                "Virginia"
+        });
+        this.continents.put("EastIslands", new String[] {
+                "Maine",
+                "VermontAndNewHampshire",
+                "NewYork",
+                "Massachusetts",
+                "NewJersey",
+                "MarylandAndDelaware",
+                "Pennsylvania",
+                "WestVirgina"
         });
     }
 
@@ -103,17 +113,28 @@ public class DefaultWorldMap implements IWorldMap, Serializable {
      */
     private void _generateAdjacentCountries() {
 
-        // North America
-        this.adjCountries.put("Alaska", new String[] {
-                "NorthwestTerritories" });
-        this.adjCountries.put("WesternCanada", new String[] {
-                "NorthwestTerritories",
-                "CentralCanada",
-                "WesternUS"});
-        this.adjCountries.put("CentralAmerica", new String[] {
-                "EasternUS",
-                "WesternUS",
-                "Venezuela"});
+        // North
+        this.adjCountries.put("Montana", new String[] {
+                "Idaho",
+                "Wyoming",
+                "NorthAndSouthDakota"
+        });
+        this.adjCountries.put("Wyoming", new String[] {
+                "Montana",
+                "Idaho",
+                "Utah",
+                "Colorado",
+                "Nebraska",
+                "NorthAndSouthDakota"
+        });
+        this.adjCountries.put("Colorado", new String[] {
+                "Wyoming",
+                "Utah",
+                "NewMexico",
+                "Oklahoma",
+                "Kansas",
+                "Nebraska"
+        });
         this.adjCountries.put("EasternUS", new String[] {
                 "CentralAmerica",
                 "CentralCanada",
@@ -310,5 +331,21 @@ public class DefaultWorldMap implements IWorldMap, Serializable {
                 "EasternAustralia",
                 "NewGuinea",
                 "Indonesia"});
+    }
+
+    private static class CustomMapBuilder {
+
+        public static void main(String[] args) {
+            try {
+                DefaultWorldMap map = new DefaultWorldMap();
+                FileOutputStream fOut = new FileOutputStream("defaultMap.json");
+                ObjectOutputStream out = new ObjectOutputStream(fOut);
+                out.writeObject(map);
+                out.close();
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

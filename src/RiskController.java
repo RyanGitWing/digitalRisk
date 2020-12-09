@@ -9,6 +9,9 @@ import java.util.List;
  *
  * @author Vis. K
  * @version 11.11.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 
 public class RiskController implements ActionListener {
@@ -38,8 +41,8 @@ public class RiskController implements ActionListener {
         String armyC;
         int armyCount;
 
-        Country country = board.getCountry(CountryName.valueOf(atkC));
-        List<CountryName> countryAdjList = country.getAdjCountries();
+        Country country = board.getCountry(atkC);
+        List<String> countryAdjList = country.getAdjCountries();
 
         if (!riskGame.getCurrentPlayer().equals(country.getRuler()))
         {
@@ -51,7 +54,7 @@ public class RiskController implements ActionListener {
         {
             List <Country> adjEnemy = new ArrayList<>();
 
-            for (CountryName countryName : countryAdjList)
+            for (String countryName : countryAdjList)
             {
                 Country boardCountry = board.getCountry(countryName);
                 if (!boardCountry.getRuler().equals(riskGame.getCurrentPlayer())) adjEnemy.add(boardCountry);
@@ -115,8 +118,8 @@ public class RiskController implements ActionListener {
                                             JOptionPane.INFORMATION_MESSAGE, null,
                                             occArmy, "");
 
-                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(defC)).setArmyOccupied(Integer.parseInt(armyD));
-                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(atkC)).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
+                                    riskGame.getBoardMap().getCountry(defC).setArmyOccupied(Integer.parseInt(armyD));
+                                    riskGame.getBoardMap().getCountry(atkC).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
                                     riskGame.update();
                                 }
 
@@ -125,7 +128,7 @@ public class RiskController implements ActionListener {
 
                                 if (cont == JOptionPane.NO_OPTION) {
 
-                                    List<CountryName> ownedC = new ArrayList<>(); // List that will be used to story CountryNames of countries with > 1 army
+                                    List<String> ownedC = new ArrayList<>(); // List that will be used to story CountryNames of countries with > 1 army
 
                                     for (Country c : riskGame.getCurrentPlayer().getOwnedCountries()) {
                                         if (riskGame.getBoardMap().getCountry(c.getCountryName()).getArmyOccupied() > 1) {
@@ -164,7 +167,7 @@ public class RiskController implements ActionListener {
                                         if (frtC != null) {
 
                                             String name = ourC.substring(0,ourC.indexOf(" "));
-                                            String[] armyDeploy = new String[riskGame.getBoardMap().getCountry(CountryName.valueOf(name)).getArmyOccupied()-1];
+                                            String[] armyDeploy = new String[riskGame.getBoardMap().getCountry(name).getArmyOccupied()-1];
 
                                             for (int i = 0; i < armyDeploy.length; i++)
                                             {
@@ -178,8 +181,8 @@ public class RiskController implements ActionListener {
                                                         "Choose the amount of army to deploy", "Amount of army available to deploy",
                                                         JOptionPane.INFORMATION_MESSAGE, null,
                                                         armyDeploy, "");
-                                                riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyC)).getArmyOccupied() + Integer.parseInt(armyDpl));
-                                                riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyWC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(fortifyWC)).getArmyOccupied() - Integer.parseInt(armyDpl));
+                                                riskGame.getBoardMap().getCountry(fortifyC).setArmyOccupied(riskGame.getBoardMap().getCountry(fortifyC).getArmyOccupied() + Integer.parseInt(armyDpl));
+                                                riskGame.getBoardMap().getCountry(fortifyWC).setArmyOccupied(riskGame.getBoardMap().getCountry(fortifyWC).getArmyOccupied() - Integer.parseInt(armyDpl));
                                                 riskGame.nextPlayer();
                                                 riskGame.update();
                                             }

@@ -5,6 +5,9 @@ import java.util.HashMap;
  *
  * @author Fareen. L
  * @version 11.08.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public interface IWorldMap {
 
@@ -13,12 +16,12 @@ public interface IWorldMap {
      *
      * @return A hashmap of continents and countries.
      */
-    public HashMap<ContinentName, CountryName[]> getContinents();
+    public HashMap<String, String[]> getContinents();
 
     /**
      *  Returns a hashmap of countries and corresponding adjacent countries in a map.
      *
      * @return A hashmap of country names and corresponding adjacent country names.
      */
-    public HashMap<CountryName, CountryName[]> getAdjCountries();
+    public HashMap<String, String[]> getAdjCountries();
 }

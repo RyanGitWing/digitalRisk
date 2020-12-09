@@ -10,8 +10,11 @@ import java.util.List;
 /**
  * Tests for Country class.
  *
- * @author Fareen Lavji
+ * @author Fareen. L
  * @version 11.09.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public class CountryTest {
 
@@ -19,7 +22,7 @@ public class CountryTest {
 
     @Before
     public void setUp() throws Exception {
-        country = new Country(CountryName.SouthernEurope, ContinentName.Europe);
+        country = new Country("SouthernEurope", "Europe");
     }
 
     @After
@@ -31,7 +34,7 @@ public class CountryTest {
     @Test
     public void getName() {
         // act and assert
-        assertEquals(CountryName.SouthernEurope, country.getCountryName());
+        assertEquals("SouthernEurope", country.getCountryName());
     }
 
     @Test
@@ -68,7 +71,7 @@ public class CountryTest {
     @Test
     public void getAdjCountry() {
         // setup
-        Country country = new Country(CountryName.SouthernEurope, ContinentName.Europe);
+        Country country = new Country("SouthernEurope", "Europe");
 
         // act and assert
         assertEquals(0, country.getAdjCountries().size());
@@ -77,10 +80,10 @@ public class CountryTest {
     @Test
     public void setAdjCountries() {
         // setup
-        List<CountryName> adj= new ArrayList<>();
-        adj.add(CountryName.Ukraine);
-        adj.add(CountryName.NorthernEurope);
-        adj.add(CountryName.WesternEurope);
+        List<String> adj= new ArrayList<>();
+        adj.add("Ukraine");
+        adj.add("NorthernEurope");
+        adj.add("WesternEurope");
         country.setAdjCountry(adj);
 
         // act and assert
