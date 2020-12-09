@@ -21,7 +21,7 @@ public class GameTest {
     @Test
     public void getBoardMap() {
         // setup
-        Game game = new Game();
+        Game game = new Game(2, 4, "");
 
         // act and assess
         assertNotNull(game.getBoardMap());
@@ -40,7 +40,7 @@ public class GameTest {
     @Test
     public void getCurrentPlayer() {
         // setup
-        Game game = new Game(2, 0);
+        Game game = new Game(2, 0, "");
 
         // act and assess
         assertEquals("Player1", game.getCurrentPlayer().getName());
@@ -59,7 +59,7 @@ public class GameTest {
     @Test
     public void nextPlayer() {
         // setup and act
-        Game game = new Game(2, 0);
+        Game game = new Game(2, 0, "");
         game.nextPlayer();
         String actual = game.getCurrentPlayer().getName();
         game.nextPlayer();
