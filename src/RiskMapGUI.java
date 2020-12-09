@@ -12,6 +12,9 @@ import java.awt.*;
  *
  * @author Vis. K
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.08.2020
  */
 
 public class RiskMapGUI extends JPanel
@@ -33,7 +36,7 @@ public class RiskMapGUI extends JPanel
         for (Continent c:  worldMap.getBoardMap().values())
         {
             JPanel jPanel = continentPanel(c);
-            if (c.getName() == "NorthAmerica")
+            if (c.getName().equals("NorthAmerica"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx = 0;
@@ -41,7 +44,7 @@ public class RiskMapGUI extends JPanel
                 constraints.anchor = GridBagConstraints.FIRST_LINE_START;
                 this.add(jPanel, constraints);
             }
-            if (c.getName() == "SouthAmerica")
+            if (c.getName().equals("SouthAmerica"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx = 0;
@@ -49,7 +52,7 @@ public class RiskMapGUI extends JPanel
                 constraints.anchor = GridBagConstraints.CENTER; // Change to LAST_LINE_START;
                 this.add(jPanel, constraints);
             }
-            if (c.getName() == "Europe")
+            if (c.getName().equals("Europe"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx = 1;
@@ -57,7 +60,7 @@ public class RiskMapGUI extends JPanel
                 constraints.anchor = GridBagConstraints.PAGE_START;
                 this.add(jPanel, constraints);
             }
-            if (c.getName() == "Africa")
+            if (c.getName().equals("Africa"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx  = 1;
@@ -65,7 +68,7 @@ public class RiskMapGUI extends JPanel
                 constraints.anchor = GridBagConstraints.CENTER;
                 this.add(jPanel, constraints);
             }
-            if (c.getName() == "Asia")
+            if (c.getName().equals("Asia"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx  = 2;
@@ -73,7 +76,7 @@ public class RiskMapGUI extends JPanel
                 constraints.anchor = GridBagConstraints.FIRST_LINE_END;
                 this.add(jPanel, constraints);
             }
-            if (c.getName() == "Australia")
+            if (c.getName().equals("Australia"))
             {
                 GridBagConstraints constraints = new GridBagConstraints();
                 constraints.gridx  = 2;
@@ -123,65 +126,65 @@ public class RiskMapGUI extends JPanel
                 jButton.setForeground(Color.white );
             }
 
-            if (continent.getName() == "NorthAmerica")
+            if (continent.getName().equals("NorthAmerica"))
             {
-                if (country.getCountryName() == "Alaska")
+                if (country.getCountryName().equals("Alaska"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 0;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "NorthwestTerritories")
+                if (country.getCountryName().equals("NorthwestTerritories"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 1;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "WesternCanada")
+                if (country.getCountryName().equals("WesternCanada"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 1;
                     constraints.gridy = 3;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "CentralCanada")
+                if (country.getCountryName().equals("CentralCanada"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 2;
                     constraints.gridy = 3;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "EasternCanada")
+                if (country.getCountryName().equals("EasternCanada"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 3;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "WesternUS")
+                if (country.getCountryName().equals("WesternUS"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 1;
                     constraints.gridy = 4;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "EasternUS")
+                if (country.getCountryName().equals("EasternUS"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 2;
                     constraints.gridy = 4;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "CentralAmerica")
+                if (country.getCountryName().equals("CentralAmerica"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 1;
                     constraints.gridy = 6;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Greenland")
+                if (country.getCountryName().equals("Greenland"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
@@ -189,30 +192,30 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
             }
-            if (continent.getName() == "SouthAmerica")
+            if (continent.getName().equals("SouthAmerica"))
             {
-                if (country.getCountryName() == "Venezuela")
+                if (country.getCountryName().equals("Venezuela"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 7;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Peru")
+                if (country.getCountryName().equals("Peru"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 8;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Brazil")
+                if (country.getCountryName().equals("Brazil"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 8;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Argentina")
+                if (country.getCountryName().equals("Argentina"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
@@ -220,51 +223,51 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
             }
-            if (continent.getName() == "Europe")
+            if (continent.getName().equals("Europe"))
             {
-                if (country.getCountryName() == "Iceland")
+                if (country.getCountryName().equals("Iceland"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 2;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "GreatBritain")
+                if (country.getCountryName().equals("GreatBritain"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 1;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Scandinavia")
+                if (country.getCountryName().equals("Scandinavia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Ukraine")
+                if (country.getCountryName().equals("Ukraine"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 5;
                     constraints.gridy = 1;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "NorthernEurope")
+                if (country.getCountryName().equals("NorthernEurope"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 1;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "SouthernEurope")
+                if (country.getCountryName().equals("SouthernEurope"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "WesternEurope")
+                if (country.getCountryName().equals("WesternEurope"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
@@ -272,44 +275,44 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
             }
-            if (continent.getName() == "Africa")
+            if (continent.getName().equals("Africa"))
             {
-                if (country.getCountryName() == "NorthAfrica")
+                if (country.getCountryName().equals("NorthAfrica"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Egypt")
+                if (country.getCountryName().equals("Egypt"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 5;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "EastAfrica")
+                if (country.getCountryName().equals("EastAfrica"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 5;
                     constraints.gridy = 3;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Congo")
+                if (country.getCountryName().equals("Congo"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 3;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "SouthAfrica")
+                if (country.getCountryName().equals("SouthAfrica"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 4;
                     constraints.gridy = 4;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Madagascar")
+                if (country.getCountryName().equals("Madagascar"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 10;
@@ -317,23 +320,23 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
             }
-            if (continent.getName() == "Asia")
+            if (continent.getName().equals("Asia"))
             {
-                if (country.getCountryName() == "Ural")
+                if (country.getCountryName().equals("Ural"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Afghanistan")
+                if (country.getCountryName().equals("Afghanistan"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
                     constraints.gridy = 1;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "MiddleEast")
+                if (country.getCountryName().equals("MiddleEast"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 3;
@@ -341,63 +344,63 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
 
-                if (country.getCountryName() == "Siberia")
+                if (country.getCountryName().equals("Siberia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 7;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Yakutsk")
+                if (country.getCountryName().equals("Yakutsk"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 8;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Kamchatka")
+                if (country.getCountryName().equals("Kamchatka"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 9;
                     constraints.gridy = 0;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Irkutsk")
+                if (country.getCountryName().equals("Irkutsk"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 8;
                     constraints.gridy = 1;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Mongolia")
+                if (country.getCountryName().equals("Mongolia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 9;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "China")
+                if (country.getCountryName().equals("China"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 8;
                     constraints.gridy = 2;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "India")
+                if (country.getCountryName().equals("India"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 7;
                     constraints.gridy = 4;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Siam")
+                if (country.getCountryName().equals("Siam"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 8;
                     constraints.gridy = 4;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "Japan")
+                if (country.getCountryName().equals("Japan"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 10;
@@ -405,30 +408,30 @@ public class RiskMapGUI extends JPanel
                     jPanel.add(jButton, constraints);
                 }
             }
-            if (continent.getName() == "Australia")
+            if (continent.getName().equals("Australia"))
             {
-                if (country.getCountryName() == "Indonesia")
+                if (country.getCountryName().equals("Indonesia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 16;
                     constraints.gridy = 5;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "NewGuinea")
+                if (country.getCountryName().equals("NewGuinea"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 17;
                     constraints.gridy = 6;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "WesternAustralia")
+                if (country.getCountryName().equals("WesternAustralia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 16;
                     constraints.gridy = 10;
                     jPanel.add(jButton, constraints);
                 }
-                if (country.getCountryName() == "EasternAustralia")
+                if (country.getCountryName().equals("EasternAustralia"))
                 {
                     GridBagConstraints constraints = new GridBagConstraints();
                     constraints.gridx = 17;
