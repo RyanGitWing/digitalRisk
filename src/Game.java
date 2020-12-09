@@ -172,6 +172,8 @@ public class Game implements Serializable
 
             board.setupPlayers(playerList);
         }
+        
+        Collections.shuffle(playerList);
     }
 
     /**
