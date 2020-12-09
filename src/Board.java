@@ -22,9 +22,8 @@ public class Board implements Serializable
 {
     private final IWorldMap worldMap;
     private final int countryCount;
-    private final int continentCount;
-    private HashMap<String, Continent> boardMap;
-    private List<Country> countries;
+    private final HashMap<String, Continent> boardMap;
+    private final List<Country> countries;
 
 
     /**
@@ -35,7 +34,6 @@ public class Board implements Serializable
     {
         this.worldMap = new DefaultWorldMap();
         this.countryCount = worldMap.getAdjCountries().keySet().size();
-        this.continentCount = worldMap.getContinents().keySet().size();
         this.boardMap = new HashMap<>();
         this.countries = new ArrayList<>();
         _setupMap();
@@ -49,7 +47,6 @@ public class Board implements Serializable
     public Board(String filePath) {
         this.worldMap = _deserialize(filePath);
         this.countryCount = worldMap.getAdjCountries().keySet().size();
-        this.continentCount = worldMap.getContinents().keySet().size();
         this.boardMap = new HashMap<>();
         this.countries = new ArrayList<>();
         _setupMap();
@@ -150,6 +147,12 @@ public class Board implements Serializable
         }
     }
 
+    /**
+     * Deserializes a custom map and loads it into the board.
+     *
+     * @param filePath The filepath for the custom map. Must be a .json.
+     * @return An IWorldMap object for the board.
+     */
     private IWorldMap _deserialize(String filePath) {
         IWorldMap map = null;
         try {
