@@ -8,7 +8,7 @@ import java.util.HashMap;
  * Use this to build and output custom maps.
  *
  * @author Fareen. L
- * @version 12.07.2020
+ * @version 12.08.2020
  */
 public class CustomWorldMap implements IWorldMap, Serializable {
 
@@ -24,18 +24,28 @@ public class CustomWorldMap implements IWorldMap, Serializable {
     }
 
     /**
-     * Returns a hashmap of continents and corresponding countries in the default map.
+     * Returns a hashmap of continents and corresponding countries in the custom map.
      *
      * @return A hashmap of continent and country names.
      */
     public HashMap<String, String[]> getContinents() { return continents; }
 
     /**
-     *  Returns a hashmap of countries and corresponding adjacent countries in the default map.
+     *  Returns a hashmap of countries and corresponding adjacent countries in the custom map.
      *
      * @return A hashmap of country names and corresponding adjacent country names.
      */
     public HashMap<String, String[]> getAdjCountries() { return adjCountries; }
+
+    /**
+     * Returns a hashmap of bonus armies corresponding to each continent.
+     *
+     * @return A hashmap of continents and bonus armies.
+     */
+    @Override
+    public HashMap<String, Integer> getBonusArmies() {
+        return null;
+    }
 
     /**
      * Returns the name of the custom map.
@@ -337,7 +347,7 @@ public class CustomWorldMap implements IWorldMap, Serializable {
 
         public static void main(String[] args) {
             try {
-                DefaultWorldMap map = new DefaultWorldMap();
+                IWorldMap map = new DefaultWorldMap();
                 FileOutputStream fOut = new FileOutputStream("defaultMap.json");
                 ObjectOutputStream out = new ObjectOutputStream(fOut);
                 out.writeObject(map);

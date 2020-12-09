@@ -1,5 +1,3 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
 import java.util.*;
 
@@ -16,7 +14,7 @@ import java.util.*;
  * @version 11.23.2020
  *
  * @author Fareen. L
- * @version 12.07.2020
+ * @version 12.08.2020
  */
 
 public class Board
@@ -125,6 +123,9 @@ public class Board
      */
     private void _setupMap()
     {
+        // setup bonus armies
+        BonusArmy.setupBonus(this.worldMap.getBonusArmies());
+
         // extract data from world maps
         HashMap<String, String[]> continents = this.worldMap.getContinents();
         HashMap<String, String[]> adjCountries = this.worldMap.getAdjCountries();
