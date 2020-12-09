@@ -7,7 +7,7 @@ import java.util.HashMap;
  * @version 11.08.2020
  *
  * @author Fareen. L
- * @version 12.07.2020
+ * @version 12.08.2020
  */
 public interface IWorldMap {
 
@@ -24,4 +24,11 @@ public interface IWorldMap {
      * @return A hashmap of country names and corresponding adjacent country names.
      */
     public HashMap<String, String[]> getAdjCountries();
+
+    /**
+     * Returns a hashmap of bonus armies corresponding to each continent.
+     *
+     * @return A hashmap of continents and bonus armies.
+     */
+    public HashMap<String, Integer> getBonusArmies();
 }

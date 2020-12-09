@@ -15,7 +15,7 @@ import java.util.*;
  * @version 11.23.2020
  *
  * @author Fareen. L
- * @version 12.07.2020
+ * @version 12.08.2020
  */
 
 public class Board implements Serializable
@@ -124,6 +124,9 @@ public class Board implements Serializable
      */
     private void _setupMap()
     {
+        // setup bonus armies
+        BonusArmy.setupBonus(this.worldMap.getBonusArmies());
+
         // extract data from world maps
         HashMap<String, String[]> continents = this.worldMap.getContinents();
         HashMap<String, String[]> adjCountries = this.worldMap.getAdjCountries();
