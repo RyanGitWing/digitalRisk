@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,20 +13,20 @@ import java.util.*;
  * @author Fareen. L
  * @version 11.23.2020
  */
-public class Country {
+public class Country implements Serializable {
 
-    private final CountryName countryName;
-    private final ContinentName continentName;
+    private final String countryName;
+    private final String continentName;
     private Player ruler;
     private int armyOccupied;
-    private List<CountryName> adjCountries;
+    private List<String> adjCountries;
 
     /**
      * Creates a new country object and sets up initial values.
      *
      * @param countryName The name of the country.
      */
-    public Country(CountryName countryName, ContinentName continentName){
+    public Country(String countryName, String continentName){
         this.countryName = countryName;
         this.continentName = continentName;
         ruler = null;
@@ -38,7 +39,7 @@ public class Country {
      *
      * @return The name of the country.
      */
-    public CountryName getCountryName(){
+    public String getCountryName(){
         return this.countryName;
     }
 
@@ -47,7 +48,7 @@ public class Country {
      *
      * @return A continent name.
      */
-    public ContinentName getContinentName() { return this.continentName; }
+    public String getContinentName() { return this.continentName; }
 
     /**
      * Returns country's ruler.
@@ -90,7 +91,7 @@ public class Country {
      *
      * @return A list of adjacent countries
      */
-    public List<CountryName> getAdjCountries(){
+    public List<String> getAdjCountries(){
         return adjCountries;
     }
 
@@ -99,7 +100,7 @@ public class Country {
      *
      * @param adj The adjacent country
      */
-    public void setAdjCountry(List<CountryName> adj){
+    public void setAdjCountry(List<String> adj){
         adjCountries = adj;
     }
 }

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,11 @@ import java.util.List;
  * @author Fareen. L
  * @version 11.23.2020
  */
-public class Player {
+public class Player implements Serializable {
 
     private final String NAME;
     private List<Country> ownedCountries;
-    private List<ContinentName> ownedContinents;
+    private List<String> ownedContinents;
     private int totArmyCount;
     private boolean PlayerTurn;
 
@@ -103,7 +104,7 @@ public class Player {
      *
      * @return A list of continent names.
      */
-    public List<ContinentName> getOwnedContinents() {
+    public List<String> getOwnedContinents() {
         return ownedContinents;
     }
 
@@ -143,22 +144,22 @@ public class Player {
      * @param name The name of the continent.
      * @return True if added, False otherwise.
      */
-    private boolean addContinent(ContinentName name) {
+    private boolean addContinent(String name) {
         int defaultCountryCount = 0;
         int playerCountryCount = 0;
 
         switch (name) {
-            case SouthAmerica:
+            case "SouthAmerica":
                 defaultCountryCount = 4;
-            case NorthAmerica:
+            case "NorthAmerica":
                 defaultCountryCount = 9;
-            case Australia:
+            case "Australia":
                 defaultCountryCount = 4;
-            case Africa:
+            case "Africa":
                 defaultCountryCount = 6;
-            case Europe:
+            case "Europe":
                 defaultCountryCount = 7;
-            case Asia:
+            case "Asia":
                 defaultCountryCount = 12;
         }
 
@@ -179,7 +180,7 @@ public class Player {
      *
      * @param name The continent name to remove.
      */
-    private void removeContinent(ContinentName name) {
+    private void removeContinent(String name) {
         this.ownedContinents.remove(name);
     }
 

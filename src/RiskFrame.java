@@ -21,6 +21,9 @@ import java.awt.*;
  *
  * @author Vis. K
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 
 public class RiskFrame extends JFrame implements RiskView{
@@ -34,7 +37,7 @@ public class RiskFrame extends JFrame implements RiskView{
      */
     public RiskFrame(int numHumanPlayers,int numAIPlayers)
     {
-        riskGame = new Game(numHumanPlayers,numAIPlayers);
+        riskGame = new Game(numHumanPlayers,numAIPlayers, "defaultMap.json");
         riskGame.addRiskView(this);
 
         this.setLayout(new BorderLayout());
@@ -47,7 +50,7 @@ public class RiskFrame extends JFrame implements RiskView{
         this.setLocationRelativeTo(null);
 
         //Add the menu to the frame
-        RiskMenu menu = new RiskMenu();
+        RiskMenu menu = new RiskMenu(riskGame);
         this.setJMenuBar(menu);
 
         //LegendGUI (Players and their colours in MapGUI);

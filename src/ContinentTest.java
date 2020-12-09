@@ -9,6 +9,9 @@ import static org.junit.Assert.*;
  *
  * @author Fareen. L
  * @version 11.09.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public class ContinentTest {
 
@@ -16,7 +19,7 @@ public class ContinentTest {
 
     @Before
     public void setUp() throws Exception {
-        continent = new Continent(ContinentName.Africa);
+        continent = new Continent("Africa");
     }
 
     @After
@@ -28,7 +31,7 @@ public class ContinentTest {
     @Test
     public void getName() {
         // act and assert
-        assertEquals(ContinentName.Africa, continent.getName());
+        assertEquals("Africa", continent.getName());
     }
 
     @Test
@@ -40,10 +43,10 @@ public class ContinentTest {
     @Test
     public void addCountry() {
         // setup
-        continent.addCountry(new Country(CountryName.SouthernEurope, ContinentName.Europe));
+        continent.addCountry(new Country("SouthernEurope", "Europe"));
 
         // act and assert
         assertEquals(1, continent.getCountries().size());
-        assertEquals(CountryName.SouthernEurope, continent.getCountries().get(0).getCountryName());
+        assertEquals("SouthernEurope", continent.getCountries().get(0).getCountryName());
     }
 }

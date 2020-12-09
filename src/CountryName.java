@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 /**
  * @author Fareen. L
  * @version 10.25.2020
  */
-public enum CountryName {
+public enum CountryName implements Serializable {
     Alaska,
     WesternCanada,
     CentralAmerica,

@@ -21,6 +21,9 @@ import java.util.List;
  *
  * @author Vis. K
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 
 public class CommandPanel extends JPanel implements ActionListener
@@ -95,7 +98,7 @@ public class CommandPanel extends JPanel implements ActionListener
                     if (armyB != null)
                     {
                         String bonusC = bonusCountry.substring(0,bonusCountry.indexOf(" "));
-                        riskGame.getBoardMap().getCountry(CountryName.valueOf(bonusC)).setArmyOccupied(riskGame.getBoardMap().getCountry(CountryName.valueOf(bonusC)).getArmyOccupied() + Integer.parseInt(armyB));
+                        riskGame.getBoardMap().getCountry(bonusC).setArmyOccupied(riskGame.getBoardMap().getCountry(bonusC).getArmyOccupied() + Integer.parseInt(armyB));
                         reinforce -= Integer.parseInt(armyB);
                     }
                 }

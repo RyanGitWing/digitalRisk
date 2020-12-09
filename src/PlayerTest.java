@@ -9,6 +9,9 @@ import static org.junit.Assert.*;
  *
  * @author Fareen Lavji
  * @version 11.09.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
  */
 public class PlayerTest {
 
@@ -60,8 +63,8 @@ public class PlayerTest {
     @Test
     public void addNewCountry() {
         // setup
-        player.addCountry(new Country(CountryName.SouthernEurope, ContinentName.Europe));
-        player.addCountry(new Country(CountryName.China, ContinentName.Asia));
+        player.addCountry(new Country("SouthernEurope", "Europe"));
+        player.addCountry(new Country("China", "Asia"));
 
         // act and assert
         assertEquals(2, player.getOwnedCountries().size());
