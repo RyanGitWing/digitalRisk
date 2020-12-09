@@ -31,10 +31,10 @@ public class AIPlayer extends Player implements Serializable {
 
         for(int i = 0; i < ownedCountriesSize; i++){
             int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
-            if(getOwnedCountries().get(i).getArmyOccupied() >= 3){
+            if(getOwnedCountries().get(i).getArmyOccupied() >= 4){
                 for(int j = 0; j < adjCountriesSize; j++){
                     Country adj = riskGame.getBoardMap().getCountry(getOwnedCountries().get(i).getAdjCountries().get(j));
-                    if(getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this)){
+                    if(getOwnedCountries().get(i).getArmyOccupied()>adj.getArmyOccupied() && !adj.getRuler().equals(this) && getOwnedCountries().get(i).getArmyOccupied() >= 4){
                         riskGame.attackCMD(getOwnedCountries().get(i).getCountryName().toString(),3,adj.getCountryName().toString());
                     }
                 }
