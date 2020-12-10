@@ -156,6 +156,7 @@ public class Game implements Serializable
 
 
         if(numAIPlayers == 0){
+            Collections.shuffle(playerList);
             playerIndex = 0;
             currentPlayer = playerList.get(playerIndex);
 
@@ -167,13 +168,14 @@ public class Game implements Serializable
             }
 
             // Initialize the starting player.
+            Collections.shuffle(playerList);
             playerIndex = 0;
             currentPlayer = playerList.get(playerIndex);
 
             board.setupPlayers(playerList);
         }
         
-        Collections.shuffle(playerList);
+        
     }
 
     /**
