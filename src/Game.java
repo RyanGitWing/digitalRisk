@@ -50,7 +50,8 @@ public class Game
      *
      * @param humanPlayerCount number of players playing the game.
      */
-    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath) throws Exception {
+    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath)
+    {
         playerList = new ArrayList<>();
         if (mapPath.isEmpty()) board = new Board();
         else board = new Board(mapPath);

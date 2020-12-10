@@ -12,13 +12,14 @@ import java.util.HashMap;
  */
 public class CustomWorldMap implements IWorldMap, Serializable {
 
-    private HashMap<String, String[]> continents;
-    private HashMap<String, String[]> adjCountries;
-    private String name = "America";
+    private final HashMap<String, String[]> continents;
+    private final HashMap<String, String[]> adjCountries;
+    private final HashMap<String, Integer> bonusArmies;
 
     public CustomWorldMap() {
         continents = new HashMap<>();
         adjCountries = new HashMap<>();
+        bonusArmies = new HashMap<>();
         _generateContinents();
         _generateAdjacentCountries();
     }
@@ -42,17 +43,14 @@ public class CustomWorldMap implements IWorldMap, Serializable {
      *
      * @return A hashmap of continents and bonus armies.
      */
-    @Override
-    public HashMap<String, Integer> getBonusArmies() {
-        return null;
-    }
+    public HashMap<String, Integer> getBonusArmies() { return bonusArmies; }
 
     /**
      * Returns the name of the custom map.
      *
      * @return A name.
      */
-    public String getName() { return name; }
+    public String getName() { return "America"; }
 
     /**
      * Generates the default continents.
@@ -137,6 +135,15 @@ public class CustomWorldMap implements IWorldMap, Serializable {
                 "Nebraska",
                 "NorthAndSouthDakota"
         });
+        this.adjCountries.put("NorthAndSouthDakota", new String[] {
+                "Montana",
+                "Wyoming",
+                "Nebraska",
+                "Minnesota",
+                "Iowa"
+        });
+
+        // Midwest
         this.adjCountries.put("Colorado", new String[] {
                 "Wyoming",
                 "Utah",
@@ -145,210 +152,287 @@ public class CustomWorldMap implements IWorldMap, Serializable {
                 "Kansas",
                 "Nebraska"
         });
-        this.adjCountries.put("EasternUS", new String[] {
-                "CentralAmerica",
-                "CentralCanada",
-                "WesternUS" });
-        this.adjCountries.put("Greenland", new String[] {
-                "NorthwestTerritories",
-                "CentralCanada",
-                "EasternCanada",
-                "Iceland" });
-        this.adjCountries.put("NorthwestTerritories", new String[] {
-                "Alaska",
-                "WesternCanada",
-                "Greenland",
-                "CentralCanada"});
-        this.adjCountries.put("CentralCanada", new String[] {
-                "WesternCanada",
-                "Greenland",
-                "NorthwestTerritories",
-                "EasternCanada",
-                "EasternUS"
+        this.adjCountries.put("Nebraska", new String[] {
+                "NorthAndSouthDakota",
+                "Wyoming",
+                "Colorado",
+                "Kansas",
+                "Missouri",
+                "Iowa",
         });
-        this.adjCountries.put("EasternCanada", new String[] {
-                "EasternUS",
-                "Greenland",
-                "NorthwestTerritories",
-                "CentralCanada" });
-        this.adjCountries.put("WesternUS", new String[] {
-                "WesternCanada",
-                "CentralAmerica",
-                "EasternUS",
-                "CentralCanada" });
+        this.adjCountries.put("Kansas", new String[] {
+                "Nebraska",
+                "Colorado",
+                "Oklahoma",
+                "Missouri"
+        });
+        this.adjCountries.put("Missouri", new String[] {
+                "Iowa",
+                "Nebraska",
+                "Kansas",
+                "Oklahoma",
+                "Arkansas",
+                "Tennessee",
+                "Kentucku",
+                "Illinois"
+        });
 
-        // South America
-        this.adjCountries.put("Argentina", new String[] {
-                "Brazil",
-                "Peru" });
-        this.adjCountries.put("Brazil", new String[] {
-                "Argentina",
-                "Peru",
-                "Venezuela"});
-        this.adjCountries.put("Peru", new String[] {
-                "Argentina",
-                "Brazil",
-                "Venezuela" });
-        this.adjCountries.put("Venezuela", new String[] {
-                "Brazil",
-                "Peru",
-                "CentralAmerica"});
+        // South
+        this.adjCountries.put("NewMexico", new String[] {
+                "Colorado",
+                "Arizona",
+                "Oklahoma",
+                "Texas"
+        });
+        this.adjCountries.put("Oklahoma", new String[] {
+                "Kansas",
+                "Colorado",
+                "NewMexico",
+                "Texas",
+                "Arkansas",
+                "Missouri"
+        });
+        this.adjCountries.put("Texas", new String[] {
+                "Oklahoma",
+                "NewMexico",
+                "Louisiana",
+                "Arkansas"
+        });
+        this.adjCountries.put("Arkansas", new String[] {
+                "Missouri",
+                "Oklahoma",
+                "Texas",
+                "Louisiana",
+                "Mississippi",
+                "Tennessee"
+        });
+        this.adjCountries.put("Louisiana", new String[] {
+                "Arkansas",
+                "Texas",
+                "Mississippi"
+        });
 
-        // Europe
-        this.adjCountries.put("GreatBritain", new String[] {
-                "Iceland",
-                "NorthernEurope",
-                "Scandinavia",
-                "WesternEurope" });
-        this.adjCountries.put("Iceland", new String[] {
-                "GreatBritain",
-                "Greenland" });
-        this.adjCountries.put("NorthernEurope", new String[] {
-                "GreatBritain",
-                "Scandinavia",
-                "SouthernEurope",
-                "Ukraine",
-                "WesternEurope" });
-        this.adjCountries.put("Scandinavia", new String[] {
-                "GreatBritain",
-                "Iceland",
-                "NorthernEurope",
-                "Ukraine" });
-        this.adjCountries.put("SouthernEurope", new String[] {
-                "NorthernEurope",
-                "Ukraine",
-                "WesternEurope",
-                "Egypt",
-                "NorthAfrica",
-                "MiddleEast" });
-        this.adjCountries.put("Ukraine", new String[] {
-                "NorthernEurope",
-                "Scandinavia",
-                "SouthernEurope",
-                "Afghanistan",
-                "MiddleEast",
-                "Ural" });
-        this.adjCountries.put("WesternEurope", new String[] {
-                "GreatBritain",
-                "NorthernEurope",
-                "SouthernEurope",
-                "NorthAfrica" });
+        // West
+        this.adjCountries.put("Washington", new String[] {
+                "Oregon",
+                "Idaho"
+        });
+        this.adjCountries.put("Oregon", new String[] {
+                "Washington",
+                "Idaho",
+                "Nevada",
+                "NorthCalifornia"
+        });
+        this.adjCountries.put("Idaho", new String[] {
+                "Washington",
+                "Oregon",
+                "Nevada",
+                "Utah",
+                "Wyoming",
+                "Montana"
+        });
+        this.adjCountries.put("NorthCalifornia", new String[] {
+                "Oregon",
+                "Nevada",
+                "SouthCalifornia"
+        });
+        this.adjCountries.put("SouthCalifornia", new String[] {
+                "NorthCalifornia",
+                "Nevada",
+                "Arizona"
+        });
+        this.adjCountries.put("Nevada", new String[] {
+                "Oregon",
+                "NorthCalifornia",
+                "SouthCalifornia",
+                "Arizona",
+                "Utah",
+                "Idaho"
+        });
+        this.adjCountries.put("Utah", new String[] {
+                "Idaho",
+                "Nevada",
+                "Arizona",
+                "Colorado",
+                "Wyoming"
+        });
+        this.adjCountries.put("Arizona", new String[] {
+                "Utah",
+                "Nevada",
+                "SouthCalifornia",
+                "NewMexico"
+        });
 
-        // Africa
-        this.adjCountries.put("Congo", new String[] {
-                "EastAfrica",
-                "NorthAfrica",
-                "SouthAfrica" });
-        this.adjCountries.put("EastAfrica", new String[] {
-                "Congo",
-                "Egypt",
-                "Madagascar",
-                "MiddleEast" });
-        this.adjCountries.put("Egypt", new String[] {
-                "EastAfrica",
-                "NorthAfrica",
-                "SouthernEurope",
-                "MiddleEast" });
-        this.adjCountries.put("Madagascar", new String[] {
-                "EastAfrica",
-                "SouthAfrica" });
-        this.adjCountries.put("NorthAfrica", new String[] {
-                "Congo",
-                "Egypt",
-                "Brazil",
-                "SouthernEurope",
-                "WesternEurope" });
-        this.adjCountries.put("SouthAfrica", new String[] {
-                "Congo",
-                "EastAfrica",
-                "Madagascar" });
+        // The Lakes
+        this.adjCountries.put("Minnesota", new String[] {
+                "NorthAndSouthDakota",
+                "Iowa",
+                "WisconsinAndUpperMichigan"
+        });
+        this.adjCountries.put("Iowa", new String[] {
+                "Minnesota",
+                "NorthAndSouthDakota",
+                "Nebraska",
+                "Missouri",
+                "Illinois",
+                "WisconsinAndUpperMichigan"
+        });
+        this.adjCountries.put("WisconsinAndUpperMichigan", new String[] {
+                "Minnesota",
+                "Iowa",
+                "Illinois",
+                "LowerMichigan",
+                "Indiana"
+        });
+        this.adjCountries.put("Illinois", new String[] {
+                "WisconsinAndUpperMichigan",
+                "Iowa",
+                "Missouri",
+                "Kentucky",
+                "Indiana",
+                "LowerMichigan"
+        });
+        this.adjCountries.put("LowerMichigan", new String[] {
+                "WisconsinAndUpperMichigan",
+                "Illinois",
+                "Indiana",
+                "Ohio"
+        });
+        this.adjCountries.put("Indiana", new String[] {
+                "LowerMichigan",
+                "WisconsinAndUpperMichigan",
+                "Illinois",
+                "Kentucky",
+                "Ohio"
+        });
+        this.adjCountries.put("Ohio", new String[] {
+                "LowerMichigan",
+                "Indiana",
+                "Kentucky",
+                "WestVirginia",
+                "Pennsylvania"
+        });
 
-        // Asia
-        this.adjCountries.put("Afghanistan", new String[] {
-                "China",
-                "India",
-                "MiddleEast",
-                "Ural",
-                "Ukraine" });
-        this.adjCountries.put("China", new String[] {
-                "Afghanistan",
-                "India",
-                "Mongolia",
-                "Siam",
-                "Siberia",
-                "Ural" });
-        this.adjCountries.put("India", new String[] {
-                "Afghanistan",
-                "China",
-                "MiddleEast" });
-        this.adjCountries.put("Irkutsk", new String[] {
-                "Kamchatka",
-                "Mongolia",
-                "Siberia",
-                "Yakutsk" });
-        this.adjCountries.put("Japan", new String[] {
-                "Kamchatka",
-                "Mongolia" });
-        this.adjCountries.put("Kamchatka", new String[] {
-                "Irkutsk",
-                "Japan",
-                "Yakutsk" });
-        this.adjCountries.put("MiddleEast", new String[] {
-                "Afghanistan",
-                "India",
-                "EastAfrica",
-                "Egypt",
-                "SouthernEurope",
-                "Ukraine" });
-        this.adjCountries.put("Mongolia", new String[] {
-                "China",
-                "Irkutsk",
-                "Japan",
-                "Kamchatka",
-                "Siberia" });
-        this.adjCountries.put("Siam", new String[] {
-                "China",
-                "India",
-                "Indonesia" });
-        this.adjCountries.put("Siberia", new String[] {
-                "China",
-                "Irkutsk",
-                "Mongolia",
-                "Ural",
-                "Yakutsk" });
-        this.adjCountries.put("Ural", new String[] {
-                "Afghanistan",
-                "China",
-                "Siberia",
-                "Ukraine" });
-        this.adjCountries.put("Yakutsk", new String[] {
-                "Irkutsk",
-                "Kamchatka",
-                "Siberia" });
+        // East Coast
+        this.adjCountries.put("Kentucky", new String[] {
+                "Ohio",
+                "Indiana",
+                "Illinois",
+                "Missouri",
+                "Tennessee",
+                "Virginia",
+                "WestVirginia"
+        });
+        this.adjCountries.put("Tennessee", new String[] {
+                "Kentucky",
+                "Missouri",
+                "Arkansas",
+                "Mississippi",
+                "Alabama",
+                "Georgia",
+                "NorthAndSouthCarolina",
+                "Virginia"
+        });
+        this.adjCountries.put("Mississippi", new String[] {
+                "Tennessee",
+                "Arkansas",
+                "Louisiana",
+                "Alabama"
+        });
+        this.adjCountries.put("Alabama", new String[] {
+                "Tennessee",
+                "Mississippi",
+                "Florida",
+                "Georgia",
+        });
+        this.adjCountries.put("Florida", new String[] {
+                "Alabama",
+                "Georgia"
+        });
+        this.adjCountries.put("Georgia", new String[] {
+                "Tennessee",
+                "Alabama",
+                "Florida",
+                "NorthAndSouthDakota"
+        });
+        this.adjCountries.put("NorthAndSouthCarolina", new String[] {
+                "Virginia",
+                "Kentucky",
+                "Tennessee",
+                "Georgia"
+        });
+        this.adjCountries.put("Virginia", new String[] {
+                "WestVirginia",
+                "Kentucky",
+                "Tennessee",
+                "NorthAndSouthCarolina"
+        });
 
-        // Australia
-        this.adjCountries.put("EasternAustralia", new String[] {
-                "NewGuinea",
-                "WesternAustralia"});
-        this.adjCountries.put("Indonesia", new String[] {
-                "NewGuinea",
-                "WesternAustralia",
-                "Siam" });
-        this.adjCountries.put("NewGuinea", new String[] {
-                "EasternAustralia",
-                "Indonesia" });
-        this.adjCountries.put("WesternAustralia", new String[] {
-                "EasternAustralia",
-                "NewGuinea",
-                "Indonesia"});
+        // East Islands
+        this.adjCountries.put("Maine", new String[] {
+                "VermontAndNewHampshire",
+                "Massachusetts"
+        });
+        this.adjCountries.put("VermontAndNewHampshire", new String[] {
+                "Maine",
+                "Massachusetts",
+                "NewYork"
+        });
+        this.adjCountries.put("Massachusetts", new String[] {
+                "VermontAndNewHampshire",
+                "Maine",
+                "NewYork",
+                "NewJersey"
+        });
+        this.adjCountries.put("NewYork", new String[] {
+                "VermontAndNewHampshire",
+                "Massachusetts",
+                "NewJersey",
+                "Pennsylvania"
+        });
+        this.adjCountries.put("Pennsylvania", new String[] {
+                "NewYork",
+                "NewJersey",
+                "MarylandAndDelaware",
+                "WestVirginia",
+                "Ohio"
+        });
+        this.adjCountries.put("NewJersey", new String[] {
+                "Massachusetts",
+                "NewYork",
+                "Pennsylvania",
+                "MarylandAndDelaware"
+        });
+        this.adjCountries.put("MarylandAndDelaware", new String[] {
+                "NewJersey",
+                "Pennsylvania",
+                "WestVirginia",
+                "Virginia"
+        });
+        this.adjCountries.put("WestVirginia", new String[] {
+                "MarylandAndDelaware",
+                "Ohio",
+                "Kentucky",
+                "Virginia"
+        });
+    }
+
+    private void _generateBonusArmies() {
+        this.bonusArmies.put("North", 1);
+        this.bonusArmies.put("Midwest", 2);
+        this.bonusArmies.put("South", 3);
+        this.bonusArmies.put("West", 4);
+        this.bonusArmies.put("TheLakes", 3);
+        this.bonusArmies.put("EastCoast", 4);
+        this.bonusArmies.put("EastIslands", 4);
     }
 
     private static class CustomMapBuilder {
 
         public static void main(String[] args) {
             try {
-                IWorldMap map = new DefaultWorldMap();
-                FileOutputStream fOut = new FileOutputStream("defaultMap.json");
+                IWorldMap map = new CustomWorldMap();
+                FileOutputStream fOut = new FileOutputStream("americaMap.json");
                 ObjectOutputStream out = new ObjectOutputStream(fOut);
                 out.writeObject(map);
                 out.close();
