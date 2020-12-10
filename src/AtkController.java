@@ -3,15 +3,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * The Risk Atk Controller.
+ *
+ * @author Ryan. N
+ * @version 12.08.2020
+ *
+ * @author Vis. K
+ * @version 12.09.2020
+ */
 
 public class AtkController implements ActionListener {
-
 
     private final Game riskGame;
     private final Board board;
 
     /**
-     * Creates a RiskController object.
+     * Creates a AtkController object.
      *
      * @param riskGame The game object.
      */
@@ -32,17 +40,19 @@ public class AtkController implements ActionListener {
         String armyC;
         int armyCount;
 
-        Country country = board.getCountry(CountryName.valueOf(atkC));
-        List<CountryName> countryAdjList = country.getAdjCountries();
+        Country country = board.getCountry(atkC);
+        List<String> countryAdjList = country.getAdjCountries();
 
         if (!riskGame.getCurrentPlayer().equals(country.getRuler())) {
             String text = "";
             text += "You don't own this country. " + "\n" + "The current ruler is: " + country.getRuler().getName() + "\n" + "The current army is: " + country.getArmyOccupied();
             JOptionPane.showMessageDialog(null, text, "Alert", JOptionPane.WARNING_MESSAGE);
-        } else {
+        }
+        else
+        {
             List<Country> adjEnemy = new ArrayList<>();
 
-            for (CountryName countryName : countryAdjList) {
+            for (String countryName : countryAdjList) {
                 Country boardCountry = board.getCountry(countryName);
                 if (!boardCountry.getRuler().equals(riskGame.getCurrentPlayer())) adjEnemy.add(boardCountry);
             }
@@ -50,7 +60,7 @@ public class AtkController implements ActionListener {
             if (adjEnemy.size() != 0) {
                 String[] adjEnemyArr = new String[adjEnemy.size()];
                 for (int i = 0; i < adjEnemy.size(); i++) {
-                    adjEnemyArr[i] = adjEnemy.get(i).getCountryName().toString();
+                    adjEnemyArr[i] = adjEnemy.get(i).getCountryName();
                 }
                 defC = (String) JOptionPane.showInputDialog(null,
                         "Choose a country to attack", "List of Enemy Adj Countries",
@@ -97,8 +107,15 @@ public class AtkController implements ActionListener {
                                             JOptionPane.INFORMATION_MESSAGE, null,
                                             occArmy, "");
 
-                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(defC)).setArmyOccupied(Integer.parseInt(armyD));
-                                    riskGame.getBoardMap().getCountry(CountryName.valueOf(atkC)).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
+                                    riskGame.getBoardMap().getCountry(defC).setArmyOccupied(Integer.parseInt(armyD));
+                                    riskGame.getBoardMap().getCountry(atkC).setArmyOccupied(country.getArmyOccupied() - Integer.parseInt(armyD));
+                                    riskGame.update();
+                                }
+                                int cont = JOptionPane.showConfirmDialog(null, "Would you like to continue to attack?",
+                                        "Attack Phase", JOptionPane.YES_NO_OPTION);
+                                if (cont == JOptionPane.NO_OPTION)
+                                {
+                                    riskGame.setState(Game.State.Fortify);
                                     riskGame.update();
                                 }
                             }

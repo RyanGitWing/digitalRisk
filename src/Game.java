@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.*;
 
 /**
@@ -25,11 +24,8 @@ import java.util.*;
  *
  * @author Fareen. L
  * @version 12.07.2020
- *
- * @author Vyasan. J
- * @version 12.09.2020
  */
-public class Game implements Serializable
+public class Game
 {
     private Dice die;
     private static ArrayList<Player> playerList;
@@ -44,40 +40,31 @@ public class Game implements Serializable
     private Boolean hasWon;
     private List <RiskView> riskViews;
     private String outcome = "", diceValue = "", atkOutput = "";
+    private int reinforce;
+    public enum State {Deploy, Attack, Fortify};
 
-
-    /**
-     * Creates a game and initialise its internal map.
-     */
-    public Game(ArrayList<Player> pL, int tP, int hP, int aI, int pI, Board b, Player c)
-    {
-        playerList = pL;
-        numPlayers = tP;
-        numHumanPlayers = hP;
-        numAIPlayers = aI;
-        playerIndex = pI;
-        board = b;
-        currentPlayer = c;
-
-        riskViews = new ArrayList<>();
-    }
+    private State state;
 
     /**
      * Creates a game and initialise its internal map.
      *
      * @param humanPlayerCount number of players playing the game.
      */
-    public Game(int humanPlayerCount, int AIPlayerCount)
+    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath)
     {
         playerList = new ArrayList<>();
+        if (mapPath.isEmpty()) board = new Board();
+        else board = new Board(mapPath);
         board = new Board();
         riskViews = new ArrayList<>();
 
         this.numHumanPlayers = humanPlayerCount;
         this.numAIPlayers = AIPlayerCount;
         this.numPlayers = humanPlayerCount + AIPlayerCount;
-
+        state = State.Deploy;
         _retrievePlayers();
+        currentPlayer = playerList.get(0);
+        reinforce = board.getBonusArmy(getCurrentPlayer());
     }
 
     /**
@@ -124,7 +111,21 @@ public class Game implements Serializable
         atkOutput = "";
         return output;
     }
+    public int getReinforce() {
+        return reinforce;
+    }
 
+    /**
+     * Returns the state of the game.
+     *
+     * @return The state of the game.
+     */
+    public State getState() {
+        return state;
+    }
+    public void setState(State state) {
+        this.state = state;
+    }
     /**
      * Returns the list of players.
      *
@@ -148,15 +149,14 @@ public class Game implements Serializable
      */
     private void _retrievePlayers()
     {
-        playerList = new ArrayList<>();
         int i ;
         for ( i = 0; i < numHumanPlayers; i++) {
 
             playerList.add(new Player("Player" + (i + 1)));
         }
 
+
         if(numAIPlayers == 0){
-            Collections.shuffle(playerList);
             playerIndex = 0;
             currentPlayer = playerList.get(playerIndex);
 
@@ -167,14 +167,8 @@ public class Game implements Serializable
                 playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j)));
             }
 
-            // Initialize the starting player.
-            Collections.shuffle(playerList);
-            playerIndex = 0;
-            currentPlayer = playerList.get(playerIndex);
-
             board.setupPlayers(playerList);
         }
-        
     }
 
     /**
@@ -189,11 +183,11 @@ public class Game implements Serializable
 
         String atkOutput = "" ;
 
-        countryOwn = board.getCountry(CountryName.valueOf(attacker));
+        countryOwn = board.getCountry(attacker);
 
-        List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
+        List<String> countryOwnAdj = countryOwn.getAdjCountries();
 
-        enemyCountry = board.getCountry(CountryName.valueOf(defender));
+        enemyCountry = board.getCountry(defender);
         enemyPlayer = enemyCountry.getRuler();
 
         if (!currentPlayer.equals(enemyPlayer)) {
@@ -385,6 +379,8 @@ public class Game implements Serializable
     public void nextPlayer() {
 
         playerIndex++;
+        state = State.Deploy;
+        reinforce = board.getBonusArmy(currentPlayer);
 
         // If the index is bigger or equal to the player list go back to index 0
         if (playerIndex >= playerList.size()){
@@ -394,7 +390,32 @@ public class Game implements Serializable
 
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
+    }
 
+    /**
+     * Method which handles Deploy phase and if bonus army reaches 0, switches state of game to Attack.
+     * */
+    public void deployCMD (String bonusC, int armyB)
+    {
+        Country bonusCountry = board.getCountry(bonusC);
+        bonusCountry.setArmyOccupied(bonusCountry.getArmyOccupied() + armyB);
+        reinforce -= armyB;
+        if (reinforce == 0)
+        {
+            state = State.Attack;
+        }
+    }
+
+    /**
+     * Method which handles Fortify phase and switches state of game to Deploy.
+     * */
+    public void fortifyCMD (String fortWC, String fortC, int armyFort)
+    {
+        Country fortWCountry = board.getCountry(fortWC); // country that is fortifying
+        Country fortCCountry = board.getCountry(fortC); // country that recieves fortification
+        fortCCountry.setArmyOccupied(fortCCountry.getArmyOccupied() + armyFort);
+        fortWCountry.setArmyOccupied(fortWCountry.getArmyOccupied() - armyFort);
+        nextPlayer();
     }
 
     /**
@@ -405,10 +426,10 @@ public class Game implements Serializable
      */
     public boolean pathCheck(String curr, List <String> visited, String goal) {
         boolean path = false;
-        Country currCountry = getBoardMap().getCountry(CountryName.valueOf(curr)); // current country
-        List<CountryName> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
-        List<CountryName> ownedC = new ArrayList<>(); // list of adj owned countries
-        for (CountryName countryName : adjC) {
+        Country currCountry = getBoardMap().getCountry(curr); // current country
+        List<String> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
+        List<String> ownedC = new ArrayList<>(); // list of adj owned countries
+        for (String countryName : adjC) {
             if (getBoardMap().getCountry(countryName).getRuler().getName().equals(currentPlayer.getName())) {
                 ownedC.add(countryName); // add the adj country to ownedC list
             }
@@ -419,54 +440,11 @@ public class Game implements Serializable
         }
         else {
             if (!(visited.contains(curr))) visited.add(curr); // add to visited countries list
-            for (CountryName countryName : ownedC) {
+            for (String countryName : ownedC) {
                 // recursive call all countryName in ownedC that are not in visited countries list
                 if (!visited.contains(countryName.toString())) return pathCheck(countryName.toString(), visited, goal);
             }
         }
         return path;
-    }
-
-    /**
-     * This method allows the user to save the state of the game.
-     *
-     * @param file The file which the game will save to.
-     */
-    public void saveG(String file){
-        //save the state of the game in another object
-        GameState gS = new GameState(playerList,numPlayers, numHumanPlayers, numAIPlayers, playerIndex, board, currentPlayer);
-        //write the game state object onto a file
-        try {
-            FileOutputStream fileOut = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(gS);
-            out.close();
-            fileOut.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method allows the user to load the most recent saved game.
-     *
-     * @param file The file which the game will load.
-     * @return Return the saved game.
-     */
-    public static Game loadG(String file){
-
-        try {
-            //read the file and load it to a new game
-            FileInputStream fileIn = new FileInputStream(file);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            GameState gS = (GameState) in.readObject();
-            Game game = new Game(gS.getPL(), gS.getTP(), gS.getHP(), gS.getAI(), gS.getPI(), gS.getB(), gS.getC());
-            in.close();
-            fileIn.close();
-            return game;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

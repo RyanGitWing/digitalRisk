@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 /**
  * The JPanel containing the Legend GUI.
@@ -9,8 +11,11 @@ import java.util.List;
  *
  */
 
-public class LegendGUI extends JPanel
+public class LegendGUI extends JPanel implements ActionListener
 {
+    private final JButton nTurn;
+    private final Game riskGame;
+
     /**
      * Creates a LegendGUI object.
      */
@@ -18,9 +23,10 @@ public class LegendGUI extends JPanel
     {
         this.setLayout(new FlowLayout());
         this.setBackground(Color.white);
+        this.riskGame = riskGame;
 
         List <Player> playerList = riskGame.getPlayerList();
-
+        JButton [] buttons = new JButton[playerList.size()];
         for (Player p: playerList)
         {
             JButton button = new JButton(p.getName());
@@ -55,7 +61,38 @@ public class LegendGUI extends JPanel
             }
             this.add(button);
         }
+
+        JButton state = new JButton("Current State: " + riskGame.getState());
+        state.setBackground(Color.black);
+        state.setForeground(Color.white);
+        this.add(state);
+
+        //Make the end turn button
+        nTurn = new JButton("End Turn");
+        nTurn.addActionListener(this);
+        this.add(nTurn);
+
         this.setVisible(true);
     }
 
+    /**
+     * An action performed event handler.
+     *
+     * @param e The event.
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(nTurn))
+        {
+            if (riskGame.getCurrentPlayer().isAI()) {
+                AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
+                ai.aiDeploy(riskGame);
+                riskGame.update();
+                ai.aiAttack(riskGame);
+                riskGame.update();
+            }
+            riskGame.nextPlayer();
+            riskGame.update();
+        }
+    }
 }
