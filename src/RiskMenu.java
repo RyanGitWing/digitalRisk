@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 /**
  * The Risk Menu Section.
@@ -20,7 +19,7 @@ public class RiskMenu extends JMenuBar implements ActionListener
     private final JMenuItem saveGame;
     private final JMenuItem loadGame;
     private final JMenuItem help;
-    private Game riskGame;
+    private final Game riskGame;
 
     /**
      * Create a menu object.
@@ -77,11 +76,7 @@ public class RiskMenu extends JMenuBar implements ActionListener
         if (e.getSource().equals(saveGame))
         {
             riskGame.update();
-            try {
-                riskGame.saveG("save.ser");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            riskGame.saveG("save.ser");
         }
         if (e.getSource().equals(loadGame)) {
             riskGame.loadG("save.ser");
