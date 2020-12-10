@@ -15,11 +15,13 @@ import java.awt.*;
  *
  * @author Fareen. L
  * @version 12.08.2020
+ *
+ * @author Vis.K
+ * @version 12.09.2020
  */
 
 public class RiskMapGUI extends JPanel
 {
-    //private final RiskController riskCtrl;
     private final Game riskGame;
     private final AtkController atkCtrl;
     private final FortifyController fortifyCtrl;
