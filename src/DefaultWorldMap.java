@@ -10,18 +10,21 @@ import java.util.*;
  * @version 11.08.2020
  *
  * @author Fareen. L
- * @version 12.07.2020
+ * @version 12.08.2020
  */
 public class DefaultWorldMap implements IWorldMap, Serializable {
 
-    private HashMap<String, String[]> continents;
-    private HashMap<String, String[]> adjCountries;
+    private final HashMap<String, String[]> continents;
+    private final HashMap<String, String[]> adjCountries;
+    private final HashMap<String, Integer> bonusArmies;
 
     public DefaultWorldMap() {
         continents = new HashMap<>();
         adjCountries = new HashMap<>();
+        bonusArmies = new HashMap<>();
         _generateContinents();
         _generateAdjacentCountries();
+        _generateBonusArmies();
     }
 
     /**
@@ -37,6 +40,13 @@ public class DefaultWorldMap implements IWorldMap, Serializable {
      * @return A hashmap of country names and corresponding adjacent country names.
      */
     public HashMap<String, String[]> getAdjCountries() { return adjCountries; }
+
+    /**
+     * Returns a hashmap of bonus armies corresponding to each continent.
+     *
+     * @return A hashmap of continents and bonus armies.
+     */
+    public HashMap<String, Integer> getBonusArmies() { return bonusArmies; }
 
     /**
      * Generates the default continents.
@@ -310,5 +320,14 @@ public class DefaultWorldMap implements IWorldMap, Serializable {
                 "EasternAustralia",
                 "NewGuinea",
                 "Indonesia"});
+    }
+
+    private void _generateBonusArmies() {
+        bonusArmies.put("Asia", 7);
+        bonusArmies.put("Europe", 5);
+        bonusArmies.put("Africa", 3);
+        bonusArmies.put("Australia", 2);
+        bonusArmies.put("NorthAmerica", 5);
+        bonusArmies.put("SouthAmerica", 2);
     }
 }

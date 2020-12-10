@@ -45,6 +45,7 @@ public class Game implements Serializable
     private List <RiskView> riskViews;
     private String outcome = "", diceValue = "", atkOutput = "";
 
+
     /**
      * Creates a game and initialise its internal map.
      */
@@ -61,18 +62,15 @@ public class Game implements Serializable
         riskViews = new ArrayList<>();
     }
 
-
     /**
      * Creates a game and initialise its internal map.
      *
      * @param humanPlayerCount number of players playing the game.
      */
-    public Game(int humanPlayerCount, int AIPlayerCount, String mapPath)
+    public Game(int humanPlayerCount, int AIPlayerCount)
     {
         playerList = new ArrayList<>();
-
-        if (mapPath.isEmpty()) board = new Board();
-        else board = new Board(mapPath);
+        board = new Board();
         riskViews = new ArrayList<>();
 
         this.numHumanPlayers = humanPlayerCount;
@@ -157,7 +155,6 @@ public class Game implements Serializable
             playerList.add(new Player("Player" + (i + 1)));
         }
 
-
         if(numAIPlayers == 0){
             Collections.shuffle(playerList);
             playerIndex = 0;
@@ -178,7 +175,6 @@ public class Game implements Serializable
             board.setupPlayers(playerList);
         }
         
-        
     }
 
     /**
@@ -193,11 +189,11 @@ public class Game implements Serializable
 
         String atkOutput = "" ;
 
-        countryOwn = board.getCountry(attacker);
+        countryOwn = board.getCountry(CountryName.valueOf(attacker));
 
-        List<String> countryOwnAdj = countryOwn.getAdjCountries();
+        List<CountryName> countryOwnAdj = countryOwn.getAdjCountries();
 
-        enemyCountry = board.getCountry(defender);
+        enemyCountry = board.getCountry(CountryName.valueOf(defender));
         enemyPlayer = enemyCountry.getRuler();
 
         if (!currentPlayer.equals(enemyPlayer)) {
@@ -398,6 +394,7 @@ public class Game implements Serializable
 
         // Player that is playing according to index.
         currentPlayer = playerList.get(playerIndex);
+
     }
 
     /**
@@ -408,10 +405,10 @@ public class Game implements Serializable
      */
     public boolean pathCheck(String curr, List <String> visited, String goal) {
         boolean path = false;
-        Country currCountry = getBoardMap().getCountry(curr); // current country
-        List<String> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
-        List<String> ownedC = new ArrayList<>(); // list of adj owned countries
-        for (String countryName : adjC) {
+        Country currCountry = getBoardMap().getCountry(CountryName.valueOf(curr)); // current country
+        List<CountryName> adjC = currCountry.getAdjCountries(); // list of adj countries to curr
+        List<CountryName> ownedC = new ArrayList<>(); // list of adj owned countries
+        for (CountryName countryName : adjC) {
             if (getBoardMap().getCountry(countryName).getRuler().getName().equals(currentPlayer.getName())) {
                 ownedC.add(countryName); // add the adj country to ownedC list
             }
@@ -422,7 +419,7 @@ public class Game implements Serializable
         }
         else {
             if (!(visited.contains(curr))) visited.add(curr); // add to visited countries list
-            for (String countryName : ownedC) {
+            for (CountryName countryName : ownedC) {
                 // recursive call all countryName in ownedC that are not in visited countries list
                 if (!visited.contains(countryName.toString())) return pathCheck(countryName.toString(), visited, goal);
             }
@@ -430,8 +427,15 @@ public class Game implements Serializable
         return path;
     }
 
-    public void saveG(String file) throws IOException{
+    /**
+     * This method allows the user to save the state of the game.
+     *
+     * @param file The file which the game will save to.
+     */
+    public void saveG(String file){
+        //save the state of the game in another object
         GameState gS = new GameState(playerList,numPlayers, numHumanPlayers, numAIPlayers, playerIndex, board, currentPlayer);
+        //write the game state object onto a file
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -443,8 +447,16 @@ public class Game implements Serializable
         }
     }
 
+    /**
+     * This method allows the user to load the most recent saved game.
+     *
+     * @param file The file which the game will load.
+     * @return Return the saved game.
+     */
     public static Game loadG(String file){
+
         try {
+            //read the file and load it to a new game
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             GameState gS = (GameState) in.readObject();
