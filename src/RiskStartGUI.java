@@ -46,7 +46,7 @@ public class RiskStartGUI
             String CustomPath = (String) JOptionPane.showInputDialog(null,
                     "Select the Custom Map", "Which Custom Map?",
                     JOptionPane.INFORMATION_MESSAGE, null,
-                    new String[]{"{basedir}", ""}, "");
+                    new String[]{"digitalRisk-main\\defaultMap.json", "defaultMap.json"}, "");
             RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, CustomPath);
         }
 

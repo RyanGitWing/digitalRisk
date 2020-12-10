@@ -90,10 +90,8 @@ public class AtkController implements ActionListener {
                             armyCount = Integer.parseInt(armyC);
 
                             if (armyCount > 0) {
-
-                                riskGame.attackCMD(atkC, armyCount, defC);
                                 riskGame.update();
-                                JOptionPane.showMessageDialog(null, riskGame.getAtkOutput(), "Alert", JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.showMessageDialog(null,  riskGame.attackCMD(atkC, armyCount, defC), "Alert", JOptionPane.WARNING_MESSAGE);
                                 if (riskGame.turnOutcome()) {
 
                                     String[] occArmy = new String[country.getArmyOccupied() - 1];

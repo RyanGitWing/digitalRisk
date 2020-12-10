@@ -82,17 +82,7 @@ public class LegendGUI extends JPanel implements ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(nTurn))
-        {
-            if (riskGame.getCurrentPlayer().isAI()) {
-                AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
-                ai.aiDeploy(riskGame);
-                riskGame.update();
-                ai.aiAttack(riskGame);
-                riskGame.update();
-            }
-            riskGame.nextPlayer();
-            riskGame.update();
-        }
+        riskGame.testAI();
+        riskGame.update();
     }
 }

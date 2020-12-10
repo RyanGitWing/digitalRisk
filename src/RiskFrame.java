@@ -35,9 +35,9 @@ public class RiskFrame extends JFrame implements RiskView{
     /**
      * Creates a RiskFrame object.
      */
-    public RiskFrame(int numHumanPlayers,int numAIPlayers)
+    public RiskFrame(int numHumanPlayers,int numAIPlayers, String mapPath)
     {
-        riskGame = new Game(numHumanPlayers,numAIPlayers, "americaMap.json");
+        riskGame = new Game(numHumanPlayers,numAIPlayers, mapPath);
         riskGame.addRiskView(this);
 
         this.setLayout(new BorderLayout());
@@ -57,16 +57,29 @@ public class RiskFrame extends JFrame implements RiskView{
         legendGUI = new LegendGUI(riskGame);
         this.add(legendGUI, BorderLayout.SOUTH);
 
-        //Add the commands to the frame
-        CommandPanel commandPanel = new CommandPanel(riskGame);
-        this.add(commandPanel, BorderLayout.WEST);
-
         // Add the map to the frame
         mapGUI = new RiskMapGUI(riskGame);
         this.add(mapGUI, BorderLayout.CENTER);
 
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        while(riskGame.getCurrentPlayer().isAI()) {
+        int ownedSize = riskGame.getCurrentPlayer().getOwnedCountries().size();
+        AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
+        ai.aiDeploy(riskGame);
+        riskGame.update();
+        if(ownedSize>=7) {
+            ai.aiAggroAttack(riskGame);
+            riskGame.update();
+        }
+        else{
+            ai.aiPassiveAttack(riskGame);
+            riskGame.update();
+        }
+        riskGame.nextPlayer();
+        riskGame.update();
+    }
     }
 
     /**

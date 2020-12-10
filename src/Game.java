@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 /**
@@ -45,6 +46,23 @@ public class Game
 
     private State state;
 
+
+    /**
+     * Creates a game and initialise its internal map.
+     */
+    public Game(ArrayList<Player> pL, int tP, int hP, int aI, int pI, Board b, Player c)
+    {
+        playerList = pL;
+        numPlayers = tP;
+        numHumanPlayers = hP;
+        numAIPlayers = aI;
+        playerIndex = pI;
+        board = b;
+        currentPlayer = c;
+
+        riskViews = new ArrayList<>();
+    }
+
     /**
      * Creates a game and initialise its internal map.
      *
@@ -68,8 +86,8 @@ public class Game
     }
 
     /**
-    * Updates the RiskViews in riskViews as the game progresses.
-    * */
+     * Updates the RiskViews in riskViews as the game progresses.
+     * */
     public void update ()
     {
         for (RiskView rv : riskViews)
@@ -164,7 +182,7 @@ public class Game
         }
         else {
             for (int j = 0; j < numAIPlayers; j++) {
-                playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j)));
+                playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j), this));
             }
 
             board.setupPlayers(playerList);
@@ -341,10 +359,12 @@ public class Game
 
             enemyCountry.setRuler(currentPlayer);
             currentPlayer.addCountry(enemyCountry);
-            enemyCountry.setArmyOccupied(numAtkArmy); // Should check to make sure at least one army in countryOwn
-
+            if (currentPlayer.isAI()) {
+                enemyCountry.setArmyOccupied(numAtkArmy);
+                countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+            }
             enemyPlayer.removeCountry(enemyCountry);
-            countryOwn.setArmyOccupied(countryOwn.getArmyOccupied() - numAtkArmy);
+
 
             // If the enemy total army count falls to zero, remove player from game.
             if (enemyPlayer.getArmyCount() == 0) {
@@ -365,7 +385,7 @@ public class Game
      *
      * @param dead The player to remove from the game
      */
-    private void removePlayer(Player dead){
+    public void removePlayer(Player dead){
 
         outcome = "NEWS: " + dead + " has been eliminated from the game!";
 
@@ -446,5 +466,68 @@ public class Game
             }
         }
         return path;
+    }
+
+    /**
+     * This method allows the user to save the state of the game.
+     *
+     * @param file The file which the game will save to.
+     */
+    public void saveG(String file){
+        //save the state of the game in another object
+        GameState gS = new GameState(playerList,numPlayers, numHumanPlayers, numAIPlayers, playerIndex, board, currentPlayer);
+        //write the game state object onto a file
+        try {
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gS);
+            out.close();
+            fileOut.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method allows the user to load the most recent saved game.
+     *
+     * @param file The file which the game will load.
+     * @return Return the saved game.
+     */
+    public static Game loadG(String file){
+
+        try {
+            //read the file and load it to a new game
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            GameState gS = (GameState) in.readObject();
+            Game game = new Game(gS.getPL(), gS.getTP(), gS.getHP(), gS.getAI(), gS.getPI(), gS.getB(), gS.getC());
+            in.close();
+            fileIn.close();
+            return game;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void testAI ()
+    {
+        if(getCurrentPlayer().isAI()) {
+            int ownedSize = getCurrentPlayer().getOwnedCountries().size();
+            AIPlayer ai = (AIPlayer) getCurrentPlayer();
+            ai.aiDeploy(this);
+            update();
+            if(ownedSize>=7) {
+                ai.aiAggroAttack(this);
+                update();
+            }
+            else{
+                ai.aiPassiveAttack(this);
+                update();
+            }
+            nextPlayer();
+            update();
+        }
     }
 }
