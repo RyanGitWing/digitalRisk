@@ -129,6 +129,12 @@ public class Game
         atkOutput = "";
         return output;
     }
+
+    /**
+     * Gets the bonus army allocation.
+     *
+     * @return The bonus armies.
+     */
     public int getReinforce() {
         return reinforce;
     }
@@ -141,9 +147,16 @@ public class Game
     public State getState() {
         return state;
     }
+
+    /**
+     * Sets the state of the game.
+     *
+     * @param state The state of the game.
+     */
     public void setState(State state) {
         this.state = state;
     }
+
     /**
      * Returns the list of players.
      *
@@ -323,13 +336,12 @@ public class Game
         }
 
         turnOutcome();
-
     }
 
     /**
      * Checks the outcome if a player won a country.
      *
-     * @return
+     * @return True if the player won, false otherwise.
      */
     public Boolean turnOutcome() {
 
@@ -376,8 +388,6 @@ public class Game
         }
 
         return hasWon;
-
-
     }
 
     /**
@@ -390,7 +400,6 @@ public class Game
         outcome = "NEWS: " + dead + " has been eliminated from the game!";
 
         playerList.remove(dead);
-
     }
 
     /**
@@ -405,7 +414,6 @@ public class Game
         // If the index is bigger or equal to the player list go back to index 0
         if (playerIndex >= playerList.size()){
             playerIndex = 0;
-
         }
 
         // Player that is playing according to index.
@@ -495,7 +503,6 @@ public class Game
      * @return Return the saved game.
      */
     public static Game loadG(String file){
-
         try {
             //read the file and load it to a new game
             FileInputStream fileIn = new FileInputStream(file);
@@ -511,7 +518,10 @@ public class Game
         return null;
     }
 
-    public void testAI ()
+    /**
+     * Runs an AI player turn.
+     */
+    public void runAI()
     {
         if(getCurrentPlayer().isAI()) {
             int ownedSize = getCurrentPlayer().getOwnedCountries().size();

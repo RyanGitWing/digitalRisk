@@ -7,7 +7,8 @@
 public interface RiskView {
 
     /**
-     * todo
+     * Handles game update.
+     *
      * @param e RiskEvent object.
      */
     void handleGameUpdate(RiskEvent e);

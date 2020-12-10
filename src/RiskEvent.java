@@ -15,6 +15,7 @@ public class RiskEvent extends EventObject {
 
     /**
      * Creates a RiskEvent object.
+     *
      * @param game The game object.
      */
     public RiskEvent (Game game)

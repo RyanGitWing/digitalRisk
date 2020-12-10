@@ -1,8 +1,17 @@
 import javax.swing.*;
 
+/**
+ * The starter frame for the game.
+ *
+ * @author Vis. K
+ * @version 12.09.2020
+ */
 public class RiskStartGUI
 {
-    
+
+    /**
+     * Sets up the game.
+     */
     public RiskStartGUI()
     {
         String [] numPlayers = new String[7]; // max 6 players
@@ -46,7 +55,7 @@ public class RiskStartGUI
             String CustomPath = (String) JOptionPane.showInputDialog(null,
                     "Select the Custom Map", "Which Custom Map?",
                     JOptionPane.INFORMATION_MESSAGE, null,
-                    new String[]{"digitalRisk-main\\defaultMap.json", "defaultMap.json"}, "");
+                    new String[]{"americaMap.json", "defaultMap.json"}, "");
             RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, CustomPath);
         }
 

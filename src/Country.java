@@ -4,8 +4,8 @@ import java.util.*;
 /**
  * Represents a country.
  *
- * @author: Vyasan. J
- * @version: 10.25.2020
+ * @author Vyasan. J
+ * @version 10.25.2020
  *
  * @author Fareen. L
  * @version 11.08.2020

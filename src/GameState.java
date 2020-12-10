@@ -42,63 +42,63 @@ public class GameState implements Serializable {
     }
 
     /**
-     * This method returns the player list.
+     * Returns the player list.
      *
-     * @return
+     * @return The list of players.
      */
     public ArrayList<Player> getPL(){
         return players;
     }
 
     /**
-     * This method returns the total number of players.
+     * Returns the total number of players.
      *
-     * @return
+     * @return The total number of players.
      */
     public int getTP(){
         return totalPlayers;
     }
 
     /**
-     * This method returns the number of human players.
+     * Returns the number of human players.
      *
-     * @return
+     * @return The number of human players.
      */
     public int getHP(){
         return humanPlayers;
     }
 
     /**
-     * This method returns the number of AI players
+     * Returns the number of AI players
      *
-     * @return
+     * @return The number of AI players.
      */
     public int getAI(){
         return AIPlayers;
     }
 
     /**
-     * This method returns the player index.
+     * Returns the current player index.
      *
-     * @return
+     * @return The player index.
      */
     public int getPI(){
         return playerIndex;
     }
 
     /**
-     * This method returns the board.
+     * Returns the board of the game.
      *
-     * @return
+     * @return The board.
      */
     public Board getB(){
         return board;
     }
 
     /**
-     * This method returns the current player.
+     * Returns the current player.
      *
-     * @return
+     * @return The current player.
      */
     public Player getC(){
         return currentPlayer;

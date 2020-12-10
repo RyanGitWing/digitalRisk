@@ -30,11 +30,6 @@ public class Player implements Serializable {
     private int totArmyCount;
     private boolean PlayerTurn;
 
-
-    public Player(){
-        NAME = "";
-    }
-
     /**
      * Creates a new player object with initial country ownership and armies.
      *

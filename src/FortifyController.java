@@ -94,5 +94,4 @@ public class FortifyController implements ActionListener {
             }
         }
     }
-
 }

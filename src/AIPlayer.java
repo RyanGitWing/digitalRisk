@@ -13,6 +13,7 @@ import java.util.List;
 
 public class AIPlayer extends Player implements Serializable {
     private final Game riskGame;
+
     /**
      * Creates an AI player.
      *
@@ -83,7 +84,7 @@ public class AIPlayer extends Player implements Serializable {
      * The ai will go through all the countries that it owns 
      * and deploy its bonus army to the country with the lowest army count
      *
-     * @param riskGame - current game that's running
+     * @param riskGame The current game.
      */
     public void aiDeploy(Game riskGame) {
         if (isDead()) removeAi();
@@ -118,12 +119,20 @@ public class AIPlayer extends Player implements Serializable {
         return true;
     }
 
+    /**
+     * Checks to see if the AI is dead.
+     *
+     * @return True if dead, false otherwise.
+     */
     public boolean isDead()
     {
         if (this.getArmyCount() == 0) return true;
         return false;
     }
 
+    /**
+     * Removes AI after they've lost all countries.
+     */
     public void removeAi()
     {
         riskGame.removePlayer(this);
