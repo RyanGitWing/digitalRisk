@@ -19,14 +19,22 @@ import java.awt.*;
 
 public class RiskMapGUI extends JPanel
 {
-    private final RiskController riskCtrl;
+    //private final RiskController riskCtrl;
+    private final Game riskGame;
+    private final AtkController atkCtrl;
+    private final FortifyController fortifyCtrl;
+    private final DeployController deployCtrl;
 
     /**
      *  This panel displays the WorldMap to the user.
      * */
     public RiskMapGUI (Game riskGame)
     {
-        riskCtrl = new RiskController(riskGame);
+        this.riskGame = riskGame;
+        atkCtrl = new AtkController(riskGame);
+        fortifyCtrl = new FortifyController(riskGame);
+        deployCtrl = new DeployController(riskGame);
+
         Board worldMap = riskGame.getBoardMap();
 
         this.setLayout(new GridBagLayout());
@@ -98,9 +106,11 @@ public class RiskMapGUI extends JPanel
         jPanel.setBackground(Color.BLUE);
         for (Country country: continent.getCountries())
         {
-            JButton jButton = new JButton(country.getCountryName().toString() + ": " + country.getArmyOccupied());
-            jButton.setActionCommand(country.getCountryName().toString());
-            if (country.getArmyOccupied() > 1) jButton.addActionListener(riskCtrl);
+            JButton jButton = new JButton(country.getCountryName() + ": " + country.getArmyOccupied());
+            jButton.setActionCommand(country.getCountryName());
+            if (riskGame.getState() == Game.State.Deploy) jButton.addActionListener(deployCtrl);
+            if (country.getArmyOccupied() > 1 && riskGame.getState() == Game.State.Attack) jButton.addActionListener(atkCtrl);
+            if (country.getArmyOccupied() > 1 && riskGame.getState() == Game.State.Fortify) jButton.addActionListener(fortifyCtrl);
             jButton.setBackground(Color.black);
 
             // Handles colours based on ruler of country, white for neutral country owned by no one.
