@@ -37,7 +37,7 @@ public class RiskFrame extends JFrame implements RiskView{
      */
     public RiskFrame(int numHumanPlayers,int numAIPlayers)
     {
-        riskGame = new Game(numHumanPlayers,numAIPlayers, "defaultMap.json");
+        riskGame = new Game(numHumanPlayers,numAIPlayers, "americaMap.json");
         riskGame.addRiskView(this);
 
         this.setLayout(new BorderLayout());

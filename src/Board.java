@@ -73,7 +73,7 @@ public class Board implements Serializable
         {
             for (Country country: continent.getCountries())
             {
-                if (country.getCountryName() == countryName)
+                if (country.getCountryName().equals(countryName))
                 {
                     return country;
                 }
@@ -96,13 +96,13 @@ public class Board implements Serializable
     }
 
     /**
-     * Calculates the total number of bonus armies alloted to a player per turn.
+     * Calculates the total number of bonus armies allotted to a player per turn.
      *
      * @param player The player to allot the bonus armies to.
      * @return The bonus army count.
      */
     public int getBonusArmy(Player player) {
-        int bonus = 0;
+        int bonus;
 
         bonus = BonusArmy.generalBonus(player.getOwnedCountries().size());
 

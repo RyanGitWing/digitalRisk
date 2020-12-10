@@ -32,7 +32,7 @@ public class GameTest {
     }
 
     @Test
-    public void getCurrentPlayer() {
+    public void getCurrentPlayer() throws Exception {
         // setup
         Game game = new Game(2, 0, "");
 
@@ -51,7 +51,7 @@ public class GameTest {
     }
 
     @Test
-    public void nextPlayer() {
+    public void nextPlayer() throws Exception {
         // setup and act
         Game game = new Game(2, 0, "");
         game.nextPlayer();

@@ -12,6 +12,9 @@ import java.awt.*;
  *
  * @author Vis. K
  * @version 11.23.2020
+ *
+ * @author Fareen. L
+ * @version 12.08.2020
  */
 
 public class RiskMapGUI extends JPanel
