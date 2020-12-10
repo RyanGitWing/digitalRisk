@@ -4,7 +4,7 @@ Game Authors: Vyasan Jogarasan, Ryan Nguyen, Fareen Lavji, Vis Kirubakaran
 
 readme Authors: Vyasan Jogarasan, Fareen Lavji
 
-Version: 12.07.2020
+Version: 12.09.2020
 
 ## Deliverables
 - [x] Source Code and executable in JAR file
@@ -38,3 +38,4 @@ Version: 12.07.2020
 * Skipping of AI player's turn is not automatic when there are humans playing as well
 * There is no end to the game
 * There is an infinite game loop with AIs
+* Need a way to reject invalid maps

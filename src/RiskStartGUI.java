@@ -55,16 +55,20 @@ public class RiskStartGUI
         }
         else if (mapType.equals("Custom"))
         {
-            FileDialog fd = new FileDialog(new JFrame());
-            fd.setVisible(true);
-            File[] f = fd.getFiles();
-            if(f.length > 0){
-                String path = fd.getFiles()[0].getAbsolutePath();
-                RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, path);
-            }
+            String path = "";
+            do {
+                FileDialog fd = new FileDialog(new JFrame());
+                fd.setVisible(true);
+                File[] f = fd.getFiles();
+                if(f.length > 0){
+                    path = fd.getFiles()[0].getAbsolutePath();
+                    if (path.endsWith(".json")) {
+                        RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, path);
+                        break;
+                    }
+                }
+            } while (!path.endsWith(".json"));
         }
-
-
     }
 
     public static void main(String[] args) {
