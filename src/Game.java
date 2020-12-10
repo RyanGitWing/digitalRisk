@@ -22,6 +22,12 @@ import java.util.*;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Fareen. L
+ * @version 12.07.2020
+ *
+ * @author Vyasan. J
+ * @version 12.09.2020
  */
 public class Game implements Serializable
 {
@@ -149,17 +155,26 @@ public class Game implements Serializable
             playerList.add(new Player("Player" + (i + 1)));
         }
 
-        if (numAIPlayers != 0) {
+        if(numAIPlayers == 0){
+            Collections.shuffle(playerList);
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+
+            board.setupPlayers(playerList);
+        }
+        else {
             for (int j = 0; j < numAIPlayers; j++) {
                 playerList.add(new AIPlayer("AIPlayer" + (i + 1 + j)));
             }
 
+            // Initialize the starting player.
+            Collections.shuffle(playerList);
+            playerIndex = 0;
+            currentPlayer = playerList.get(playerIndex);
+
+            board.setupPlayers(playerList);
         }
-        playerIndex = 0;
-        currentPlayer = playerList.get(playerIndex);
-        board.setupPlayers(playerList);
-
-
+        
     }
 
     /**

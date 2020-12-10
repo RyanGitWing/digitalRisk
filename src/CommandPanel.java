@@ -24,6 +24,9 @@ import java.util.List;
  *
  * @author Fareen. L
  * @version 12.07.2020
+ *
+ * @author Vyasan. J
+ * @version 12.09.2020
  */
 
 public class CommandPanel extends JPanel implements ActionListener
@@ -104,10 +107,16 @@ public class CommandPanel extends JPanel implements ActionListener
                 }
                 riskGame.update();
             }
-            if (riskGame.getCurrentPlayer().isAI()) {
+            if(riskGame.getCurrentPlayer().isAI()) {
+                int ownedSize = riskGame.getCurrentPlayer().getOwnedCountries().size();
                 AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
                 ai.aiDeploy(riskGame);
-                ai.aiAttack(riskGame);
+                if(ownedSize>=7) {
+                    ai.aiAggroAttack(riskGame);
+                }
+                else{
+                    ai.aiPassiveAttack(riskGame);
+                }
                 riskGame.nextPlayer();
                 riskGame.update();
             }
