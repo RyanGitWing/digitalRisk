@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.nio.file.Files;
 
 /**
  * The starter frame for the game.
@@ -52,11 +55,13 @@ public class RiskStartGUI
         }
         else if (mapType.equals("Custom"))
         {
-            String CustomPath = (String) JOptionPane.showInputDialog(null,
-                    "Select the Custom Map", "Which Custom Map?",
-                    JOptionPane.INFORMATION_MESSAGE, null,
-                    new String[]{"americaMap.json", "defaultMap.json"}, "");
-            RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, CustomPath);
+            FileDialog fd = new FileDialog(new JFrame());
+            fd.setVisible(true);
+            File[] f = fd.getFiles();
+            if(f.length > 0){
+                String path = fd.getFiles()[0].getAbsolutePath();
+                RiskFrame rf = new RiskFrame(numHumanP, numAIPlyr, path);
+            }
         }
 
 
