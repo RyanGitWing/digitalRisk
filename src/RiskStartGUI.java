@@ -8,6 +8,9 @@ import java.nio.file.Files;
  *
  * @author Vis. K
  * @version 12.09.2020
+ *
+ * @author Fareen. L
+ * @version 12.09.2020
  */
 public class RiskStartGUI
 {

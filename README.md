@@ -39,3 +39,4 @@ Version: 12.09.2020
 * There is no end to the game
 * There is an infinite game loop with AIs
 * Need a way to reject invalid maps
+* If the user closes the dialogue box for uploading custom maps, they need to start the game again.
