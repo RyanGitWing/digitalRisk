@@ -24,6 +24,9 @@ import java.awt.*;
  *
  * @author Fareen. L
  * @version 12.07.2020
+ *
+ * @author Vis.K
+ * @version 12.09.2020
  */
 
 public class RiskFrame extends JFrame implements RiskView{
@@ -64,6 +67,7 @@ public class RiskFrame extends JFrame implements RiskView{
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        // Handles AI-Only match - since AIPlayer is current player, that means no Human player exists
         while(riskGame.getCurrentPlayer().isAI()) {
         int ownedSize = riskGame.getCurrentPlayer().getOwnedCountries().size();
         AIPlayer ai = (AIPlayer) riskGame.getCurrentPlayer();
@@ -71,13 +75,12 @@ public class RiskFrame extends JFrame implements RiskView{
         riskGame.update();
         if(ownedSize>=7) {
             ai.aiAggroAttack(riskGame);
-            riskGame.update();
         }
         else{
             ai.aiPassiveAttack(riskGame);
-            riskGame.update();
         }
-        riskGame.nextPlayer();
+            riskGame.update();
+            riskGame.nextPlayer();
         riskGame.update();
     }
     }

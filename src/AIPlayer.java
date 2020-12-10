@@ -89,20 +89,22 @@ public class AIPlayer extends Player implements Serializable {
         if (isDead()) removeAi();
         else riskGame.setState(Game.State.Deploy);
 
-        int bonus = riskGame.getBoardMap().getBonusArmy(this);
-        List<Country> owned = this.getOwnedCountries();
-        int ownedSize = owned.size();
-        int weakestIndex = 0;
+        if (!isDead()) {
+            int bonus = riskGame.getBoardMap().getBonusArmy(this);
+            List<Country> owned = this.getOwnedCountries();
+            int ownedSize = owned.size();
+            int weakestIndex = 0;
 
-        for (int i = 0; i < ownedSize; i++) {
-            if (owned.get(i).getArmyOccupied() < owned.get(weakestIndex).getArmyOccupied()) {
-                weakestIndex = i;
+            for (int i = 0; i < ownedSize; i++) {
+                if (owned.get(i).getArmyOccupied() < owned.get(weakestIndex).getArmyOccupied()) {
+                    weakestIndex = i;
+                }
             }
+
+            owned.get(weakestIndex).setArmyOccupied(owned.get(weakestIndex).getArmyOccupied() + bonus);
+
+            riskGame.setState(Game.State.Attack);
         }
-
-        owned.get(weakestIndex).setArmyOccupied(owned.get(weakestIndex).getArmyOccupied()+bonus);
-
-        riskGame.setState(Game.State.Attack);
     }
 
 

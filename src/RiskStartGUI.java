@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class RiskStartGUI
 {
-
+    
     public RiskStartGUI()
     {
         String [] numPlayers = new String[7]; // max 6 players

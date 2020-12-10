@@ -82,7 +82,7 @@ public class LegendGUI extends JPanel implements ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        riskGame.testAI();
+        riskGame.runAI();
         riskGame.update();
     }
 }
