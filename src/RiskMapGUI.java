@@ -114,7 +114,7 @@ public class RiskMapGUI extends JPanel
             jButton.setBackground(Color.black);
 
             // Handles colours based on ruler of country, white for neutral country owned by no one.
-            if (country.getRuler().getName().equals("Player1")) {
+            if (country.getRuler().getName().equals("Player1") || country.getRuler().getName().equals("AIPlayer1") ) {
                 jButton.setForeground(Color.RED);
             }
             if (country.getRuler().getName().equals("Player2")||country.getRuler().getName().equals("AIPlayer2")) {

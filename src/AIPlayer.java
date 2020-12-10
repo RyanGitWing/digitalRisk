@@ -12,14 +12,15 @@ import java.util.List;
  */
 
 public class AIPlayer extends Player implements Serializable {
-
+    private final Game riskGame;
     /**
      * Creates an AI player.
      *
      * @param name The name of the AI player.
      */
-    AIPlayer(String name){
+    AIPlayer(String name, Game riskGame){
         super(name);
+        this.riskGame = riskGame;
     }
 
 
@@ -33,8 +34,8 @@ public class AIPlayer extends Player implements Serializable {
      */
     public void aiAggroAttack(Game riskGame){
         int ownedCountriesSize = getOwnedCountries().size();
-
-
+        riskGame.setState(Game.State.Attack);
+        if (isDead()) removeAi();
         for(int i = 0; i < ownedCountriesSize; i++){
             int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
             if(getOwnedCountries().get(i).getArmyOccupied() >= 4){
@@ -60,7 +61,8 @@ public class AIPlayer extends Player implements Serializable {
      */
     public void aiPassiveAttack(Game riskGame){
         int ownedCountriesSize = getOwnedCountries().size();
-
+        riskGame.setState(Game.State.Attack);
+        if (isDead()) removeAi();
 
         for(int i = 0; i < ownedCountriesSize; i++){
             int adjCountriesSize = getOwnedCountries().get(i).getAdjCountries().size();
@@ -74,7 +76,6 @@ public class AIPlayer extends Player implements Serializable {
             }
 
         }
-
     }
 
     /**
@@ -85,6 +86,9 @@ public class AIPlayer extends Player implements Serializable {
      * @param riskGame - current game that's running
      */
     public void aiDeploy(Game riskGame) {
+        if (isDead()) removeAi();
+        else riskGame.setState(Game.State.Deploy);
+
         int bonus = riskGame.getBoardMap().getBonusArmy(this);
         List<Country> owned = this.getOwnedCountries();
         int ownedSize = owned.size();
@@ -97,6 +101,8 @@ public class AIPlayer extends Player implements Serializable {
         }
 
         owned.get(weakestIndex).setArmyOccupied(owned.get(weakestIndex).getArmyOccupied()+bonus);
+
+        riskGame.setState(Game.State.Attack);
     }
 
 
@@ -109,6 +115,18 @@ public class AIPlayer extends Player implements Serializable {
     public boolean isAI(){
         return true;
     }
+
+    public boolean isDead()
+    {
+        if (this.getArmyCount() == 0) return true;
+        return false;
+    }
+
+    public void removeAi()
+    {
+        riskGame.removePlayer(this);
+    }
+
 
 
 }
