@@ -6,6 +6,9 @@ import java.util.List;
  *
  * @author Vyasan. J
  * @version 11.22.2020
+ *
+ * @author Vyasan. J
+ * @version 12.09.2020
  */
 
 public class AIPlayer extends Player implements Serializable {
