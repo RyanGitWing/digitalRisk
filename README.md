@@ -1,3 +1,5 @@
+Note: Recreation of this game was for academic purposes only.
+
 # Digital Risk
 
 Game Authors: Vyasan Jogarasan, Ryan Nguyen, Fareen Lavji, Vis Kirubakaran
